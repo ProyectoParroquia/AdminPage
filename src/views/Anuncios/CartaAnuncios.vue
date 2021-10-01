@@ -47,8 +47,7 @@
             </div>
           </div>
           <v-overlay
-
-          absolute=true
+          absolute
           opacity= .5
           value=true
         >

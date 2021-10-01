@@ -36,6 +36,14 @@ export default {
 }
 </script>
 
-<style scoped>
+<style >
+body::-webkit-scrollbar{
+  width: 10px;
+  background:#f4f5fa;
+}
+ body::-webkit-scrollbar-thumb{
+   background: rgba(174, 95, 158, .7);
+   border-radius: 5px;
 
+ }
 </style>

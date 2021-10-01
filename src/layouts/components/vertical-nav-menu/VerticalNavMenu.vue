@@ -1,4 +1,5 @@
 <template>
+
   <v-navigation-drawer
 
     :value="isDrawerOpen"
@@ -259,4 +260,22 @@ export default {
   }
 }
 
+::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #ff2929;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: rgb(255, 219, 219);
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 </style>

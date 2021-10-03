@@ -125,12 +125,12 @@ export default {
   margin-right: auto;
 }
 
-vertical-nav-menu::-webkit-scrollbar{
+/* vertical-nav-menu::-webkit-scrollbar{
   width: 10px;
   background:#f4f5fa;
 }
 vertical-nav-menu::-webkit-scrollbar-thumb{
    background: rgba(174, 95, 158, .7);
    border-radius: 5px;
- }
+ } */
 </style>

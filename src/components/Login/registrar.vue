@@ -2,7 +2,7 @@
     <v-card-text class="mt-12">
        <h1
           class="text-center display-10 purple--text text--light2"
-       >Registrarse</h1>
+       >{{titulo}}</h1>
           <validation-observer
             ref="observer"
             v-slot="{ invalid }"
@@ -391,6 +391,12 @@ export default {
       ValidationProvider,
       ValidationObserver,
     },
+    props:{
+      titulo: {
+        type:String,
+        default: "Registrarse"
+      },
+    },
     data:function(){
         return {
           e1: 1,
@@ -441,6 +447,9 @@ export default {
         this.$refs.observer.validate()
       },
 
+      setformActualizar(){
+        this.form.nombreUsuario = this.dataform.nombreUsuario
+      },
 
       guardar(){
             /* this.form.token = localStorage.getItem("token");  */
@@ -461,7 +470,7 @@ export default {
                 console.log(res);
                 if(res.status === 201){
                   this.Snackbar(res.data.success, "green")
-                  setTimeout(this.$router.push('/about'),1800);
+                  setTimeout(this.$router.push('/pages/login'),1000);
                 }else{
 
 
@@ -482,7 +491,7 @@ export default {
                 }
 
             })
-            console.log("funcoina")
+
         },
 
         Snackbar(texto, color) {
@@ -495,7 +504,8 @@ export default {
                 axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( data =>{
                 this.form.items = data.data;
                   });
-    }
+    },
+
 
     },
   setup() {

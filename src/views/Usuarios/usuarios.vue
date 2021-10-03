@@ -3,7 +3,7 @@
   <v-data-table
     :headers="headers"
     :items="desserts"
-    sort-by="calories"
+    sort-by="usuarios"
     class="elevation-1"
     :search="search"
   >
@@ -27,26 +27,50 @@
       ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog
-          v-model="dialog"
+          v-model="dialogNuevo"
           max-width="500px"
+          max-height="500px"
         >
-          <template v-slot:activator="{ on, attrs }">
+
+        <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
               dark
               class="mb-2"
               v-bind="attrs"
               v-on="on"
+              @click="reseteo()"
             >
               Nuevo Usuario
             </v-btn>
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2 mr-4"
+              v-bind="attrs"
+              @click="consultarInactivos()"
+            >
+              {{BotonConsultaTexto}}
+            </v-btn>
           </template>
 
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
+<v-card >
+  <v-card-text style="padding-top:5px;">
+          <registrar :titulo="formTitle"/>
+  </v-card-text>
+</v-card>
+        </v-dialog>
 
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+        >
+
+          <v-card>
+
+            <v-card-title>
+              {{formTitle}} {{editedItem.nombreUsuario}}
+            </v-card-title>
             <v-card-text>
               <v-container>
                 <v-row>
@@ -55,9 +79,23 @@
                     sm="6"
                     md="4"
                   >
+
+
                     <v-text-field
-                      v-model="editedItem.name"
-                      label="Nombres"
+                      v-model="editedItem.nombreUsuario"
+                      label="Nombre"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+
+
+                    <v-text-field
+                      v-model="editedItem.apellidoUsuario"
+                      label="Apellido"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -66,27 +104,7 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.calories"
-                      label="Edad"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.fat"
-                      label="Telefono"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.carbs"
+                      v-model="editedItem.correoUsuario"
                       label="Correo"
                     ></v-text-field>
                   </v-col>
@@ -96,8 +114,29 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.protein"
-                      label="Nombre Usu"
+                      v-model="editedItem.idTipoDoc_FK"
+                      label="Tipo Documento"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.numeroDocumentoUsuario"
+                      label="Numero Documento"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-text-field
+                      v-model="editedItem.fechaNacimientoUsuario"
+                      label="Fecha Nacimiento"
+                      type="date"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -126,10 +165,14 @@
           v-model="dialogDelete"
           max-width="500px"
         >
-          <v-card>
-            <v-card-title class="text-h5">
-              ¿Está seguro de eliminar a este usario?
-            </v-card-title>
+          <v-card class="pt-4">
+            <v-card-text class="text-h4 text-center font-weight-black"  >
+              Cambiar estado
+
+            </v-card-text>
+            <v-card-text class="text-h5 text-center" >
+                ¿Cambiar el estado de {{editedItem.nombreUsuario}} ?
+              </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
@@ -170,13 +213,21 @@
       </v-icon>
     </template>
     <template v-slot:no-data>
-      <v-btn
-        color="primary"
-        @click="initialize"
-      >
-        Reset
-      </v-btn>
+      <v-col>
+      <p>
+      ¡UY! Al parecer no se encuentra información.
+      </p>
+
+      </v-col>
     </template>
+    <template v-slot:no-results>
+      <v-col>
+      <p>
+      ¡Oops! La información que deseas buscar, no se encuentra.
+      </p>
+            </v-col>
+    </template>
+
   </v-data-table>
 
 </template>
@@ -188,45 +239,74 @@ import {
   mdiMagnify,
 
 } from '@mdi/js'
+import axios from 'axios';
+import registrar from '@/components/Login/registrar.vue';
  export default {
+    components:{
+
+    registrar
+  },
+
   data: () => ({
+    valorBoton:true,
+    BotonConsultaTexto:"Inactivos",
+    tokenLogin: localStorage.getItem('token'),
     dialog: false,
     dialogDelete: false,
+    dialogNuevo:false,
     search: '',
     headers: [
       {
         text: 'Nombres',
         align: 'start',
         sortable: false,
-        value: 'name',
+        value: 'nombreUsuario',
       },
-      { text: 'Edad', value: 'calories' },
-      { text: 'Telefono', value: 'fat' },
-      { text: 'Correo', value: 'carbs' },
-      { text: 'Nombre Usu', value: 'protein' },
+      {
+        text: 'Apellido',
+        align: 'start',
+        sortable: false,
+        value: 'apellidoUsuario',
+      },
+      { text: 'Correo', value: 'correoUsuario' },
+      { text: 'Tipo Docu', value: 'tipoDoc.denominacionTipoDocumento' },
+      { text: 'Num. Docu', value: 'numeroDocumentoUsuario' },
+      { text: 'Fecha Nacimiento', value: 'fechaNacimientoUsuario' },
+      { text: 'Tipo Usu', value: 'tipoUsuario.nombreTipoUsuario' },
+
       { text: 'Acciones', value: 'actions', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
     editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      idUsuario: 0,
+      nombreUsuario: '',
+      apellidoUsuario: '',
+      correoUsuario: '',
+      //hacer select
+      idTipoDoc_FK: 0,
+      numeroDocumentoUsuario:0,
+      fechaNacimientoUsuario: '',
+      tipoUsuario: 0,
+
+
     },
     defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
+      idUsuario: 0,
+     nombreUsuario: '',
+      apellidoUsuario: '',
+      correoUsuario: '',
+      tipoDoc: 0,
+      numeroDocumentoUsuario:0,
+      fechaNacimientoUsuario: 0,
+      tipoUsuario: 0,
     },
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Editar Usuario'
+      console.log(21)
+      return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Editar al Usuario'
     },
   },
 
@@ -239,6 +319,10 @@ import {
     {
       val || this.closeDelete()
     },
+    dialogNuevo(val)
+    {
+      val|| this.closeNuevo()
+      }
   },
 
   created() {
@@ -246,95 +330,47 @@ import {
   },
 
   methods: {
+    reseteo(){
+      this.dialogNuevo = true
+      this.editedIndex= -1
+      this.editedItem = this.defaultItem
+    },
+
     initialize() {
-      this.desserts = [
-        {
-          name: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          name: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          name: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          name: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          name: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          name: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          name: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          name: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          name: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          name: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ]
+        let direccion = "http://localhost:3000/api/usuarios";
+        axios.get(direccion, { headers: { token:this.tokenLogin } })
+                    .then( res =>{
+                        console.log(res)
+                this.desserts = res.data;
+                console.log(this.desserts)
+                  });
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialog = true
+      this.editedIndex= 1
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
+      this.editedIndex= 1
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
+      let cambioEstado
+      if(this.valorBoton){
+        cambioEstado = "inhabilitar"
+      }else{
+        cambioEstado = "activar"
+      }
+
+      axios.put("http://localhost:3000/api/usuarios/"+cambioEstado+"/"+this.editedItem.idUsuario, this.editedItem,{headers: { token:this.tokenLogin } })
+              .then( () =>{
+                this.valorBoton=!this.valorBoton
+                  this.consultarInactivos()
+              })
       this.closeDelete()
     },
 
@@ -342,8 +378,11 @@ import {
       this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
       })
+
+    },
+    closeNuevo(){
+      this.dialogNuevo = false
     },
 
     closeDelete() {
@@ -355,13 +394,67 @@ import {
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
+      if (this.editedItem.idUsuario >= 1) {
+          axios.put("http://localhost:3000/api/usuarios/actualizar/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token:this.tokenLogin } })
+          .then(data =>{
+            if(data.status===201){
+              console.log("correcto")
+             /*  this.makeToast("Actualizado",data.data.success,"info");
+                   setTimeout(this.salir,1800); */
+
+                this.valorBoton=!this.valorBoton
+                  this.consultarInactivos()
+            }else{
+              /* this.makeToast("Error",data.data.mensage,"danger"); */
+              console.log("Error")
+            }
+          })
+      }else{
+        console.log("pan")
+
+        try{
+          console.log("hola?")
+          axios.post("http://localhost:3000/api/usuarios", this.editedItem)
+          .then(data =>{
+            if(data.status===201){
+              console.log("correcto")
+             /*  this.makeToast("Actualizado",data.data.success,"info");
+                   setTimeout(this.salir,1800); */
+
+                this.valorBoton=!this.valorBoton
+                  this.consultarInactivos()
+            }else{
+              /* this.makeToast("Error",data.data.mensage,"danger"); */
+              console.log("Error")
+            }
+          })
+          }catch(e){
+            console.log("ouno :(")
+          }
+
       }
       this.close()
     },
+    consultarInactivos(){
+          let varestado
+              if(this.valorBoton){
+                varestado ="/inactivos"
+                this.BotonConsultaTexto=  "Activos"
+
+              }else{
+                varestado = "/" ;
+                this.BotonConsultaTexto= "Inactivos"
+              }
+
+                /* credencial_token = localStorage(credencial_token) */
+                 let direccion = "http://localhost:3000/api/usuarios"+varestado;
+                axios.get(direccion, { headers: { token:this.tokenLogin } } ).then( res =>{
+                    this.desserts = res.data;
+                    console.log(this.desserts)
+                });
+                this.valorBoton= !this.valorBoton
+
+            },
   },
   setup() {
     return {
@@ -372,5 +465,7 @@ import {
       },
     }
   },
+
+
 }
 </script>

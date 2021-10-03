@@ -88,7 +88,7 @@ export default {
            if(respuesta.status === 201){
 
              localStorage.token = respuesta.data.success;
-             this.$router.push('/dashboard');
+             this.$router.push('/dashboard2');
            }else{
              this.error = true;
              this.error_msg = respuesta.data.error;

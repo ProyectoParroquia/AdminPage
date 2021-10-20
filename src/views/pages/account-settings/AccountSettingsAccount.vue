@@ -8,8 +8,9 @@
         rounded
         size="120"
         class="me-6"
-      >
-        <v-img :src="accountDataLocale.avatarImg"></v-img>
+      ><!--
+      agregar ruta de imagenes pero eso lo sabe andreina.. lo sabra* -->
+        <v-img ></v-img>
       </v-avatar>
 
       <!-- upload photo -->
@@ -28,7 +29,7 @@
         <input
           ref="refInputEl"
           type="file"
-          accept=".jpeg,.png,.jpg,GIF"
+          accept=".jpeg,.png,.jpg"
           :hidden="true"
         />
 
@@ -49,11 +50,11 @@
       <v-form class="multi-col-validation mt-6">
         <v-row>
           <v-col
-            md="6"
+            md="12"
             cols="12"
           >
             <v-text-field
-              v-model="accountDataLocale.username"
+              v-model="accountDataLocale.nombreUsuario"
               label="Nombre de Usuario"
               dense
               outlined
@@ -61,23 +62,11 @@
           </v-col>
 
           <v-col
-            md="6"
-            cols="12"
-          >
-            <v-text-field
-              v-model="accountDataLocale.name"
-              label="Nombre"
-              dense
-              outlined
-            ></v-text-field>
-          </v-col>
-
-          <v-col
             cols="12"
             md="6"
           >
             <v-text-field
-              v-model="accountDataLocale.email"
+              v-model="accountDataLocale.correoUsuario"
               label="Correo electrónico"
               dense
               outlined
@@ -89,7 +78,7 @@
             md="6"
           >
             <v-text-field
-              v-model="accountDataLocale.role"
+              v-model="accountDataLocale.tipoUsuario.nombreTipoUsuario"
               dense
               label="Rol"
               outlined
@@ -101,11 +90,10 @@
             md="12"
           >
             <v-select
-              v-model="accountDataLocale.status"
+              v-model="accountDataLocale.estadoUsuario"
               dense
               outlined
               label="Estado"
-              :items="status"
             ></v-select>
           </v-col>
 
@@ -164,14 +152,15 @@ import { mdiAlertOutline, mdiCloudUploadOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
 
 export default {
+
   props: {
     accountData: {
       type: Object,
       default: () => {},
     },
   },
+
   setup(props) {
-    const status = ['Activo', 'Inactivo']
 
     const accountDataLocale = ref(JSON.parse(JSON.stringify(props.accountData)))
 

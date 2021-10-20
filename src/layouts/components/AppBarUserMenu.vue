@@ -45,9 +45,9 @@
           style="vertical-align:middle"
         >
           <span class="text--primary font-weight-semibold mb-n1">
-            Samuel
+            {{DataLogin.nombreUsuario}}
           </span>
-          <small class="text--disabled text-capitalize">Admin</small>
+          <small class="text--disabled text-capitalize">{{DataLogin.tipoUsuario.nombreTipoUsuario}}</small>
         </div>
       </div>
 
@@ -151,6 +151,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import {
   mdiAccountOutline,
   mdiEmailOutline,
@@ -163,6 +164,23 @@ import {
 } from '@mdi/js'
 
 export default {
+  data: () => ({
+    tokenLogin: localStorage.getItem('token'),
+    DataLogin:{},
+    }),
+
+
+  created:function(){
+        let direccion = "http://localhost:3000/api/usuarios/perfil";
+          axios.get(direccion, { headers: { token:this.tokenLogin } }).then( data =>{
+            if (data.status===201){
+              this.DataLogin = data.data;
+              console.log(this.DataLogin)
+            }else{
+              console.log("error")
+            }
+          });
+      },
   setup() {
     return {
       icons: {

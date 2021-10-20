@@ -120,10 +120,13 @@
                             name="select"
                             rules="required"
                           >
+         <!--                  <select class="form-control" name="idTipoDoc_FK" id="idTipoDoc_FK">
+    <option v-for="documento in ListaDocumentos" :key="documento.idTipoDocumento" :value="documento.idTipoDocumento">{{documento.denominacionTipoDocumento}}</option>
+</select> -->
                             <v-autocomplete
                               color="#ae5f9e"
                               clearable
-                              v-model="form.idTipoDoc"
+                              v-model="form.tipoDoc"
                               :items="form.items"
                               :error-messages="errors"
                               label="Tipo Documento"
@@ -392,6 +395,10 @@ export default {
       ValidationObserver,
     },
     props:{
+      link: {
+        type:String,
+        default: "/dashboard2"
+      },
       titulo: {
         type:String,
         default: "Registrarse"
@@ -409,11 +416,9 @@ export default {
                 "apellidoUsuario": "",
                 "correoUsuario": "",
 
-                "idTipoDoc": null,
+                "tipoDoc": "",
                   "items": [
-                    'CC',
-                    'CE',
-                    'TI',
+
                   ],
                 "numeroDocumentoUsuario": "",
                 "fechaNacimientoUsuario": "",
@@ -425,6 +430,7 @@ export default {
                 "idTipoDoc_FK":""
 
             },
+            items:{},
             snackbarData:{
               snackbar: false,
               text: '',
@@ -453,24 +459,18 @@ export default {
 
       guardar(){
             /* this.form.token = localStorage.getItem("token");  */
-            switch (this.form.idTipoDoc ) {
-              case 'CC':
-                      this.form.idTipoDoc_FK = 1
-                break;
-              case 'TI':
-                      this.form.idTipoDoc_FK = 2
-                break;
-              case 'CE':
-                      this.form.idTipoDoc_FK = 3
-                break;
-            }
+            this.items.forEach(el => {
+                if(el.denominacionTipoDocumento == this.form.tipoDoc){
+                  this.form.idTipoDoc_FK = el.idTipoDocumento
+                }
+              });
 
             axios.post("http://localhost:3000/api/usuarios",this.form/* , {headers: { token:this.tokenLogin } }*/ )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){
                   this.Snackbar(res.data.success, "green")
-                  setTimeout(this.$router.push('/pages/login'),1000);
+                  setTimeout(this.$router.push(this.link),1000);
                 }else{
 
 
@@ -499,15 +499,24 @@ export default {
             this.snackbarData.snackbar=true
             this.snackbarData.color=color
         },
-        mounted:function(){
+        initialize(){
         let direccion = "http://localhost:3000/api/tipoDoc/";
-                axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( data =>{
-                this.form.items = data.data;
+                axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( res =>{
+                res.data.forEach(el => {
+                    this.form.items.push(el.denominacionTipoDocumento)
+
+                  });
+                this.items = res.data;
+
                   });
     },
 
 
     },
+
+  created() {
+    this.initialize()
+  },
   setup() {
     return {
       icons: {

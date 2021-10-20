@@ -22,7 +22,53 @@
     <!-- tabs item -->
     <v-tabs-items v-model="tab">
       <v-tab-item>
-        <account-settings-account :account-data="accountSettingData.account"></account-settings-account>
+         <v-card
+            flat
+            class="mt-5"
+          >
+             <div class="px-10">
+          <v-card-title class="flex-nowrap">
+                  <v-icon class="text--primary me-6">
+
+                  </v-icon>
+                  <span class="text-break">Bienvenid@, {{accountSettingData.nombreUsuario}}!</span>
+                </v-card-title>
+                <v-card-text class="pt-6">
+                  <v-row>
+                   <v-col
+              cols="12"
+              sm="8"
+              md="9"
+            >
+
+                      <p>Bienvenido! aquí podrá revisar o editar sus datos personales,
+                        como nombre, num de celular, etc.
+                        ademas en la zona de seguridad podrá cambiarla a supreferencia
+                          siempre y cuando sepa su contraseña actual</p>
+                  </v-col>
+                  <v-col
+                      cols="12"
+                      sm="8"
+                      md="3"
+                      class="d-none d-sm-flex justify-center position-relative"
+
+                    >
+                      <v-img
+                        contain
+                        max-width="100"
+                        src="@/assets/images/3d-characters/Richie_2.png"
+
+                      ></v-img>
+                    </v-col>
+                    </v-row>
+                </v-card-text>
+             </div>
+  </v-card>
+
+      </v-tab-item>
+
+      <v-tab-item>
+        <account-settings-account :account-data="accountSettingData"></account-settings-account>
       </v-tab-item>
 
       <v-tab-item>
@@ -30,7 +76,7 @@
       </v-tab-item>
 
       <v-tab-item>
-        <account-settings-info :information-data="accountSettingData.information"></account-settings-info>
+        <account-settings-info :information-data="accountSettingData"></account-settings-info>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -38,6 +84,7 @@
 
 <script>
 import { mdiAccountOutline, mdiLockOpenOutline, mdiInformationOutline } from '@mdi/js'
+import axios from 'axios';
 import { ref } from '@vue/composition-api'
 
 // demos
@@ -51,39 +98,38 @@ export default {
     AccountSettingsSecurity,
     AccountSettingsInfo,
   },
+
+  data: () => ({
+    tokenLogin: localStorage.getItem('token'),
+    accountSettingData:{},
+    }),
+
+
+  created:function(){
+        let direccion = "http://localhost:3000/api/usuarios/perfil";
+          axios.get(direccion, { headers: { token:this.tokenLogin } }).then( data =>{
+            if (data.status===201){
+              this.accountSettingData = data.data;
+              console.log(this.accountSettingData)
+            }else{
+              console.log("error")
+            }
+          });
+      },
   setup() {
     const tab = ref('')
 
     // tabs
     const tabs = [
+      { title: 'Perfil', icon: "" },
       { title: 'Cuenta', icon: mdiAccountOutline },
       { title: 'Seguridad', icon: mdiLockOpenOutline },
       { title: 'Información', icon: mdiInformationOutline },
     ]
 
-    // account settings data
-    const accountSettingData = {
-      account: {
-        avatarImg: require('@/assets/images/avatars/1.png'),
-        username: 'Samucuga',
-        name: 'Samuel Cuello',
-        email: 'samucuga123@gmail.com',
-        role: 'Admin',
-        status: 'Activo',
-      },
-      information: {
-        bio: ' Hola soy Samuel Cuello, el sacerdote de la parroquia Madre de la divina gracia😎 Los invito a que visiten mi Iglesia😀 seguro quedaran asi:😍 ',
-        birthday: 'Febrero 22, 1995',
-        phone: '320-989-7269',
-        country: 'COLOMBIA',
-        gender: 'male',
-      },
-    }
-
     return {
       tab,
       tabs,
-      accountSettingData,
       icons: {
         mdiAccountOutline,
         mdiLockOpenOutline,

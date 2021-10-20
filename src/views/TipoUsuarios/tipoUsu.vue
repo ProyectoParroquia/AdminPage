@@ -3,7 +3,7 @@
   <v-data-table
     :headers="headers"
     :items="data"
-    sort-by="calories"
+    sort-by="TipoUsu"
     class="elevation-1"
     :search="search"
   >
@@ -12,7 +12,7 @@
         color = "tableHeader"
         flat
       >
-        <v-toolbar-title>Usuarios</v-toolbar-title>
+        <v-toolbar-title>Tipo Usuarios</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset

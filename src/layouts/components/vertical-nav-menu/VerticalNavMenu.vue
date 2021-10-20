@@ -37,9 +37,10 @@
 
     <!-- Navigation Items -->
     <v-list
+
       expand
       shaped
-      class="vertical-nav-menu-items pr-5"
+      class="vertical-nav-menu-items pr-2"
     >
       <nav-menu-link
         title="Inicio"

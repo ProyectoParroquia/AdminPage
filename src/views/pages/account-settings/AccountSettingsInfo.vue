@@ -6,24 +6,12 @@
     <v-form class="multi-col-validation">
       <v-card-text class="pt-5">
         <v-row>
-          <v-col cols="12">
-            <v-textarea
-              v-model="optionsLocal.bio"
-              outlined
-              rows="3"
-              label="Biografia"
-            ></v-textarea>
-          </v-col>
-
-          <v-col
-            cols="12"
-            md="6"
-          >
-            <v-text-field
-              v-model="optionsLocal.birthday"
+          <v-col cols="12" md="6">
+              <v-text-field
+              v-model="optionsLocal.nombreUsuario"
               outlined
               dense
-              label="Cumpleaños"
+              label="Nombre"
             ></v-text-field>
           </v-col>
 
@@ -32,10 +20,21 @@
             md="6"
           >
             <v-text-field
-              v-model="optionsLocal.phone"
+              v-model="optionsLocal.apellidoUsuario"
               outlined
               dense
-              label="Numero"
+              label="Apellido"
+            ></v-text-field>
+          </v-col>
+          <v-col
+            cols="12"
+            md="6"
+          >
+            <v-text-field
+              v-model="optionsLocal.fechaNacimientoUsuario"
+              outlined
+              dense
+              label="Fecha Cumpleaños"
             ></v-text-field>
           </v-col>
 
@@ -43,44 +42,37 @@
             cols="12"
             md="6"
           >
-            <v-select
-              v-model="optionsLocal.country"
+            <v-text-field
+              v-model="optionsLocal.numeroDocumentoUsuario"
               outlined
               dense
-              label="Pais"
-              :items="['COLOMBIA','USA','MEXICO','BRAZIL']"
-            ></v-select>
+              label="Numero Contacto"
+            ></v-text-field>
           </v-col>
 
           <v-col
             cols="12"
             md="6"
           >
-            <p class="text--primary mt-n3 mb-2">
-              Genero
-            </p>
-            <v-radio-group
-              v-model="optionsLocal.gender"
-              row
-              class="mt-0"
-              hide-details
-            >
-              <v-radio
-                value="male"
-                label="Masculino"
-              >
-              </v-radio>
-              <v-radio
-                value="female"
-                label="Femenino"
-              >
-              </v-radio>
-              <v-radio
-                value="other"
-                label="Otro"
-              >
-              </v-radio>
-            </v-radio-group>
+          <v-text-field
+              v-model="optionsLocal.tipoDoc.denominacionTipoDocumento"
+              outlined
+              dense
+              label="Tipo Documento"
+            ></v-text-field>
+
+          </v-col>
+
+          <v-col
+            cols="12"
+            md="6"
+          >
+             <v-text-field
+              v-model="optionsLocal.numeroDocumentoUsuario"
+              outlined
+              dense
+              label="Numero Documento"
+            ></v-text-field>
           </v-col>
         </v-row>
       </v-card-text>

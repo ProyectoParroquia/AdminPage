@@ -23,19 +23,19 @@ const routes = [
    {
     path: '/usuarios',
     name: 'usuarios',
-    component: () => import('@/views/Usuarios/usuarios.vue'),
+    component: () => import('@/views/ModuloUsuarios/Usuarios/usuarios.vue'),
   },
 
    {
     path: '/TipoUsuarios',
     name: 'TipoUsuarios',
-    component: () => import('@/views/TipoUsuarios/tipoUsu.vue'),
+    component: () => import('@/views/ModuloUsuarios/TipoUsuarios/tipoUsu.vue'),
   },
 
    {
     path: '/TipoDocumentos',
     name: 'TipoDocu',
-    component: () => import('@/views/TipoDocumentos/tipoDocu.vue'),
+    component: () => import('@/views/ModuloUsuarios/TipoDocumentos/tipoDocu.vue'),
   },
 
    {
@@ -101,12 +101,30 @@ const routes = [
     },
   },
   {
-    path: '/pages/register',
-    name: 'pages-register',
-    component: () => import('@/views/pages/Register.vue'),
+    path: '/pages/SoliRestablecerContra',
+    name: 'Recuperar Contra',
+    component: () => import('@/views/pages/RecuContra/SolicitudRecuperarContra.vue'),
     meta: {
       layout: 'blank',
     },
+  },
+  {
+    path: '/pages/RestablecerContra',
+    name: 'Restablecer Contra',
+    component: () => import('@/views/pages/RecuContra/RecuperacionContra.vue'),
+    meta: {
+      layout: 'blank',
+    },
+
+  },
+  {
+    path: '/actualizar',
+    name: 'actualizar',
+    component: () => import('@/views/ModuloUsuarios/Usuarios/editUsu.vue'),
+    meta: {
+      layout: 'blank',
+    },
+
   },
   {
     path: '/error-404',
@@ -126,6 +144,7 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+
 })
 
 export default router

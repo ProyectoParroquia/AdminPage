@@ -3,7 +3,11 @@
     flat
     class="mt-5"
   >
-    <v-form>
+   <validation-observer
+                          ref="observer"
+                          v-slot="{ invalid }"
+                        >
+    <v-form @submit.prevent="submit">
       <div class="px-3">
         <v-card-text class="pt-5">
           <v-row>
@@ -12,41 +16,62 @@
               sm="8"
               md="6"
             >
+            <validation-provider
+                  vid="confirmation"
+                   v-slot="{ errors }"
+                  name="contraseña"
+                  rules="required"
+               >
               <!-- current password -->
               <v-text-field
                 v-model="currentPassword"
                 :type="isCurrentPasswordVisible ? 'text' : 'password'"
                 :append-icon="isCurrentPasswordVisible ? icons.mdiEyeOffOutline:icons.mdiEyeOutline"
                 label="Contraseña Actual"
+                :error-messages="errors"
                 outlined
                 dense
                 @click:append="isCurrentPasswordVisible = !isCurrentPasswordVisible"
               ></v-text-field>
-
+            </validation-provider>
+               <validation-provider
+                  vid="confirmation"
+                   v-slot="{ errors }"
+                  name="contraseña"
+                  rules="required|min:8|alpha_dash"
+               >
               <!-- new password -->
               <v-text-field
                 v-model="newPassword"
                 :type="isNewPasswordVisible ? 'text' : 'password'"
                 :append-icon="isNewPasswordVisible ? icons.mdiEyeOffOutline:icons.mdiEyeOutline"
                 label="Nueva Contraseña"
+                :error-messages="errors"
                 outlined
                 dense
                 hint="Asegúrese de que tenga al menos 8 caracteres."
                 persistent-hint
                 @click:append="isNewPasswordVisible = !isNewPasswordVisible"
               ></v-text-field>
-
+               </validation-provider>
               <!-- confirm password -->
+               <validation-provider
+                        v-slot="{ errors }"
+                        name="contraseña"
+                        rules="required|confirmed:confirmation"
+                      >
               <v-text-field
                 v-model="cPassword"
                 :type="isCPasswordVisible ? 'text' : 'password'"
                 :append-icon="isCPasswordVisible ? icons.mdiEyeOffOutline:icons.mdiEyeOutline"
                 label="Confirmación de contraseña nueva"
+                :error-messages="errors"
                 outlined
                 dense
                 class="mt-3"
                 @click:append="isCPasswordVisible = !isCPasswordVisible"
               ></v-text-field>
+               </validation-provider>
             </v-col>
 
             <v-col
@@ -69,7 +94,7 @@
       <!-- divider -->
       <v-divider></v-divider>
 
-      <div class="pa-3">
+      <!-- <div class="pa-3">
         <v-card-title class="flex-nowrap">
           <v-icon class="text--primary me-3">
             {{ icons.mdiKeyOutline }}
@@ -98,59 +123,148 @@
             de seguridad a su cuenta al requerir algo más que una
             contraseña para iniciar sesión.
           </p>
-        </v-card-text>
+        </v-card-text> -->
 
         <!-- action buttons -->
         <v-card-text>
           <v-btn
             color="primary"
             class="me-3 mt-3"
+            type="submit"
+            :disabled="invalid"
           >
             Guardar Cambios
           </v-btn>
-          <v-btn
-            color="secondary"
-            outlined
-            class="mt-3"
-          >
-            Cancelar
-          </v-btn>
+
         </v-card-text>
-      </div>
+
     </v-form>
+   </validation-observer>
+
+           <!-- ALERTAS -->
+             <v-snackbar
+                v-model="snackbarData.snackbar"
+                :timeout="snackbarData.timeout"
+                :color="snackbarData.color"
+                top
+                right
+              >
+
+                {{ snackbarData.text }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbarData.snackbar = false"
+                  >
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
   </v-card>
 </template>
 
 <script>
 // eslint-disable-next-line object-curly-newline
+import { required, min, regex, alpha_dash, confirmed} from 'vee-validate/dist/rules'
+ import { extend, ValidationObserver, ValidationProvider, setInteractionMode} from 'vee-validate'
 import { mdiKeyOutline, mdiLockOpenOutline, mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
-import { ref } from '@vue/composition-api'
+import axios from 'axios'
+setInteractionMode('eager')
+extend('required', {
+    ...required,
+    message: 'El campo {_field_} no puede estar vacio',
+  })
+    extend('confirmed', {
+    ...confirmed,
+    message: 'El campo {_field_} no coincide ',
+  })
 
+   extend('alpha_dash', {
+    ...alpha_dash,
+    message: 'El campo {_field_} puede contener letras, numeros y guiones ',
+  })
+  extend('min', {
+    ...min,
+    message: 'El campo {_field_} debe tener minimo {length} caracteres',
+  })
+
+  extend('regex', {
+    ...regex,
+    message: 'el campo {_field_} {_value_} no coincide {regex}',
+  })
 export default {
-  setup() {
-    const isCurrentPasswordVisible = ref(false)
-    const isNewPasswordVisible = ref(false)
-    const isCPasswordVisible = ref(false)
-    const currentPassword = ref('12345678')
-    const newPassword = ref('87654321')
-    const cPassword = ref('87654321')
+   data: function(){
+     return {
+       error:'',
+      isCurrentPasswordVisible: false,
+      isNewPasswordVisible: false,
+      isCPasswordVisible: false,
+      currentPassword:"",
+      newPassword:"",
+      cPassword:"",
 
+      snackbarData:{
+              snackbar: false,
+              text: '',
+              timeout: 2000,
+              color:''
+            }
+
+    }
+  },
+  components: {
+      ValidationProvider,
+      ValidationObserver,
+    },
+  props: {
+    securityData: Object
+  },
+
+  methods:{
+    submit () {
+      let body={
+        idUsu:this.securityData.idUsuario,
+        contraseñaActual:this.currentPassword,
+        nuevaContraseña:this.newPassword
+      }
+
+      let direccion= "http://localhost:3000/api/credenciales/cambioContra"
+       axios.put(direccion, body).then(res=>{
+          console.log(res)
+          if(res.status === 201){
+                  this.Snackbar(res.data.success, "green")
+                }else{
+                  if(res.data.error){
+                    this.Snackbar(res.data.error, "red")
+                  }}
+        }).catch(error=>{
+          console.log(error)
+        })
+      },
+      Snackbar(texto, color) {
+          this.snackbarData.text=texto,
+            this.snackbarData.snackbar=true
+            this.snackbarData.color=color
+        },
+  },
+  mounted:()=>{/*
+    this.passToken = getParameterByName('tokenpass') */
+  },
+  setup() {
     return {
-      isCurrentPasswordVisible,
-      isNewPasswordVisible,
-      currentPassword,
-      isCPasswordVisible,
-      newPassword,
-      cPassword,
       icons: {
         mdiKeyOutline,
         mdiLockOpenOutline,
         mdiEyeOffOutline,
-        mdiEyeOutline,
+        mdiEyeOutline
       },
     }
   },
-}
+};
+
 </script>
 
 <style lang="scss" scoped>

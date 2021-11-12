@@ -47,14 +47,14 @@
     </v-card-text>
 
     <v-card-text>
-      <v-form class="multi-col-validation mt-6">
+      <v-form class="multi-col-validation mt-6" @submit.prevent="submit">
         <v-row>
           <v-col
             md="12"
             cols="12"
           >
             <v-text-field
-              v-model="accountDataLocale.nombreUsuario"
+              v-model="accountDataLocale.credencial.username"
               label="Nombre de Usuario"
               dense
               outlined
@@ -78,6 +78,7 @@
             md="6"
           >
             <v-text-field
+              readonly
               v-model="accountDataLocale.tipoUsuario.nombreTipoUsuario"
               dense
               label="Rol"
@@ -89,45 +90,19 @@
             cols="12"
             md="12"
           >
-            <v-select
+            <v-text-field
+              readonly
               v-model="accountDataLocale.estadoUsuario"
               dense
               outlined
               label="Estado"
-            ></v-select>
+            ></v-text-field>
           </v-col>
-
-          <!-- alert -->
-          <v-col cols="12">
-            <v-alert
-              color="warning"
-              text
-              class="mb-0"
-            >
-              <div class="d-flex align-start">
-                <v-icon color="warning">
-                  {{ icons.mdiAlertOutline }}
-                </v-icon>
-
-                <div class="ms-3">
-                  <p class="text-base font-weight-medium mb-1">
-                    Tu correo electrónico no esta confirmado. Porfavor revise su correo.
-                  </p>
-                  <a
-                    href="javascript:void(0)"
-                    class="text-decoration-none warning--text"
-                  >
-                    <span class="text-sm">Reenviar confirmación</span>
-                  </a>
-                </div>
-              </div>
-            </v-alert>
-          </v-col>
-
           <v-col cols="12">
             <v-btn
               color="primary"
               class="me-3 mt-4"
+              type="submit"
             >
               Guardar Cambios
             </v-btn>
@@ -144,22 +119,86 @@
         </v-row>
       </v-form>
     </v-card-text>
+    <!-- ALERTAS -->
+             <v-snackbar
+                v-model="snackbarData.snackbar"
+                :timeout="snackbarData.timeout"
+                :color="snackbarData.color"
+                top
+                right
+              >
+
+                {{ snackbarData.text }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="blue"
+                    text
+                    v-bind="attrs"
+                    @click="snackbarData.snackbar = false"
+                  >
+                    Close
+                  </v-btn>
+                </template>
+              </v-snackbar>
   </v-card>
 </template>
 
 <script>
 import { mdiAlertOutline, mdiCloudUploadOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
+import axios from 'axios'
 
 export default {
+data: function(){
+     return {
 
+        tokenLogin: localStorage.getItem('token'),
+      snackbarData:{
+              snackbar: false,
+              text: '',
+              timeout: 2000,
+              color:''
+            }
+
+    }
+  },
   props: {
     accountData: {
       type: Object,
       default: () => {},
     },
   },
+  methods: {
+      submit(){
+        this.accountDataLocale.username = this.accountDataLocale.credencial.username
+        console.log(this.accountDataLocale)
+         axios.put("http://localhost:3000/api/usuarios/actualizar/"+this.accountDataLocale.idUsuario, this.accountDataLocale,{ headers: { token:this.tokenLogin } })
+          .then(res =>{
+            if(res.status === 201){
 
+              console.log(res);
+              this.Snackbar(res.data.success, "green")
+              setTimeout(this.recarga,1000);
+
+            }else{
+
+              this.makeToast("Error",res.data.mensage,"danger");
+              console.log("Error")
+
+            }
+          })
+
+      },
+      recarga(){
+        this.$router.go(0)
+      },
+       Snackbar(texto, color) {
+          this.snackbarData.text=texto,
+          this.snackbarData.snackbar=true
+           this.snackbarData.color=color
+        },
+  },
   setup(props) {
 
     const accountDataLocale = ref(JSON.parse(JSON.stringify(props.accountData)))

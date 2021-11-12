@@ -2,7 +2,7 @@
     <v-card-text class="mt-12">
        <h1
           class="text-center display-10 purple--text text--light2"
-       >Registrar</h1>
+       >Crear Usuario</h1>
           <validation-observer
             ref="observer"
             v-slot="{ invalid }"
@@ -76,49 +76,7 @@
 
               </v-row>
               <v-row>
-                  <v-col >
-
-                        <validation-provider
-                          v-slot="{ errors }"
-                          name="FechaNacimiento"
-                          rules="required|max:10|min:10"
-                        >
-
-                          <v-text-field
-                            color="#ae5f9e"
-                            type="date"
-                            readonly
-                            v-model="form.fechaNacimientoUsuario"
-                            :counter="10"
-                            :error-messages="errors"
-                            label="Fecha Nacimiento"
-                            required
-                            clearable
-                            @click="menu = true"
-                          ></v-text-field>
-                          <v-dialog
-
-                          max-width="300px"
-                           ref="menu"
-                          v-model="menu"
-                          :close-on-content-click="false"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                          >
-                          <v-date-picker
-                                v-model="form.fechaNacimientoUsuario"
-                                :active-picker.sync="activePicker"
-                                :error-messages="errors"
-                                required
-                                max="2010-12-31"
-                                min="1930-01-01"
-                                @change="saveDate"
-                              ></v-date-picker>
-                          </v-dialog>
-                        </validation-provider>
-                      </v-col>
-                      <v-col>
+                <v-col>
                          <validation-provider
                               v-slot="{ errors }"
                               name="NumeroContacto"
@@ -134,7 +92,6 @@
                                   ></v-text-field>
                             </validation-provider>
                       </v-col>
-
 
               </v-row>
             </v-card>
@@ -165,7 +122,9 @@
                             name="select"
                             rules="required"
                           >
-
+         <!--                  <select class="form-control" name="idTipoDoc_FK" id="idTipoDoc_FK">
+    <option v-for="documento in ListaDocumentos" :key="documento.idTipoDocumento" :value="documento.idTipoDocumento">{{documento.denominacionTipoDocumento}}</option>
+</select> -->
                             <v-autocomplete
                               color="#ae5f9e"
                               clearable
@@ -208,41 +167,50 @@
                         </v-col>
 
                   </v-row>
-
-                  <!-- Validacion de correos -->
                   <v-row>
-                       <v-col cols="12" md="6" >
-                     <validation-provider
-                     vid="confirmationEmail"
-                        v-slot="{ errors }"
-                        name="Correo"
-                        rules="required|email"
-                        >
-                        <v-text-field
-                        color="#ae5f9e"
-                          v-model="form.correoUsuario"
-                          :error-messages="errors"
-                          label="correo"
-                          required
-                        ></v-text-field>
-                      </validation-provider>
-                  </v-col>
+                      <v-col >
 
-                   <v-col>
-                     <validation-provider
-                        v-slot="{ errors }"
-                        name="Correo"
-                        rules="required|confirmed:confirmationEmail"
+                        <validation-provider
+                          v-slot="{ errors }"
+                          name="FechaNacimiento"
+                          rules="required|max:10|min:10"
                         >
-                        <v-text-field
-                        color="#ae5f9e"
-                          v-model="form.correoUsuarioV"
-                          :error-messages="errors"
-                          label="Confirmación correo"
-                          required
-                        ></v-text-field>
-                      </validation-provider>
-                  </v-col>
+
+                          <v-text-field
+                            color="#ae5f9e"
+                            type="date"
+                            readonly
+                            v-model="form.fechaNacimientoUsuario"
+                            :counter="10"
+                            :error-messages="errors"
+                            label="Fecha Nacimiento"
+                            required
+                            clearable
+                            @click="menu = true"
+                          ></v-text-field>
+                          <v-dialog
+
+                          max-width="300px"
+                           ref="menu"
+                          v-model="menu"
+                          :close-on-content-click="false"
+                          transition="scale-transition"
+                          offset-y
+                          min-width="auto"
+                          >
+                          <v-date-picker
+                                v-model="form.fechaNacimientoUsuario"
+                                :active-picker.sync="activePicker"
+                                :error-messages="errors"
+                                required
+                                max="2010-12-31"
+                                min="1930-01-01"
+                                @change="saveDate"
+                              ></v-date-picker>
+                          </v-dialog>
+                        </validation-provider>
+                      </v-col>
+
                   </v-row>
             </v-card>
 
@@ -271,6 +239,23 @@
               class="mb-12"
             >
             <v-row>
+               <v-col >
+                     <validation-provider
+                        v-slot="{ errors }"
+                        name="Correo"
+                        rules="required|email"
+                        >
+                        <v-text-field
+                        color="#ae5f9e"
+                          v-model="form.correoUsuario"
+                          :error-messages="errors"
+                          label="correo"
+                          required
+                        ></v-text-field>
+                      </validation-provider>
+                  </v-col>
+            </v-row>
+            <v-row>
                   <v-col >
                      <validation-provider
                         v-slot="{ errors }"
@@ -279,7 +264,6 @@
                         >
                           <v-text-field
                             color="#ae5f9e"
-
                             v-model="form.username"
                             :counter="10"
                             :error-messages="errors"
@@ -290,55 +274,6 @@
                   </v-col>
               </v-row>
 
-              <!-- Validacion contraseñas -->
-              <v-row >
-                  <v-col cols="12" md="6" mt="10">
-                    <validation-provider
-                        vid="confirmation"
-                        v-slot="{ errors }"
-                        name="contraseña"
-
-                        rules="required|{ regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8 }"
-                      >
-                          <v-text-field
-                            color="#ae5f9e"
-                            v-model="form.password"
-                            :counter="20"
-                            hint="Obliagorio: Letra en mayuscula, en minuscula, un número y un caracter especial"
-                            :append-icon="show1 ? icons.mdiEyeOutline :icons.mdiEyeOffOutline"
-                            :type="show1 ? 'text' : 'password'"
-                            :error-messages="errors"
-                            label="Contraseña"
-                            required
-                            @click:append="show1 = !show1"
-                          ></v-text-field>
-                    </validation-provider>
-                  </v-col>
-
-                  <v-col>
-                     <validation-provider
-                        v-slot="{ errors }"
-                        name="contraseña"
-                        rules="required|confirmed:confirmation"
-                      >
-                        <v-text-field
-                          color="#ae5f9e"
-                          v-model="form.passwordV"
-                          :counter="20"
-                          :append-icon="show2 ? icons.mdiEyeOutline :icons.mdiEyeOffOutline"
-                          :type="show2 ? 'text' : 'password'"
-                          :error-messages="errors"
-                          label="Confirmar Contraseña"
-                          required
-                          @click:append="show2 = !show2"
-                        ></v-text-field>
-
-
-                      </validation-provider>
-
-                  </v-col>
-
-              </v-row>
 
             </v-card>
             <div class="text-right">
@@ -395,7 +330,7 @@
 
 </template>
 <script>
-  import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
+import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
   import { extend, ValidationObserver, ValidationProvider, setInteractionMode } from 'vee-validate'
   import axios from 'axios';
   import {
@@ -449,7 +384,7 @@ setInteractionMode('eager')
 
   extend('regex', {
     ...regex,
-    message: 'la contraseña {_value_} no coincide con las reglas especificadas. Minusculas, mayusculas, numeros y caracter especial ',
+    message: 'el campo {_field_} {_value_} no coincide {regex}',
   })
 
   extend('email', {
@@ -488,10 +423,8 @@ export default {
             form:{
                 "nombreUsuario": "",
                 "apellidoUsuario": "",
-                "numeroContacto":"",
                 "correoUsuario": "",
-                "correoUsuarioV": "",
-
+                  "numeroContacto":"",
                 "tipoDoc": "",
                   "items": [
 
@@ -501,7 +434,6 @@ export default {
 
                 "username": "",
                 "password":"",
-                "passwordV":"",
 
                 "idTipoDoc_FK":""
 
@@ -545,6 +477,8 @@ export default {
 
       guardar(){
             /* this.form.token = localStorage.getItem("token");  */
+            let randPassword = Array(10).fill("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz").map(function(x) { return x[Math.floor(Math.random() * x.length)] }).join('');
+            this.form.password=randPassword
             this.items.forEach(el => {
                 if(el.denominacionTipoDocumento == this.form.tipoDoc){
                   this.form.idTipoDoc_FK = el.idTipoDocumento
@@ -557,10 +491,12 @@ export default {
                 if(res.status === 201){
                   this.Snackbar(res.data.success, "green")
                   setTimeout((this.metodo)?this.metodo:this.$router.go(0),1000);
+
                 }else{
                   if(res.data.err){
                     this.Snackbar(res.data.err, "red")
                   }
+
                   if(res.data.err.errors){
                     res.data.err.errors.forEach(element => {
 
@@ -570,9 +506,6 @@ export default {
                     res.data.err.errors.forEach(el => {
                       this.Snackbar(el.message, "red")
                     })
-                  }else{
-                    console.log(res.data.err)
-                    this.Snackbar(res.data.err, "red")
                   }
 
                 }

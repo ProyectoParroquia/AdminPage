@@ -9,8 +9,9 @@
         <template v-slot:activator="{ on, attrs }">
           <v-card
             v-bind="attrs"
-            class="icons-card mb-6 me-6"
+
             v-on="on"
+            class="icons-card mb-6 me-6"
           >
             <v-card-text class="py-3 px-4">
               <v-icon size="30">

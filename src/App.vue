@@ -3,12 +3,16 @@
     <router-view></router-view>
   </component>
 </template>
-
+//*FSDFSF
+//?DFGDFGDGFRGE
+//!AQUINO
+//TODO HFERHW
 <script>
 import { computed } from '@vue/composition-api'
 import { useRouter } from '@/utils'
 import LayoutBlank from '@/layouts/Blank.vue'
 import LayoutContent from '@/layouts/Content.vue'
+import '@/axios/configAxios'
 
 export default {
   components: {
@@ -36,14 +40,4 @@ export default {
 }
 </script>
 
-<style >
-body::-webkit-scrollbar{
-  width: 10px;
-  background:#f4f5fa;
-}
- body::-webkit-scrollbar-thumb{
-   background: rgba(174, 95, 158, .7);
-   border-radius: 5px;
 
- }
-</style>

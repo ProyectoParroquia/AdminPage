@@ -1,0 +1,26 @@
+//Estilos Scroll
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+  width: 8px;
+}
+::-webkit-scrollbar:horizontal {
+  height: 8px;
+}
+
+::-webkit-scrollbar-button:increment,
+::-webkit-scrollbar-button {
+  display: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(174, 95, 158, 0.7);
+  border-radius: 20px;
+  border: 1px solid #9b4790b9;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}

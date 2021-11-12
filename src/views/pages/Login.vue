@@ -2,7 +2,7 @@
 
   <v-app id="inspire" >
 
-    <v-main class="fondo">
+    <v-main >
 
       <v-container class="fill-height" fluid>
         <v-row align="center" justify="center">
@@ -12,13 +12,13 @@
 
                 <v-window-item :value="1">
                   <v-row>
-                    <v-col cols="12" md="6">
+                    <v-col cols="12" md="7" style="padding-left:30px; padding-right:30px;">
 
                       <ingresar/>
 
 
                     </v-col>
-                    <v-col cols="12" md="6" class="purple lighten-2">
+                    <v-col cols="12" md="5" class="purple lighten-2">
                       <v-card-text class="white--text mt-12">
                         <div class="imagenLogo text-center ">
                             <img src="@/assets/LogoSacris.png" style="max-width: 60%; margin-bottom:20px;"/>
@@ -73,7 +73,7 @@
 /* import Header from '@/components/header1.vue'; */
 import ingresar from '@/components/Login/ingresar.vue';
 import registrar from '@/components/Login/registrar.vue';
-
+localStorage.removeItem('token')
 export default {
    data: function(){
      return {

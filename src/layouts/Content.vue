@@ -15,15 +15,16 @@
             class="d-block d-lg-none me-2"
             @click="isDrawerOpen = !isDrawerOpen"
           ></v-app-bar-nav-icon>
-          <v-text-field
-            rounded
-            dense
-            outlined
-            :prepend-inner-icon="icons.mdiMagnify"
-            class="app-bar-search flex-grow-0"
-            hide-details
-          ></v-text-field>
-
+            <v-breadcrumbs :items="items">
+              <template v-slot:item="{ item }">
+                <v-breadcrumbs-item
+                  :href="item.href"
+                  :disabled="item.disabled"
+                >
+                  {{ item.text.toUpperCase() }}
+                </v-breadcrumbs-item>
+              </template>
+            </v-breadcrumbs>
           <v-spacer></v-spacer>
 
           <!-- Right Content -->
@@ -91,6 +92,25 @@ export default {
     ThemeSwitcher,
     AppBarUserMenu,
   },
+  data: () => ({
+      items: [
+        {
+          text: 'Dashboard',
+          disabled: false,
+          to: '/dashboard2'
+        },
+        {
+          text: 'Link 1',
+          disabled: false,
+          href: 'breadcrumbs_link_1',
+        },
+        {
+          text: 'Link 2',
+          disabled: true,
+          href: 'breadcrumbs_link_2',
+        },
+      ],
+    }),
   setup() {
     const isDrawerOpen = ref(null)
 

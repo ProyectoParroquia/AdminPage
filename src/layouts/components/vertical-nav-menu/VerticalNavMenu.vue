@@ -13,7 +13,7 @@
     <!-- Navigation Header -->
     <div class="vertical-nav-header d-flex items-center ps-6 pe-5 pt-5 pb-2">
       <router-link
-        to="/"
+        to="/dashboard2"
         class="d-flex align-center text-decoration-none"
       >
         <v-img
@@ -265,18 +265,4 @@ export default {
     width: 5px;
   }
 
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #ff2929;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: rgb(255, 219, 219);
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #555;
-  }
 </style>

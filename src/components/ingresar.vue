@@ -49,7 +49,7 @@
                         </v-form>
                         <div class=" text-center mt-3 ">
                           <v-btn
-                          to="/pages/SoliRestablecerContra"
+                          to="/pages/Recuperacion"
                           plain
                           class="ma-1"
                           >

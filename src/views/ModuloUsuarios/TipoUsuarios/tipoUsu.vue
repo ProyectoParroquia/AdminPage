@@ -208,8 +208,6 @@ import axios from 'axios';
     data: [],
     editedIndex: -1,
     editedItem: {
-      idTipoUsuario: 0,
-      nombreTipoUsuario: '',
 
     },
     defaultItem: {

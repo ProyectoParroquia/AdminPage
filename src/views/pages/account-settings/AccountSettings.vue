@@ -72,11 +72,11 @@
       </v-tab-item>
 
       <v-tab-item>
-        <account-settings-security></account-settings-security>
+        <account-settings-security :securityData="accountSettingData"></account-settings-security>
       </v-tab-item>
 
       <v-tab-item>
-        <account-settings-info :information-data="accountSettingData"></account-settings-info>
+        <account-settings-info :information-data="accountSettingData" :recargar="recargar"></account-settings-info>
       </v-tab-item>
     </v-tabs-items>
   </v-card>
@@ -100,13 +100,21 @@ export default {
   },
 
   data: () => ({
+    /* keyComp:0, */
     tokenLogin: localStorage.getItem('token'),
     accountSettingData:{},
     }),
 
+  methods:{
+    recargar(){
+      setTimeout(this.$router.go(0),4000);
+
+    }
+  },
 
   created:function(){
         let direccion = "http://localhost:3000/api/usuarios/perfil";
+        console.log("Componente renderizado")
           axios.get(direccion, { headers: { token:this.tokenLogin } }).then( data =>{
             if (data.status===201){
               this.accountSettingData = data.data;

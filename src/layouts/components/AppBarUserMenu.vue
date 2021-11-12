@@ -135,7 +135,9 @@
       <!-- Logout -->
       <v-list-item
         link
-        :to="{ name: 'pages-login' }"
+
+        @click="EliminarToken"
+
       >
         <v-list-item-icon class="me-2">
           <v-icon size="22">
@@ -166,10 +168,22 @@ import {
 export default {
   data: () => ({
     tokenLogin: localStorage.getItem('token'),
-    DataLogin:{},
+    DataLogin:{
+      nombreUsuario:'',
+      tipoUsuario:{
+        nombreTipoUsuario:''
+      }
+    },
     }),
 
+  methods:{
+      EliminarToken(){
+        console.log("Elimino token")
+        localStorage.removeItem('token')
+        this.$router.push('/pages/login');
 
+      }
+  },
   created:function(){
         let direccion = "http://localhost:3000/api/usuarios/perfil";
           axios.get(direccion, { headers: { token:this.tokenLogin } }).then( data =>{

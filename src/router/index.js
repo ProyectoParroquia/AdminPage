@@ -27,15 +27,9 @@ const routes = [
   },
 
    {
-    path: '/TipoUsuarios',
-    name: 'TipoUsuarios',
-    component: () => import('@/views/ModuloUsuarios/TipoUsuarios/tipoUsu.vue'),
-  },
-
-   {
-    path: '/TipoDocumentos',
-    name: 'TipoDocu',
-    component: () => import('@/views/ModuloUsuarios/TipoDocumentos/tipoDocu.vue'),
+    path: '/Otros',
+    name: 'Otros',
+    component: () => import('@/views/ModuloUsuarios/TipoDocyUsu/TiposDyU.vue'),
   },
 
    {
@@ -104,6 +98,14 @@ const routes = [
     path: '/pages/SoliRestablecerContra',
     name: 'Recuperar Contra',
     component: () => import('@/views/pages/RecuContra/SolicitudRecuperarContra.vue'),
+    meta: {
+      layout: 'blank',
+    },
+  },
+  {
+    path: '/HomePage',
+    name: 'HomePage',
+    component: () => import('@/views/HomePage/home.vue'),
     meta: {
       layout: 'blank',
     },

@@ -1,17 +1,17 @@
 <template>
   <v-card class="pt-4">
             <v-card-text class="text-h4 text-center font-weight-black"  >
-              Eliminar Tipo Usuario
+              Eliminar Tipo Documento
             </v-card-text>
             <v-card-text class="text-h5 text-center" >
-                ¿Eliminar Tipo usuario "{{datoTU.nombreTipoUsuario}}" ?
+                ¿Eliminar Tipo Documento "{{datoTD.denominacionTipoDocumento}}" ?
               </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn
 
                 text
-                @click="cerrarDialogEliminarTU()"
+                @click="cerrarDialogEliminarTD()"
               >
                 Cancelar
               </v-btn>
@@ -31,16 +31,17 @@
 <script>
 import axios from 'axios'
 export default {
+  //(las propiedades las traemos al necesitar O USAR alguna funcion, arreglo o atributo en este componente)
    props:{
-        datoTU:Object,
-        cerrarDialogEliminarTU:Function,
+        datoTD:Object,
+        cerrarDialogEliminarTD:Function,
         Snackbar:Function,
         initialize:Function,
     },
 
   methods:{
     eliminarTU() {
-      axios.delete("http://localhost:3000/api/tipoUsuario/"+this.datoTU.idTipoUsuario)
+      axios.delete("http://localhost:3000/api/tipoDoc/"+this.datoTD.idTipoDocumento)
               .then( res =>{
                 console.log(res)
                  if(res.status === 201){
@@ -52,7 +53,7 @@ export default {
               console.log("Error")
                  }
               })
-      this.cerrarDialogEliminarTU()
+      this.cerrarDialogEliminarTD()
       this.initialize()
     },
   }

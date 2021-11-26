@@ -1,19 +1,20 @@
 <template>
 
   <v-data-table
-  items-per-page=5
     :headers="headers"
     :items="data"
-    sort-by="usuarios"
+    :items-per-page="5"
+    sort-by="idTipoDocumento"
     class="elevation-1"
     :search="search"
   >
     <template v-slot:top>
+      <!-- toolbar= menù -->
       <v-toolbar
         color = "tableHeader"
         flat
       >
-        <v-toolbar-title>Usuarios</v-toolbar-title>
+        <v-toolbar-title>Tipo Documento</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -28,269 +29,165 @@
       ></v-text-field>
         <v-spacer></v-spacer>
         <v-dialog
-          v-model="dialogNuevo"
-          max-width="500px"
+          v-model="dialogEditar"
+           max-width="500px"
           max-height="500px"
         >
+           <template v-slot:activator="{ on }">
 
-        <template v-slot:activator="{ on, attrs }">
-            <v-btn
+          <v-tooltip bottom
+          v-on="on"
+          color="secondary">
+             <template v-slot:activator="{ on, attrs }">
+              <v-btn
               color="primary"
               dark
-              class="mb-2"
+
               v-bind="attrs"
               v-on="on"
-              @click="reseteo()"
+              @click="abrirNuevo()"
+              fab
+              small
             >
-              Nuevo Usuario
+              <v-icon
+              >{{icons.mdiPlusThick}}</v-icon>
             </v-btn>
-            <v-btn
-              color="primary"
-              dark
-              class="mb-2 mr-4"
-              v-bind="attrs"
-              @click="consultarInactivos()"
-            >
-              {{BotonConsultaTexto}}
-            </v-btn>
-          </template>
+             </template>
+             <span>Nuevo Tipo Documento</span>
+          </v-tooltip>
 
-<v-card >
-  <v-card-text style="padding-top:5px;">
-          <registrar :titulo="formTitle" link="/usuarios"/>
-  </v-card-text>
-</v-card>
-        </v-dialog>
+        </template>
 
-        <v-dialog
-          v-model="dialog"
-          max-width="500px"
-        >
-
-          <v-card>
-
-            <v-card-title>
-              {{formTitle}} {{editedItem.nombreUsuario}}
-            </v-card-title>
-             <validation-observer
-                 ref="observer"
-                 v-slot="{ invalid }"
-                 >
-            <v-card-text>
-              <v-container>
-
-                <v-row>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                   <validation-provider
-                      v-slot="{ errors }"
-                      name="Nombre"
-                      rules="required|max:25|alpha_spaces|min:3"
-                    >
-                          <v-text-field
-                          color="#ae5f9e"
-                            v-model="editedItem.nombreUsuario"
-                            :counter="25"
-                            :error-messages="errors"
-                            label="Nombre"
-                            required
-                          ></v-text-field>
-                          </validation-provider>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                     <validation-provider
-                        v-slot="{ errors }"
-                        name="Apellido"
-                        rules="required|max:25|alpha_spaces|min:4"
-                      >
-                        <v-text-field
-                          v-model="editedItem.apellidoUsuario"
-                          :counter="25"
-                          :error-messages="errors"
-                          label="Apellido"
-                          required
-                        ></v-text-field>
-                      </validation-provider>
-
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                   <validation-provider
-                      v-slot="{ errors }"
-                      name="Correo"
-                      rules="required|email"
-                    >
-                      <v-text-field
-                        v-model="editedItem.correoUsuario"
-                        :error-messages="errors"
-                        label="correo"
-                        required
-                      ></v-text-field>
-                    </validation-provider>
-
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                   <validation-provider
-        v-slot="{ errors }"
-        name="select"
-        rules="required"
-      >
-
-        <v-autocomplete
-          clearable
-          v-model="editedItem.tipoDoc.denominacionTipoDocumento"
-          :items="itemSelectName"
-          :error-messages="errors"
-          label="Tipo Documento"
-          data-vv-name="editedItem.idTipoDoc"
-          required
-        >
-        <template v-slot:no-data>
-        <v-list-item>
-          <v-list-item-title>
-            No se encontraron
-            <strong>datos</strong>
-          </v-list-item-title>
-        </v-list-item>
-      </template>
-
-        </v-autocomplete>
-      </validation-provider>
-
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                  <validation-provider
-        v-slot="{ errors }"
-        name="NumeroDocumento"
-        rules="required|max:10|numeric|min:5"
-      >
-        <v-text-field
-          v-model="editedItem.numeroDocumentoUsuario"
-          :counter="10"
-          :error-messages="errors"
-          label="Numero Documento"
-          required
-        ></v-text-field>
-      </validation-provider>
-
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                   <validation-provider
-        v-slot="{ errors }"
-        name="FechaNacimiento"
-        rules="required|max:10|min:10"
-      >
-        <v-text-field
-          type="date"
-          v-model="editedItem.fechaNacimientoUsuario"
-          :counter="10"
-          :error-messages="errors"
-          label="Fecha Nacimiento"
-          required
-        ></v-text-field>
-      </validation-provider>
-
-                  </v-col>
-                </v-row>
-
-              </v-container>
+          <!-- carta para llamar componente de EDITAR que tambien sirve para crear -->
+          <v-card >
+            <v-card-text style="padding-top:5px;">
+                 <editar :key="keyEditarTiDoc" :initialize="initialize" :Snackbar="Snackbar" :datoTD="datoTD" :titulo="titulo"  :cerrarDialogeditarTD="cerrarDialogeditarTD"/>
             </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
-
-                text
-                @click="close"
-              >
-                Cancelar
-              </v-btn>
-              <v-btn
-                color="primary"
-                :disabled="invalid"
-                @click="save"
-              >
-                Guardar
-              </v-btn>
-            </v-card-actions>
-            </validation-observer>
           </v-card>
-
         </v-dialog>
-        <v-dialog
-          v-model="dialogDelete"
+
+
+
+        <!-- Dialog para eliminar -->
+       <v-dialog
+          v-model="dialogEliminar"
           max-width="500px"
         >
-          <v-card class="pt-4">
-            <v-card-text class="text-h4 text-center font-weight-black"  >
-              Cambiar estado
+          <eliminar
+          :key="keyEliminarTiDoc"
+          :initialize="initialize"
+          :Snackbar="Snackbar" :datoTD="datoTD"
+          :cerrarDialogEliminarTD="cerrarDialogEliminarTD"
+          />
 
-            </v-card-text>
-            <v-card-text class="text-h5 text-center" >
-                ¿Cambiar el estado de {{editedItem.nombreUsuario}} ?
-              </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
 
-                text
-                @click="closeDelete"
-              >
-                Cancelar
-              </v-btn>
-              <v-btn
-                color="primary"
-
-                @click="deleteItemConfirm"
-              >
-                Aceptar
-              </v-btn>
-
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
         </v-dialog>
       </v-toolbar>
+
+              <!-- Alerta para mensajes -->
+             <v-snackbar
+                v-model="snackbarData.snackbar"
+                :timeout="snackbarData.timeout"
+                :color="snackbarData.color"
+                top
+                right
+              >
+
+                {{ snackbarData.text }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="white"
+                    text
+                    icon
+
+                    v-bind="attrs"
+                    @click="snackbarData.snackbar = false"
+                  >
+
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
+                  </v-btn>
+                </template>
+              </v-snackbar>
     </template>
 
+    <!-- Espacio para las acciones dentro de la DataTable -->
     <template v-slot:[`item.actions`]="{ item }">
-      <v-icon
-        color="primary"
-        class="mr-2"
-        @click="editItem(item)"
+      <!-- spedd dial para el despliegue de acciones -->
+      <v-speed-dial
+      open-on-hover
+      transition="slide-x-reverse-transition"
+      direction="left"
+    >
+      <template v-slot:activator>
+
+        <v-btn
+
+          color="primary"
+          dark
+          fab
+          small
+        >
+          <v-icon>
+
+            {{icons. mdiDotsHorizontal}}
+          </v-icon>
+        </v-btn>
+      </template>
+      <!-- Boton para editar Tipo Usuario -->
+
+      <!-- toltip para mensaje al pasar cursor -->
+      <v-tooltip bottom
+       color="secondary"
+       >
+      <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        fab
+        dark
+        small
+        color="green lighten-1"
+        v-bind="attrs"
+          v-on="on"
       >
-        {{icons.mdiPencil}}
-      </v-icon>
-      <v-icon
-        color="delete"
-        @click="deleteItem(item)"
+        <v-icon
+        @click="editarDato(item)"
+        >{{icons.mdiPencil}}</v-icon>
+      </v-btn>
+      </template>
+      <span>Editar Tipo Documento</span>
+    </v-tooltip>
+
+      <!-- Boton para eliminar tipo usuario -->
+    <v-tooltip bottom
+     color="secondary">
+      <template v-slot:activator="{ on, attrs }">
+      <v-btn
+        fab
+        dark
+        small
+        color="red lighten-1"
+        v-bind="attrs"
+          v-on="on"
       >
-        {{icons.mdiMinusCircle}}
-      </v-icon>
-    </template>
-    <template v-slot:no-data>
+        <v-icon
+        @click="eliminarItem(item)"
+        >
+                {{icons.mdiMinusCircle }}
+              </v-icon>
+
+      </v-btn>
+      </template>
+      <span>Eliminar Tipo Documento</span>
+    </v-tooltip>
+
+    </v-speed-dial>
+         </template>
+
+      <!-- Templates para mensajes al no encontrar datos o no haya resultados al buscar -->
+      <template v-slot:no-data>
       <v-col>
       <p>
       ¡UY! Al parecer no se encuentra información.
@@ -298,151 +195,85 @@
 
       </v-col>
     </template>
-    <template v-slot:no-results>
+     <template v-slot:no-results>
       <v-col>
       <p>
       ¡Oops! La información que deseas buscar, no se encuentra.
       </p>
             </v-col>
     </template>
-
   </v-data-table>
 
 </template>
 
 <script>
+//importacion de los iconos
 import {
   mdiPencil,
+  mdiDotsHorizontal,
   mdiMinusCircle,
+  mdiPlusThick,
   mdiMagnify,
 
 } from '@mdi/js'
 import axios from 'axios';
-import registrar from '@/components/Login/registrar.vue';
-import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
-import { extend, setInteractionMode,ValidationProvider, ValidationObserver } from 'vee-validate'
-setInteractionMode('eager')
-    extend('confirmed', {
-    ...confirmed,
-    message: 'El campo {_field_} no coincide ',
-  })
-
-   extend('alpha_dash', {
-    ...alpha_dash,
-    message: 'El campo {_field_} puede contener caracteres alfanuméricos, así como guiones y guiones bajos.',
-  })
-
-   extend('numeric', {
-    ...numeric,
-    message: 'El campo {_field_} solo debe contener numeros',
-  })
-
-  extend('alpha_spaces', {
-    ...alpha_spaces,
-    message: 'El campo {_field_} solo debe tener caracteres alfabeticos y espacios',
-  })
-
-  extend('digits', {
-    ...digits,
-    message: 'El campo {_field_} debe tener {length} digitos. ({_value_})',
-  })
-
-  extend('required', {
-    ...required,
-    message: 'El campo {_field_} no puede estar vacio',
-  })
-
-  extend('max', {
-    ...max,
-    message: 'El campo {_field_} no puede tener más de {length} caracteres',
-  })
-
-  extend('min', {
-    ...min,
-    message: 'El campo {_field_} debe tener minimo {length} caracteres',
-  })
-
-  extend('regex', {
-    ...regex,
-    message: 'el campo {_field_} {_value_} no coincide {regex}',
-  })
-
-  extend('email', {
-    ...email,
-    message: 'El correo debe ser válido',
-  })
-
+import eliminar from './eliminar.vue'
+import editar from './editar.vue'
  export default {
-    components:{
-      ValidationProvider,
-       ValidationObserver,
-    registrar
-  },
-
+   components:{
+      eliminar,
+      editar
+   },
   data: () => ({
-    valorBoton:true,
-    BotonConsultaTexto:"Inactivos",
-    tokenLogin: localStorage.getItem('token'),
-    dialog: false,
-    dialogDelete: false,
-    dialogNuevo:false,
+    //variable que guarda numero para validar el titulo de editar o agregar
+    titulo:1,
+    //?ALERTA
+      snackbarData:{
+              snackbar: false,
+              text: '',
+              timeout: 2000,
+              color:''
+            },
+
+    dialogEditar:false,
+    dialogEliminar: false,
     search: '',
     headers: [
       {
-        text: 'Nombres',
+        text: 'ID',
         align: 'start',
-        value: 'nombreUsuario',
+
+        value: 'idTipoDocumento',
       },
-      {
-        text: 'Apellido',
-        align: 'start',
-        value: 'apellidoUsuario',
-      },
-      { text: 'Correo', value: 'correoUsuario' },
-      { text: 'Tipo Docu', value: 'tipoDoc.denominacionTipoDocumento' },
-      { text: 'Num. Docu', value: 'numeroDocumentoUsuario' },
-      { text: 'Fecha Nacimiento', value: 'fechaNacimientoUsuario' },
-      { text: 'Tipo Usu', value: 'tipoUsuario.nombreTipoUsuario' },
+      { text: 'Tipo Documento', value: 'denominacionTipoDocumento' },
 
       { text: 'Acciones', value: 'actions', sortable: false },
     ],
+    //guarda los datos al listar
     data: [],
-    editedIndex: -1,
-    editedItem: {},
-     itemSelect: {},
-     itemSelectName: [],
+    datoTD: {
+    },
+    //llaves para props
+    keyNuevoUsu:0,
+    keyEditarTiDoc:0,
+    keyEliminarTiDoc:0,
+
     defaultItem: {
-      idUsuario: 0,
-     nombreUsuario: '',
-      apellidoUsuario: '',
-      correoUsuario: '',
-      tipoDoc: 0,
-      numeroDocumentoUsuario:0,
-      fechaNacimientoUsuario: 0,
-      tipoUsuario: 0,
+      idTipoUsuario: 0,
+      nombreTipoUsuario: '',
     },
   }),
 
-  computed: {
-    formTitle() {
-      console.log(21)
-      return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Editar al Usuario'
-    },
-  },
 
   watch: {
-    dialog(val)
+    dialogEditar(val)
     {
-      val || this.close()
+      val || this.cerrarDialogeditarTD()
     },
-    dialogDelete(val)
+    dialogEliminarTu(val)
     {
-      val || this.closeDelete()
+      val || this.cerrarDialogEliminarTD()
     },
-    dialogNuevo(val)
-    {
-      val|| this.closeNuevo()
-      }
   },
 
   created() {
@@ -451,135 +282,81 @@ setInteractionMode('eager')
 
   methods: {
 
-    reseteo(){
-      this.dialogNuevo = true
-      this.editedIndex= -1
-      this.editedItem = this.defaultItem
-    },
+    //Listar
     initialize() {
-      let direcciondoc = "http://localhost:3000/api/tipoDoc/";
-                axios.get(direcciondoc/* ,{headers: { token:this.tokenLogin } } */)
-                .then( res =>{
-                  res.data.forEach(el => {
-                    this.itemSelectName.push(el.denominacionTipoDocumento)
-                  });
-                this.itemSelect = res.data
-                  });
-
-
-        let direccion = "http://localhost:3000/api/usuarios";
-        axios.get(direccion, { headers: { token:this.tokenLogin } })
-                    .then( res =>{
+      let direccion = "http://localhost:3000/api/tipoDoc";
+                axios.get(direccion).then( res =>{
                 this.data = res.data;
+                console.log(this.data)
                   });
     },
 
-    editItem(item) {
-      this.editedItem = Object.assign({}, item)
-      console.log(this.editedItem)
-      this.dialog = true
-      this.editedIndex= 1
+    //Abrir los dialog cambiandolos de estado a true
+    abrirNuevo(){
+      this.dialogEditar = true
+      //Asigna a titulo otro numero para el cambio de titulo
+      this.titulo=2
+      console.log(this.titulo)
+      //llave de las propiedades para recargar componente
+      this.keyEditarTiDoc ++
     },
 
-    deleteItem(item) {
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-      this.editedIndex= 1
+    editarDato(item) {
+      //asignamos a objeto DatoTD el item que llega como parametro(item que guarda solo el dato del arreglo)
+      this.datoTD =  item
+      this.dialogEditar = true
+      this.titulo=1
+      console.log(this.titulo)
+       this.keyEditarTiDoc ++
     },
-
-    deleteItemConfirm() {
-      let cambioEstado
-      if(this.valorBoton){
-        cambioEstado = "inhabilitar"
-      }else{
-        cambioEstado = "activar"
-      }
-
-      axios.put("http://localhost:3000/api/usuarios/"+cambioEstado+"/"+this.editedItem.idUsuario, this.editedItem,{headers: { token:this.tokenLogin } })
-              .then( () =>{
-                this.valorBoton=!this.valorBoton
-                  this.consultarInactivos()
-              })
-      this.closeDelete()
-    },
-
-    close() {
-      this.dialog = false
-        this.editedItem = Object.assign({}, this.defaultItem)
+     eliminarItem(item) {
+      this.datoTD =  item
+       this.dialogEliminar = true
+      console.log(this.datoTD)
+      this.keyEliminarTiDoc ++
 
 
     },
-    closeNuevo(){
-      this.dialogNuevo = false
-    },
 
-    closeDelete() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+
+
+    //Metodos para cerrar los dialog cambiadolos de estado a false
+    cerrarDialogeditarTD(){
+        this.dialogEditar=false
+         this.$nextTick(() => {
+        this.datoTD = this.defaultItem
+
       })
     },
 
-    save() {
-        /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
+    cerrarDialogEliminarTD() {
+      this.dialogEliminar = false
+      this.$nextTick(() => {
+        this.datoTD = this.defaultItem
 
-              this.itemSelect.forEach(el => {
-                if(el.denominacionTipoDocumento == this.editedItem.tipoDoc.denominacionTipoDocumento){
-                  this.editedItem.idTipoDoc_FK = el.idTipoDocumento
-                }
-              });
+      })
 
-
-        this.$refs.observer.validate()
-          axios.put("http://localhost:3000/api/usuarios/actualizar/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token:this.tokenLogin } })
-          .then(data =>{
-            if(data.status===201){
-              console.log("correcto")
-             /*  this.makeToast("Actualizado",data.data.success,"info");
-                   setTimeout(this.salir,1800); */
-
-                this.valorBoton=!this.valorBoton
-                  this.consultarInactivos()
-            }else{
-              /* this.makeToast("Error",data.data.mensage,"danger"); */
-              console.log("Error")
-            }
-          })
-      this.close()
     },
-    consultarInactivos(){
-          let varestado
-              if(this.valorBoton){
-                varestado ="/inactivos"
-                this.BotonConsultaTexto=  "Activos"
 
-              }else{
-                varestado = "/" ;
-                this.BotonConsultaTexto= "Inactivos"
-              }
-
-                /* credencial_token = localStorage(credencial_token) */
-                 let direccion = "http://localhost:3000/api/tipoDoc"+varestado;
-                axios.get(direccion, { headers: { token:this.tokenLogin } } ).then( res =>{
-                    this.data = res.data;
-                    console.log(this.data)
-                });
-                this.valorBoton= !this.valorBoton
-
-            },
+    //?funcion para asignarle diferentes atributos(texto y color) a la ALERTA dinamicamente
+     Snackbar(texto, color) {
+          this.snackbarData.text=texto,
+            this.snackbarData.snackbar=true
+            this.snackbarData.color=color
+        },
 
   },
+  //retorno para usar los iconos
   setup() {
     return {
       icons: {
         mdiMinusCircle,
+        mdiPlusThick,
+        mdiDotsHorizontal,
         mdiPencil,
         mdiMagnify,
       },
     }
   },
-
-
 }
 </script>

@@ -297,8 +297,7 @@
                         vid="confirmation"
                         v-slot="{ errors }"
                         name="contraseña"
-
-                        rules="required|{ regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8 }"
+                        :rules="{ required, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8 }"
                       >
                           <v-text-field
                             color="#ae5f9e"
@@ -338,7 +337,44 @@
 
                   </v-col>
 
-              </v-row>
+                    </v-row>
+                    <v-row>
+                       <v-col>
+                     <validation-provider
+                        v-slot="{ errors }"
+                        name="contraseña"
+                        rules="required"
+                      >
+                   <v-checkbox
+                    v-model="politicas"
+                    label="Politicas"
+                    :error-messages="errors"
+                    color="primary"
+                    value="error"
+                    hide-details
+                  >
+                  <template v-slot:label>
+                    <div>
+                      Estoy de acuerdo con
+                      <v-tooltip bottom>
+                        <template v-slot:activator="{ on }">
+                          <a
+                            target="_blank"
+                            @click="VerTerminos()"
+                            v-on="on"
+                          >
+                            los terminos y condiciones
+                          </a>
+                        </template>
+                        Ver los terminos y condiciones
+                      </v-tooltip>
+                      de Sacris
+                    </div>
+                  </template>
+                  </v-checkbox>
+                     </validation-provider>
+                  </v-col>
+                    </v-row>
 
             </v-card>
             <div class="text-right">
@@ -366,8 +402,15 @@
       </v-container>
                         </v-form>
                           </validation-observer>
+        <!-- Dialog para terminos y condiciones -->
+           <v-dialog
+          v-model="TerminosDialog"
+          max-width="650px"
+        >
+          <Terminos key="key" :VerTerminos="VerTerminos" />
+        </v-dialog>
 
-
+        <!-- ALERTA -->
 
           <v-snackbar
                 v-model="snackbarData.snackbar"
@@ -403,6 +446,7 @@
   mdiEyeOutline
 
 } from '@mdi/js'
+import Terminos from './terminos.vue';
 
 /* import step from '@/components/Login/step.vue'; */
 
@@ -449,7 +493,7 @@ setInteractionMode('eager')
 
   extend('regex', {
     ...regex,
-    message: 'la contraseña {_value_} no coincide con las reglas especificadas. Minusculas, mayusculas, numeros y caracter especial ',
+    message: 'La contraseña {_value_} no coincide con las reglas especificadas. Minusculas, mayusculas, numeros y caracter especial ',
   })
 
   extend('email', {
@@ -461,6 +505,7 @@ export default {
   components: {
       ValidationProvider,
       ValidationObserver,
+    Terminos,
     },
     props:{
       metodo: {
@@ -474,11 +519,16 @@ export default {
     },
     data:function(){
         return {
+          //?Checkbox
+          politicas:false,
+          //?dialog terminos
+          TerminosDialog:false,
           //! Fecha
            activePicker: null,
            menu: false,
            date: null,
 
+          key:0,
 
           e1: 1,
             steps: 3,
@@ -530,6 +580,12 @@ export default {
         },
 
          methods: {
+          //?politicas
+
+           VerTerminos(){
+      this.TerminosDialog = !this.TerminosDialog
+      this.key ++
+    },
 
       submit () {
         this.$refs.observer.validate()

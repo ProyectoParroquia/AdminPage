@@ -70,17 +70,12 @@
 
         <nav-menu-link
           class="ml-8"
-          title="Tipo Usuarios"
+          title="Otros"
           :icon="icons.mdiBookCross"
-          :to="{ name: 'TipoUsuarios' }"
+          :to="{ name: 'Otros' }"
 
         ></nav-menu-link>
-        <nav-menu-link
-          class="ml-8"
-          title="Tipo Documentos"
-          :icon="icons.mdiBookOpenPageVariant"
-          :to="{ name: 'TipoDocu' }"
-        ></nav-menu-link>
+
 
       </nav-menu-group>
 

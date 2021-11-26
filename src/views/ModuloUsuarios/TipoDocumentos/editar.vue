@@ -2,8 +2,10 @@
           <v-card>
 
             <v-card-title>
+              <!-- integramos la funcion para el cambio del titulo -->
               {{cambioTitulo()}}
             </v-card-title>
+
              <validation-observer
                  ref="observer"
                  v-slot="{ invalid }"
@@ -20,7 +22,7 @@
                     >
                           <v-text-field
                           color="#ae5f9e"
-                            v-model="datoTU.nombreTipoUsuario"
+                            v-model="datoTD.denominacionTipoDocumento"
                             :counter="25"
                             :error-messages="errors"
                             label="Tipo Usuario"
@@ -41,7 +43,7 @@
               <v-btn
 
                 text
-                @click="cerrarDialogeditarTU"
+                @click="cerrarDialogeditarTD"
               >
                 Cancelar
               </v-btn>
@@ -61,10 +63,6 @@ import axios from 'axios'
 import { required, max, min, alpha_spaces} from 'vee-validate/dist/rules'
 import {ValidationProvider, ValidationObserver, extend, setInteractionMode } from 'vee-validate'
 setInteractionMode('eager')
-
-
-
-
   extend('alpha_spaces', {
     ...alpha_spaces,
     message: 'El campo {_field_} solo debe tener caracteres alfabeticos y espacios',
@@ -87,11 +85,12 @@ setInteractionMode('eager')
 
 
 export default {
-
+  //accedemos a las propiedades que recibimos del componente padre(tipoDocu)
+  //(las propiedades las traemos al necesitar alguna funcion, arreglo o atributo en este componente)
   props:{
         titulo:Number,
-        datoTU:Object,
-        cerrarDialogeditarTU:Function,
+        datoTD:Object,
+        cerrarDialogeditarTD:Function,
         Snackbar:Function,
         initialize:Function
     },
@@ -101,29 +100,34 @@ export default {
 
 
   methods:{
+    /* metodo que valida si la variable titulo trae un 2 o no lo trae,
+    si lo trae (?) pondra Nuevo... si no (:) pondra editar */
     cambioTitulo(){
-      return this.titulo === 2 ?'Nuevo tipo Usuario' :'Editar Tipo Usuario'
+      return this.titulo === 2 ?'Nuevo tipo Documento' :'Editar Tipo Documento'
     },
 
+    //Metodo en el que valiamos si el id viene lleno o no
      GuardarActualizacion() {
-        if(this.datoTU.idTipoUsuario){
+       //si viene lleno, realizaremos una edicion de el dato que llegue por ese id
+        if(this.datoTD.idTipoDocumento){
           console.log("editando")
           this.$refs.observer.validate()
-          axios.put("http://localhost:3000/api/tipoUsuario/actualizar/"+this.datoTU.idTipoUsuario, this.datoTU/* ,{ headers: { token:this.tokenLogin } } */)
+          axios.put("http://localhost:3000/api/tipoDoc/actualizar/"+this.datoTD.idTipoDocumento, this.datoTD/* ,{ headers: { token:this.tokenLogin } } */)
           .then(res =>{
             if(res.status === 201){
               console.log(res)
               this.Snackbar(res.data.success, "green")
+              //llamamos a este metodo para reenderizar el componente y que muestre los cambios
               this.initialize()
             }else{
               this.makeToast("Error",res.data.mensage,"danger");
               console.log("Error")
             }
           })
-
+          //si no, agregaremos un nuevo Tipo Doc
         }else{
           console.log("creando")
-          axios.post("http://localhost:3000/api/tipoUsuario",this.datoTU/* , {headers: { token:this.tokenLogin } }*/ )
+          axios.post("http://localhost:3000/api/tipoDoc/",this.datoTD/* , {headers: { token:this.tokenLogin } }*/ )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){
@@ -150,7 +154,7 @@ export default {
 
             })
         }
-      this.cerrarDialogeditarTU()
+      this.cerrarDialogeditarTD()
     },
   }
 }

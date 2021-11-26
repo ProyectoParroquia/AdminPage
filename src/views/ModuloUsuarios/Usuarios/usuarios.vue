@@ -35,7 +35,7 @@
           max-width="500px"
           max-height="500px"
         >
-            <!-- <template> -->
+            <!-- Botones header -->
         <template v-slot:activator="{ on }">
 
           <v-tooltip bottom
@@ -397,7 +397,7 @@ import editarTiUsu from './editarTipoUsu.vue'
       { text: 'Acciones', value: 'actions', sortable: false },
     ],
     data: [],
-    editedIndex: -1,
+
     editedItem: {},
      itemSelect: [],
      itemSelectTU: [],
@@ -484,14 +484,14 @@ import editarTiUsu from './editarTipoUsu.vue'
       console.log(this.editedItem)
       this.keyEditarUsu ++
       this.dialog = true
-      this.editedIndex= 1
+
     },
      editTiUsu(item) {
       this.editedItem = item
       console.log(this.editedItem)
       this.keyEditarTiUsu ++
       this.dialogTipoUsu = true
-      this.editedIndex= 1
+
     },
 
     deleteItem(item) {
@@ -499,7 +499,7 @@ import editarTiUsu from './editarTipoUsu.vue'
       console.log(this.editedItem.nombreUsuario)
       this.keyEliminarUsu ++
       this.dialogDelete = true
-      this.editedIndex= 1
+
     },
 
      deleteItemConfirm() {
@@ -549,7 +549,7 @@ import editarTiUsu from './editarTipoUsu.vue'
     },
     closeTipoUsu(){
       this.dialogTipoUsu = false
-      this.editedIndex = -1
+
       this.initialize()
     },
 
@@ -557,7 +557,7 @@ import editarTiUsu from './editarTipoUsu.vue'
       this.dialogDelete = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+
       })
     },
 

@@ -38,7 +38,7 @@
                   vid="confirmation"
                    v-slot="{ errors }"
                   name="contraseña"
-                  rules="required|min:8|alpha_dash"
+                  :rules="{ required, regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).*$/, min:8 }"
                >
               <!-- new password -->
               <v-text-field
@@ -193,7 +193,7 @@ extend('required', {
 
   extend('regex', {
     ...regex,
-    message: 'el campo {_field_} {_value_} no coincide {regex}',
+     message: 'La contraseña {_value_} no coincide con las reglas especificadas. Minusculas, mayusculas, numeros y caracter especial ',
   })
 export default {
    data: function(){

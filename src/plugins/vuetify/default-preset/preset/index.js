@@ -12,7 +12,8 @@ export default {
         warning: '#FFB400',
         error: '#FF4C51',
         delete: '#ae5f9e',
-        tableHeader: '#e2e1e3'
+        tableHeader: '#e2e1e3',
+        hover:'#dec1e3'
       },
       dark: {
         primary: '#cc60b6',
@@ -23,7 +24,8 @@ export default {
         warning: '#FFB400',
         error: '#FF4C51',
         delete: '#FF4C51',
-        tableHeader: '#ae5f9e'
+        tableHeader: '#ae5f9e',
+        hover:'#edb9e3bf'
       },
     },
   },

@@ -3,48 +3,6 @@
     flat
     class="pa-3 mt-2"
   >
-    <v-card-text class="d-flex">
-      <v-avatar
-        rounded
-        size="120"
-        class="me-6"
-      ><!--
-      agregar ruta de imagenes pero eso lo sabe andreina.. lo sabra* -->
-        <v-img ></v-img>
-      </v-avatar>
-
-      <!-- upload photo -->
-      <div>
-        <v-btn
-          color="primary"
-          class="me-3 mt-5"
-          @click="$refs.refInputEl.click()"
-        >
-          <v-icon class="d-sm-none">
-            {{ icons.mdiCloudUploadOutline }}
-          </v-icon>
-          <span class="d-none d-sm-block">Ingresar nueva FOTO</span>
-        </v-btn>
-
-        <input
-          ref="refInputEl"
-          type="file"
-          accept=".jpeg,.png,.jpg"
-          :hidden="true"
-        />
-
-        <v-btn
-          color="error"
-          outlined
-          class="mt-5"
-        >
-          Reiniciar
-        </v-btn>
-        <p class="text-sm mt-5">
-          Solo insertar archivo tipo imagen (PNG-JPG-JPEG). Tamaño maximo de 800K
-        </p>
-      </div>
-    </v-card-text>
 
     <v-card-text>
       <v-form class="multi-col-validation mt-6" @submit.prevent="submit">

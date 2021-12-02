@@ -462,14 +462,15 @@ import editarTiUsu from './editarTipoUsu.vue'
                   });
 
 
-      let direccionTUsu = "http://localhost:3000/api/tipoUsuario/";
-                axios.get(direccionTUsu)
-                .then( res =>{
-                  res.data.forEach(el => {
-                    this.itemSelectNameTU.push(el.nombreTipoUsuario)
-                  });
-                this.itemSelectTU = res.data
-                  });
+      let direccionTUsu = "http://localhost:3000/api/tipoUsuario/si/";
+                axios.get(direccionTUsu).then(res=>{
+
+                  console.log(res)
+                    res.data.forEach(el => {
+                      this.itemSelectNameTU.push(el.nombreTipoUsuario)
+                    });
+                  this.itemSelectTU = res.data
+                })
 
 
         let direccion = "http://localhost:3000/api/usuarios";
@@ -522,7 +523,7 @@ import editarTiUsu from './editarTipoUsu.vue'
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
                  }else{
-                   this.makeToast("Error",res.data.mensage,"danger");
+                   this.Snackbar("Error",res.data.mensage,"danger");
               console.log("Error")
                  }
               })
@@ -539,7 +540,7 @@ import editarTiUsu from './editarTipoUsu.vue'
     close() {
       this.dialog = false
         this.editedItem = Object.assign({}, this.defaultItem)
-        this.consultarInactivos()
+        this.initialize()
 
 
 

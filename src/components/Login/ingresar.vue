@@ -22,8 +22,6 @@
                             :prepend-inner-icon="icons.mdiLock "
                             :append-icon="show1  ?icons.mdiEyeOutline :icons.mdiEyeOffOutline "
                             :type="show1 ? 'text' : 'password'"
-
-                            required
                             @click:append="show1 = !show1"
                             color="#ae5f9e"
                           />

@@ -4,16 +4,17 @@
     :headers="headers"
     :items="data"
     :items-per-page="5"
-    sort-by="idTipoUsuario"
+    sort-by="idTipoCurso"
     class="elevation-1"
     :search="search"
   >
     <template v-slot:top>
+      <!-- toolbar= menù -->
       <v-toolbar
         color = "tableHeader"
         flat
       >
-        <v-toolbar-title>Tipo Usuarios</v-toolbar-title>
+        <v-toolbar-title>Tipo Curso</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -52,26 +53,21 @@
               >{{icons.mdiPlusThick}}</v-icon>
             </v-btn>
              </template>
-             <span>Nuevo Tipo Usuario</span>
+             <span>Nuevo Tipo Curso</span>
           </v-tooltip>
 
         </template>
 
-          <!-- carta para llamar componente de registro=crear -->
+          <!-- carta para llamar componente de EDITAR que tambien sirve para crear -->
           <v-card >
             <v-card-text style="padding-top:5px;">
-                     <editar :key="keyEditarTiUsu" :initialize="initialize" :Snackbar="Snackbar" :datoTU="datoTU" :titulo="titulo"  :cerrarDialogeditarTU="cerrarDialogeditarTU"/>
+                 <editar :key="keyEditarTiDoc" :initialize="initialize" :Snackbar="Snackbar" :datoTD="datoTD" :titulo="titulo"  :cerrarDialogeditarTD="cerrarDialogeditarTD"/>
             </v-card-text>
 
           </v-card>
         </v-dialog>
 
-        <!-- <v-dialog
-        v-model="dialogEditar"
-        max-width="500px"
-        >
-          <editar :key="keyEditarTiUsu" :initialize="initialize" :Snackbar="Snackbar" :datoTU="datoTU" :cerrarDialogeditarTU="cerrarDialogeditarTU"/>
-        </v-dialog> -->
+
 
         <!-- Dialog para eliminar -->
        <v-dialog
@@ -79,16 +75,17 @@
           max-width="500px"
         >
           <eliminar
-          :key="keyEliminarTiUsu"
+          :key="keyEliminarTiDoc"
           :initialize="initialize"
-          :Snackbar="Snackbar" :datoTU="datoTU"
-          :cerrarDialogEliminarTU="cerrarDialogEliminarTU"
+          :Snackbar="Snackbar" :datoTD="datoTD"
+          :cerrarDialogEliminarTD="cerrarDialogEliminarTD"
           />
 
 
         </v-dialog>
       </v-toolbar>
 
+              <!-- Alerta para mensajes -->
              <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
@@ -117,7 +114,9 @@
               </v-snackbar>
     </template>
 
+    <!-- Espacio para las acciones dentro de la DataTable -->
     <template v-slot:[`item.actions`]="{ item }">
+      <!-- spedd dial para el despliegue de acciones -->
       <v-speed-dial
       open-on-hover
       transition="slide-x-reverse-transition"
@@ -139,6 +138,8 @@
         </v-btn>
       </template>
       <!-- Boton para editar Tipo Usuario -->
+
+      <!-- toltip para mensaje al pasar cursor -->
       <v-tooltip bottom
        color="secondary"
        >
@@ -156,7 +157,7 @@
         >{{icons.mdiPencil}}</v-icon>
       </v-btn>
       </template>
-      <span>Editar Tipo Usuario</span>
+      <span>Editar Tipo Curso</span>
     </v-tooltip>
 
       <!-- Boton para eliminar tipo usuario -->
@@ -179,12 +180,13 @@
 
       </v-btn>
       </template>
-      <span>Eliminar Tipo Usuario</span>
+      <span>Eliminar Tipo Curso</span>
     </v-tooltip>
 
     </v-speed-dial>
          </template>
 
+      <!-- Templates para mensajes al no encontrar datos o no haya resultados al buscar -->
       <template v-slot:no-data>
       <v-col>
       <p>
@@ -205,6 +207,7 @@
 </template>
 
 <script>
+//importacion de los iconos
 import {
   mdiPencil,
   mdiDotsHorizontal,
@@ -222,6 +225,7 @@ import editar from './editar.vue'
       editar
    },
   data: () => ({
+    //variable que guarda numero para validar el titulo de editar o agregar
     titulo:1,
     //?ALERTA
       snackbarData:{
@@ -239,35 +243,32 @@ import editar from './editar.vue'
         text: 'ID',
         align: 'start',
 
-        value: 'idTipoUsuario',
+        value: 'idTipoCurso',
       },
-      { text: 'Tipo Usuario', value: 'nombreTipoUsuario' },
+      { text: 'Tipo Curso', value: 'nombreTipoCurso' },
 
       { text: 'Acciones', value: 'actions', sortable: false },
     ],
+    //guarda los datos al listar
     data: [],
-    datoTU: {
+    datoTD: {
     },
     //llaves para props
     keyNuevoUsu:0,
-    keyEditarTiUsu:0,
-    keyEliminarTiUsu:0,
+    keyEditarTiDoc:0,
+    keyEliminarTiDoc:0,
 
-    defaultItem: {
-      idTipoUsuario: 0,
-      nombreTipoUsuario: '',
-    },
   }),
 
 
   watch: {
     dialogEditar(val)
     {
-      val || this.cerrarDialogeditarTU()
+      val || this.cerrarDialogeditarTD()
     },
     dialogEliminarTu(val)
     {
-      val || this.cerrarDialogEliminarTU()
+      val || this.cerrarDialogEliminarTD()
     },
   },
 
@@ -277,53 +278,47 @@ import editar from './editar.vue'
 
   methods: {
 
+    //Listar
     initialize() {
-      let direccion = "http://localhost:3000/api/tipoUsuario/si";
+      let direccion = "http://localhost:3000/api/TipoCurso";
                 axios.get(direccion).then( res =>{
                 this.data = res.data;
                 console.log(this.data)
                   });
     },
+
+    //Abrir los dialog cambiandolos de estado a true
     abrirNuevo(){
       this.dialogEditar = true
+      //Asigna a titulo otro numero para el cambio de titulo
       this.titulo=2
       console.log(this.titulo)
-      this.keyEditarTiUsu ++
+      //llave de las propiedades para recargar componente
+      this.keyEditarTiDoc ++
     },
 
     editarDato(item) {
-      this.datoTU =  item
+      //asignamos a objeto DatoTD el item que llega como parametro(item que guarda solo el dato del arreglo)
+      this.datoTD =  item
       this.dialogEditar = true
       this.titulo=1
       console.log(this.titulo)
-       this.keyEditarTiUsu ++
+       this.keyEditarTiDoc ++
     },
      eliminarItem(item) {
-      this.datoTU =  item
-      console.log(this.datoTU)
-      this.keyEliminarTiUsu ++
-      this.dialogEliminar = true
+      this.datoTD =  item
+       this.dialogEliminar = true
+      console.log(this.datoTD)
+      this.keyEliminarTiDoc ++
+
 
     },
 
-    cerrarDialogeditarTU(){
-        this.dialogEditar=false
-         this.$nextTick(() => {
-        this.datoTU = this.defaultItem
 
-      })
-    },
 
-    cerrarDialogEliminarTU() {
-      this.dialogEliminar = false
-      this.$nextTick(() => {
-        this.datoTU = this.defaultItem
 
-      })
 
-    },
-
-    //?ALERTA
+    //?funcion para asignarle diferentes atributos(texto y color) a la ALERTA dinamicamente
      Snackbar(texto, color) {
           this.snackbarData.text=texto,
             this.snackbarData.snackbar=true
@@ -331,6 +326,7 @@ import editar from './editar.vue'
         },
 
   },
+  //retorno para usar los iconos
   setup() {
     return {
       icons: {

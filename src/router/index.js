@@ -33,23 +33,36 @@ const routes = [
   },
 
    {
-    path: '/ServiciosCom',
-    name: 'comunitarios',
-    component: () => import('@/views/Servicios/Comunitarios.vue'),
-  },
-
-   {
-    path: '/ServiciosPar',
-    name: 'particulares',
-    component: () => import('@/views/Servicios/Particulares.vue'),
-  },
-
-   {
     path: '/Cursos',
     name: 'cursos',
     component: () => import('@/views/Cursos/cursos.vue'),
   },
 
+    {
+    path: '/Consultar',
+    name: 'RequisitoIns',
+    component: () => import('@/views/Requisitos/RequisitoIns.vue'),
+  },
+  {
+  path: '/Recreativos',
+  name: 'cards',
+  component: () => import('@/views/Cursos/cards.vue'),
+},
+{
+  path: '/TipoCurso',
+  name: 'tipoCurso',
+  component: () => import('@/views/Cursos/TipoCurso/tipoCurso.vue'),
+},
+  {
+    path: '/Definir',
+    name: 'NuevoCR',
+    component: () => import('@/views/Requisitos/NuevoCR.vue'),
+  },
+  {
+    path: '/Inscripcion',
+    name: 'inscripcion',
+    component: () => import('@/views/Cursos/Inscripcion/Inscripcion.vue'),
+  },
    {
     path: '/Anuncios',
     name: 'anuncios',

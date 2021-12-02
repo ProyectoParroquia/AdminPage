@@ -307,8 +307,7 @@ export default {
               this.Snackbar(res.data.success, "green")
 
 
-                this.valorBoton=!this.valorBoton
-                  this.consultarInactivos()
+                  this.initialize()
             }else{
               this.makeToast("Error",res.data.mensage,"danger");
               console.log("Error")

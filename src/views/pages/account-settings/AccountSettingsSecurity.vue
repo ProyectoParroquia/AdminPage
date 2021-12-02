@@ -199,6 +199,7 @@ export default {
    data: function(){
      return {
        error:'',
+       required:'',
       isCurrentPasswordVisible: false,
       isNewPasswordVisible: false,
       isCPasswordVisible: false,

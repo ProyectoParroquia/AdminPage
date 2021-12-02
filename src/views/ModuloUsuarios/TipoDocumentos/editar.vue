@@ -17,13 +17,13 @@
                   <v-col>
                    <validation-provider
                       v-slot="{ errors }"
-                      name="Nombre"
-                      rules="required|max:25|alpha_spaces|min:3"
+                      name="Tipo Usuario"
+                      rules="required|max:10|alpha_spaces|min:3"
                     >
                           <v-text-field
                           color="#ae5f9e"
                             v-model="datoTD.denominacionTipoDocumento"
-                            :counter="25"
+                            :counter="10"
                             :error-messages="errors"
                             label="Tipo Usuario"
                             required

@@ -52,7 +52,7 @@
                             :counter="25"
                             :error-messages="errors"
                             label="Nombre"
-                            required
+
                           ></v-text-field>
                     </validation-provider>
                   </v-col>
@@ -69,7 +69,7 @@
                           :counter="25"
                           :error-messages="errors"
                           label="Apellido"
-                          required
+
                         ></v-text-field>
                     </validation-provider>
                   </v-col>
@@ -92,7 +92,7 @@
                             :counter="10"
                             :error-messages="errors"
                             label="Fecha Nacimiento"
-                            required
+
                             clearable
                             @click="menu = true"
                           ></v-text-field>
@@ -110,7 +110,7 @@
                                 v-model="form.fechaNacimientoUsuario"
                                 :active-picker.sync="activePicker"
                                 :error-messages="errors"
-                                required
+
                                 max="2010-12-31"
                                 min="1930-01-01"
                                 @change="saveDate"
@@ -130,7 +130,7 @@
                                     :counter="13"
                                     :error-messages="errors"
                                     label="Numero de Contacto"
-                                    required
+
                                   ></v-text-field>
                             </validation-provider>
                       </v-col>
@@ -174,7 +174,7 @@
                               :error-messages="errors"
                               label="Tipo Documento"
                               data-vv-name="form.idTipoDoc"
-                              required
+
                             >
                             <template v-slot:no-data>
                             <v-list-item>
@@ -201,7 +201,7 @@
                                     :counter="10"
                                     :error-messages="errors"
                                     label="Numero Documento"
-                                    required
+
                                   ></v-text-field>
                             </validation-provider>
 
@@ -223,7 +223,7 @@
                           v-model="form.correoUsuario"
                           :error-messages="errors"
                           label="correo"
-                          required
+
                         ></v-text-field>
                       </validation-provider>
                   </v-col>
@@ -239,7 +239,7 @@
                           v-model="form.correoUsuarioV"
                           :error-messages="errors"
                           label="Confirmación correo"
-                          required
+
                         ></v-text-field>
                       </validation-provider>
                   </v-col>
@@ -284,7 +284,7 @@
                             :counter="10"
                             :error-messages="errors"
                             label="Nombre Usuario"
-                            required
+
                           ></v-text-field>
                       </validation-provider>
                   </v-col>
@@ -308,7 +308,7 @@
                             :type="show1 ? 'text' : 'password'"
                             :error-messages="errors"
                             label="Contraseña"
-                            required
+
                             @click:append="show1 = !show1"
                           ></v-text-field>
                     </validation-provider>
@@ -328,7 +328,7 @@
                           :type="show2 ? 'text' : 'password'"
                           :error-messages="errors"
                           label="Confirmar Contraseña"
-                          required
+
                           @click:append="show2 = !show2"
                         ></v-text-field>
 

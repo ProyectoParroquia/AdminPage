@@ -9,7 +9,7 @@
             <h1 class="white--text mb-2 text-center " style="font-size:45px; font-weight: 900; text-shadow: 3px 2px #000000">Sacris</h1>
             <div class="white--text mb-2  text-center" style=" font-size:25px; font-weight: 900; text-shadow: 3px 2px #000000">Gestor de servicios eucarísticos </div>
             <div class="subheading mb-3 text-center" style="font-weight: 500; text-shadow: 1px 1px #000000">Evita el papeleo y las filas largas, haz tus inscripciones y solicitudes aquí.</div>
-            <v-btn color="primary" class=" mt-5" dark large to="">
+            <v-btn color="primary" class=" mt-5" dark large :to="{ name: 'login'}">
               Iniciar Sesión
             </v-btn>
           </v-layout>

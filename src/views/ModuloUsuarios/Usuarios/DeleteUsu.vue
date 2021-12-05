@@ -58,7 +58,7 @@ methods:{
       }
 
 
-      axios.put("http://localhost:3000/api/usuarios/"+cambioEstado+"/"+this.editedItem.idUsuario, this.editedItem,{headers: { token:this.tokenLogin } })
+      axios.put("https://sacris.herokuapp.com/api/usuarios/"+cambioEstado+"/"+this.editedItem.idUsuario, this.editedItem/* { headers: { token: localStorage.getItem('token') } } */)
               .then( res =>{
                 console.log(res)
                  if(res.status === 201){

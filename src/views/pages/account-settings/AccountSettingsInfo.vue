@@ -99,7 +99,7 @@
       </v-card-text>
     </v-form>
      <!-- ALERTAS -->
-             <v-snackbar
+            <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
                 :color="snackbarData.color"
@@ -111,12 +111,17 @@
 
                 <template v-slot:action="{ attrs }">
                   <v-btn
-                    color="blue"
+                    color="white"
                     text
+                    icon
+
                     v-bind="attrs"
                     @click="snackbarData.snackbar = false"
                   >
-                    Close
+
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
                   </v-btn>
                 </template>
               </v-snackbar>
@@ -151,7 +156,7 @@ export default {
   },
   methods: {
       submit(){
-         axios.put("http://localhost:3000/api/usuarios/actualizar/"+this.optionsLocal.idUsuario, this.optionsLocal,{ headers: { token:this.tokenLogin } })
+         axios.put("https://sacris.herokuapp.com/api/usuarios/actualizar/"+this.optionsLocal.idUsuario, this.optionsLocal,{ headers: { token:this.tokenLogin } })
           .then(res =>{
             if(res.status === 201){
               this.Snackbar(res.data.success, "green")

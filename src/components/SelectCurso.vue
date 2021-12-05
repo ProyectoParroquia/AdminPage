@@ -1,6 +1,6 @@
 <template>
 
-<select class="form-control" name="idCursoFK" id="idCursoFK">
+<select style="width:300px;"  name="idCursoFK" id="idCursoFK">
     <option v-for="Curso in ListaCurso" :key="Curso.idCurso"
      :value="Curso.idCurso">{{Curso.nombreCurso}}
      </option>
@@ -21,7 +21,7 @@ export default {
 
     },
     mounted:function(){
-        let direccion = "http://localhost:3000/api/Curso";
+        let direccion = "https://sacris.herokuapp.com/api/Curso";
                 axios.get(direccion).then( data =>{
                 this.ListaCurso = data.data;
                   });

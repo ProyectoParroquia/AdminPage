@@ -119,7 +119,7 @@ export default {
     submit () {
         this.$refs.observer.validate()
 
-        let url="http://localhost:3000/api/credenciales/solicitudContra"
+        let url="https://sacris.herokuapp.com/api/credenciales/solicitudContra"
         axios.post(url,{correoSoli:this.correoSoli}).then(res=>{
           console.log(res)
         }).catch(err=>{

@@ -1,10 +1,12 @@
 <template>
 
-<select  style="width:300px;" class="form-control" name="idCursoFK" id="idCursoFK">
-    <option v-for="Curso in ListaCurso" :key="Curso.idCurso"
-     :value="Curso.idCurso">{{Curso.nombreCurso}}
-     </option>
-</select>
+<v-text-field
+:value="ListaidInscripcion"
+name ="idInscripcionFK"
+id="ListaidInscripcion"
+readonly
+>
+</v-text-field>
 
 </template>
 
@@ -13,17 +15,17 @@ import axios from 'axios';
 
 
 export default {
-    name:"SelectCursoSa",
+    name:"SelectIns",
    data(){
         return {
-            ListaCurso:null,
+            ListaidInscripcion:null,
         }
 
     },
     mounted:function(){
-        let direccion = "https://sacris.herokuapp.com/api/Curso/Sacramental";
+        let direccion = "http://localhost:5000/api/Inscripcion/max";
                 axios.get(direccion).then( data =>{
-                this.ListaCurso = data.data;
+                this.ListaidInscripcion = data.data;
                   });
     }
 
@@ -31,6 +33,7 @@ export default {
 }
 
 </script>
+
 <style scoped>
 select{
 	background-color: #f1f1f100;

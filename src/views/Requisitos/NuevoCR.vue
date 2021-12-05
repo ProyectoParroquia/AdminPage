@@ -3,10 +3,85 @@
 
      <v-form enctype="multipart/form-data">
 
-    <v-container >
+        <v-card style="padding:30px;">
+           <h2 class="text-center">Elija el curso al cual definirá sus requisitos</h2>
 
-      <v-row>
-          <v-snackbar
+
+
+           <v-divider></v-divider>
+           <v-row>
+      <v-col
+      class="mt-5"
+        cols="12"
+        md="2"
+      >
+        <label for="curso">Curso:</label>
+      </v-col>
+
+      <v-col
+        cols="12"
+        md="9"
+      >
+        <!-- <v-text-field
+          id="firstnameHorizontalIcons"
+          v-model="firstname"
+          :prepend-inner-icon="icons.mdiAccountOutline"
+          outlined
+          dense
+          placeholder="First Name"
+          hide-details
+        ></v-text-field> -->
+        <SelectCurso id="curso" />
+      </v-col>
+       <v-col
+      class="mt-5"
+        cols="12"
+        md="2"
+      >
+        <label for="requisito">Requisitos:</label>
+      </v-col>
+      <v-col
+        cols="12"
+        md="9"
+      >
+
+        <v-autocomplete
+          clearable
+          v-model="form.idRequisitos"
+          :items="form.items"
+          label="Requisitos"
+          data-vv-name="form.idRequisitos"
+          required
+          id="requisito"
+        >
+        <template v-slot:no-data>
+                            <v-list-item>
+                              <v-list-item-title>
+                                No se encontraron
+                                <strong>datos</strong>
+                              </v-list-item-title>
+                            </v-list-item>
+                          </template>
+        </v-autocomplete>
+      </v-col>
+       <v-col
+        offset-md="2"
+        cols="12"
+      >
+        <v-btn  class="ma-2"
+         color="primary"
+         dark
+         v-on:click="guardar()" >
+        Guardar
+        </v-btn>
+      </v-col>
+           </v-row>
+             <!-- <SelectCurso  /> -->
+
+
+        </v-card>
+
+        <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
                 :color="snackbarData.color"
@@ -26,39 +101,15 @@
                     @click="snackbarData.snackbar = false"
                   >
 
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
                   </v-btn>
                 </template>
               </v-snackbar>
-        <v-col
-          cols="12"
-          sm="6"
-        >
-         <v-container>
-           <label>Elija el curso al cual definirá sus requisios</label>
-           <br>
-             <SelectCurso  />
-         </v-container>
-          <v-autocomplete
-          clearable
-          v-model="form.idRequisitos"
-          :items="form.items"
-          :error-messages="errors"
-          label="Requisitos"
-          data-vv-name="form.idRequisitos"
-          required
-          id="idRequisitosFK"
-        >
-        </v-autocomplete>
-         <v-btn  class="ma-2"
-         color="purple"
-         text
-         v-on:click="guardar()" >
-        Guardar
-        </v-btn>
-        </v-col>
-      </v-row>
-    </v-container>
+
  </v-form>
+
 </template>
 <script>
 import SelectCurso from '@/components/SelectCurso.vue';
@@ -116,7 +167,7 @@ export default {
                 break;
             }
 
-            axios.post("http://localhost:3000/api/CursoRequisito",this.form)
+            axios.post("https://sacris.herokuapp.com/api/CursoRequisito",this.form)
          .then(res =>{
                     if(res.status === 201){
               console.log(res)

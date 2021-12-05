@@ -1,15 +1,6 @@
 <template>
     <v-container grid-List-md>
- <v-btn
-       color="primary"
-      text
-    v-on:click="consultarInactivos()"><span  text color="primary" v-if="BotonConsultaTexto=='Inactivo'">
-               Inactivos
-              </span>
-              <span text  color="primary" v-else>
-               Activos
-              </span>
-              </v-btn>
+
       <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
@@ -41,19 +32,6 @@
           max-width="800px"
           max-height="1000px"
         >
-             <template v-slot:activator="{ on, attrs }">
-              <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-              @click="abrir()"
-              text
-            >
-    Nuevo Anuncio
-            </v-btn>
-
-        </template>
          <v-card max-width="800px">
            <v-card-title>
               Nuevo Anuncio
@@ -89,158 +67,17 @@
       max-height="1000px"
 
     >
-
-    <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          v-bind="attrs"
-          v-on="on"
-           color="primary"
-          @click="editItem(anuncio)"
-          dark
-          fab
-          small
-        >
-            <v-icon
-              >{{icons.mdiPencil,}}
-             </v-icon>
-        </v-btn>
-      </template>
       <v-card max-width="800px">
          <v-card-title>
               {{formTitle}}&nbsp;{{editedItem.tituloAnuncio}}
         </v-card-title>
 
-       <validation-observer
-    ref="observer"
-     v-slot="{ invalid }"
-  >
-
-  <v-form  @submit.prevent="save"  enctype="multipart/form-data">
-    <v-container>
-      <v-row>
- <v-stepper v-model="e1"  >
-    <v-stepper-header  max-width="900px">
-      <v-stepper-step
-        :complete="e1 > 1"
-        step="1"
-      >
-        Definir datos 1
-      </v-stepper-step>
-
-      <v-divider></v-divider>
-
-    </v-stepper-header>
-
-    <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card  height="350px" width="900px">
-           <v-row>
-              <v-col
-          cols="6"
-          sm="6"
-        >  <validation-provider
-        v-slot="{ errors }"
-        name="nombreCurso"
-        rules="required|max:25|alpha_spaces|min:3"
-      >
-          <v-text-field
-             name="tituloAnuncio"
-             id="tituloAnuncio"
-             v-model="editedItem.tituloAnuncio"
-             :counter="25"
-          :error-messages="errors"
-          required
-            label="Nombre anuncio"
-          ></v-text-field>
-          </validation-provider>
-
-         <validation-provider
-        v-slot="{ errors }"
-        name="mensajeAnuncio"
-        rules="required|max:250|alpha_spaces|min:10"
-      >
-<br>
-<br>
-          <v-textarea
-             name="mensajeAnuncio"
-             type="text"
-             id="mensajeAnuncio"
-             v-model="editedItem.mensajeAnuncio"
-            label="Mensaje"
-             :counter="250"
-          :error-messages="errors"
-          required
-          height="30px"
-          ></v-textarea>
-             </validation-provider>
-        <br>
-        <br>
-
-          <input
-         id="file"
-          type="file"
-           @change="selectedHandler"
-           >
-        <figure>
-          <img width="100" :src="imagen" height="100" alt="foto anuncio">
-        </figure>
-    </v-col>
-
-        <v-col
-          cols="12"
-          sm="6"
-        >Fecha final
-             <datepicker
-          name="fechaFinal"
-          id="fechaFinal"
-          label="Fecha final "
-          v-model="editedItem.fechaFinal"
-          :format="DatePickerFormat"
-          class="fechas"
-
-          ></datepicker>
-
-        </v-col>
-           </v-row>
-        </v-card>
-           <v-btn
-          color="primary"
-           type="submit"
-           text
-           :disabled="invalid"
-          @click="save()"
-        >
-          Guardar
-        </v-btn>
-      </v-stepper-content>
-    </v-stepper-items>
-  </v-stepper>
-      </v-row>
-    </v-container>
-  </v-form>
-  </validation-observer>
       </v-card>
        </v-dialog>
        &nbsp;
         <v-dialog
           max-width="500px"
         >
-         <template v-slot:activator="{ on, attrs }">
-              <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-              @click="deleteItem(anuncio)"
-              small
-              fab
-            >
-              <v-icon
-              >{{icons.mdiContrast}}
-             </v-icon>
-            </v-btn>
-
-        </template>
           <v-card class="pt-4">
             <v-card-text class="text-h4 text-center font-weight-black"  >
               Cambiar estado
@@ -305,11 +142,10 @@ import {
    mdiCloseCircleOutline
 } from '@mdi/js'
 import axios from 'axios';
-import Datepicker from 'vuejs-datepicker';
 import Nuevo from '@/components/FormularioAnuncio.vue';
 /* import editUsu from './editUsu.vue' */
 import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
-import {ValidationProvider, ValidationObserver, extend, setInteractionMode } from 'vee-validate'
+import {extend, setInteractionMode } from 'vee-validate'
 setInteractionMode('eager')
     extend('confirmed', {
     ...confirmed,
@@ -364,10 +200,7 @@ setInteractionMode('eager')
  export default {
 
     components:{
-     ValidationProvider,
-       ValidationObserver,
-  Nuevo,
-  Datepicker
+  Nuevo
    /*  editUsu */
   },
 

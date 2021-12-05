@@ -185,7 +185,7 @@ export default {
       }
   },
   created:function(){
-        let direccion = "http://localhost:3000/api/usuarios/perfil";
+        let direccion = "https://sacris.herokuapp.com/api/usuarios/perfil";
           axios.get(direccion, { headers: { token:this.tokenLogin } }).then( data =>{
             if (data.status===201){
               this.DataLogin = data.data;

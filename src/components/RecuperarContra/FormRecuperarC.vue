@@ -130,7 +130,7 @@ export default {
   methods:{
     submit () {
         this.$refs.observer.validate()
-        let url="http://localhost:3000/api/credenciales/restablecercontra"
+        let url="https://sacris.herokuapp.com/api/credenciales/restablecercontra"
         axios.put(url, {nuevaContraseña:this.password},{headers:{tokenpass:this.passToken}}).then(res=>{
           console.log(res)
         }).catch(error=>{

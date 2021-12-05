@@ -115,7 +115,7 @@ export default {
         if(this.datoTD.idTipoCurso){
           console.log("editando")
           this.$refs.observer.validate()
-          axios.put("http://localhost:3000/api/TipoCurso/"+this.datoTD.idTipoCurso, this.datoTD/* ,{ headers: { token:this.tokenLogin } } */)
+          axios.put("https://sacris.herokuapp.com/api/TipoCurso/"+this.datoTD.idTipoCurso, this.datoTD,{ headers: { token: localStorage.getItem('token') }  })
           .then(res =>{
             if(res.status === 201){
               console.log(res)
@@ -131,7 +131,7 @@ export default {
           //si no, agregaremos un nuevo Tipo Doc
         }else{
           console.log("creando")
-          axios.post("http://localhost:3000/api/TipoCurso/",this.datoTD/* , {headers: { token:this.tokenLogin } }*/ )
+          axios.post("https://sacris.herokuapp.com/api/TipoCurso/",this.datoTD,{ headers: { token: localStorage.getItem('token'), }  } )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){

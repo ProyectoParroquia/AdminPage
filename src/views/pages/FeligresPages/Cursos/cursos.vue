@@ -1,15 +1,6 @@
 <template>
     <v-container grid-List-md>
- <v-btn
-       color="primary"
-      text
-    v-on:click="consultarInactivos()"><span  text color="primary" v-if="BotonConsultaTexto=='Inactivo'">
-               Inactivos
-              </span>
-              <span text  color="primary" v-else>
-               Activos
-              </span>
-              </v-btn>
+
       <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
@@ -36,193 +27,61 @@
                   </v-btn>
                 </template>
               </v-snackbar>
+        <v-dialog
+      transition="dialog-top-transition"
+      max-width="1000px"
+        max-height="1800px"
+    >
+      <v-card max-width="900px">
+        <v-card-title>
+          <span class="text-h5">Nueva Inscripcion</span>
+        </v-card-title>
+        <v-card-text>
+         <NuevoInsci :Snackbar="Snackbar"/>
+        </v-card-text>
+
+      </v-card>
+       </v-dialog>
       <v-dialog
           v-model="dialogNuevo"
           max-width="800px"
           max-height="1000px"
         >
-             <template v-slot:activator="{ on, attrs }">
-              <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-              @click="abrir()"
-              text
-            >
-    Nuevo Anuncio
-            </v-btn>
-
-        </template>
          <v-card max-width="800px">
            <v-card-title>
-              Nuevo Anuncio
+              {{formTitle}}&nbsp;
                </v-card-title>
         <v-card-text>
-       <nuevo :key="keyNuevoUsu"  :Snackbar="Snackbar" :initialize="initialize" :closeNuevo="closeNuevo" :UsuarioLogueado="UsuarioLogueado"/>
+       <nuevo :key="keyNuevoUsu" :closeNuevo="closeNuevo" :renderizar="initialize" :Snackbar="Snackbar"/>
         </v-card-text>
       </v-card>
 </v-dialog>
    <v-row>
         <v-col
-        cols="4"
-           v-for="anuncio in listaAnuncio"
-          :key="anuncio.idAnuncio"
+           v-for="curso in listaCurso"
+          :key="curso.idCurso"
            :items="data"
         >
-          <v-card  max-width="500">
+          <v-card max-width="270" >
             <v-img
              class="blue--text align-end"
-              :src="'https://sacris.herokuapp.com/'+anuncio.imagenAnuncio"
+              :src="'https://sacris.herokuapp.com/'+curso.imagenCurso"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
-              <h1 color="white" style="color:#FFFFFF; font-size:30px;"  v-text="anuncio.tituloAnuncio"></h1>
+              <h1 color="white" style="color:#FFFFFF; font-size:30px;"  v-text="curso.nombreCurso"></h1>
             </v-img>
             <br>
+            <v-card-text style="font-size:16px; line-height:0.5em;" >
+                         <p>{{curso.fechaInicialCurso}}</p>
+                         <p>{{curso.fechaFinalCurso}}</p>
+                         <p>{{curso.costoCurso}}</p>
+                         <p>{{curso.TipoCurso.nombreTipoCurso}}</p>
+                         <p>{{curso.estadoCurso}}</p>
+                         </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
        <v-dialog
-        v-model="dialogEditar"
-      transition="dialog-top-transition"
-      max-width="800px"
-      max-height="1000px"
-
-    >
-
-    <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          v-bind="attrs"
-          v-on="on"
-           color="primary"
-          @click="editItem(anuncio)"
-          dark
-          fab
-          small
-        >
-            <v-icon
-              >{{icons.mdiPencil,}}
-             </v-icon>
-        </v-btn>
-      </template>
-      <v-card max-width="800px">
-         <v-card-title>
-              {{formTitle}}&nbsp;{{editedItem.tituloAnuncio}}
-        </v-card-title>
-
-       <validation-observer
-    ref="observer"
-     v-slot="{ invalid }"
-  >
-
-  <v-form  @submit.prevent="save"  enctype="multipart/form-data">
-    <v-container>
-      <v-row>
- <v-stepper v-model="e1"  >
-    <v-stepper-header  max-width="900px">
-      <v-stepper-step
-        :complete="e1 > 1"
-        step="1"
-      >
-        Definir datos 1
-      </v-stepper-step>
-
-      <v-divider></v-divider>
-
-    </v-stepper-header>
-
-    <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card  height="350px" width="900px">
-           <v-row>
-              <v-col
-          cols="6"
-          sm="6"
-        >  <validation-provider
-        v-slot="{ errors }"
-        name="nombreCurso"
-        rules="required|max:25|alpha_spaces|min:3"
-      >
-          <v-text-field
-             name="tituloAnuncio"
-             id="tituloAnuncio"
-             v-model="editedItem.tituloAnuncio"
-             :counter="25"
-          :error-messages="errors"
-          required
-            label="Nombre anuncio"
-          ></v-text-field>
-          </validation-provider>
-
-         <validation-provider
-        v-slot="{ errors }"
-        name="mensajeAnuncio"
-        rules="required|max:250|alpha_spaces|min:10"
-      >
-<br>
-<br>
-          <v-textarea
-             name="mensajeAnuncio"
-             type="text"
-             id="mensajeAnuncio"
-             v-model="editedItem.mensajeAnuncio"
-            label="Mensaje"
-             :counter="250"
-          :error-messages="errors"
-          required
-          height="30px"
-          ></v-textarea>
-             </validation-provider>
-        <br>
-        <br>
-
-          <input
-         id="file"
-          type="file"
-           @change="selectedHandler"
-           >
-        <figure>
-          <img width="100" :src="imagen" height="100" alt="foto anuncio">
-        </figure>
-    </v-col>
-
-        <v-col
-          cols="12"
-          sm="6"
-        >Fecha final
-             <datepicker
-          name="fechaFinal"
-          id="fechaFinal"
-          label="Fecha final "
-          v-model="editedItem.fechaFinal"
-          :format="DatePickerFormat"
-          class="fechas"
-
-          ></datepicker>
-
-        </v-col>
-           </v-row>
-        </v-card>
-           <v-btn
-          color="primary"
-           type="submit"
-           text
-           :disabled="invalid"
-          @click="save()"
-        >
-          Guardar
-        </v-btn>
-      </v-stepper-content>
-    </v-stepper-items>
-  </v-stepper>
-      </v-row>
-    </v-container>
-  </v-form>
-  </validation-observer>
-      </v-card>
-       </v-dialog>
-       &nbsp;
-        <v-dialog
           max-width="500px"
         >
          <template v-slot:activator="{ on, attrs }">
@@ -231,7 +90,7 @@
               dark
               v-bind="attrs"
               v-on="on"
-              @click="deleteItem(anuncio)"
+              @click="deleteItem(curso)"
               small
               fab
             >
@@ -247,7 +106,7 @@
 
             </v-card-text>
             <v-card-text class="text-h5 text-center" >
-                ¿Cambiar el estado de {{editedItem.tituloAnuncio}} ?
+                ¿Cambiar el estado de {{editedItem.nombreCurso}} ?
               </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -265,9 +124,7 @@
         </v-dialog>
          &nbsp;
        <v-dialog
-       color="white"
-         max-width="400px"
-          max-height="800px"
+        max-width="570px"
       >
       <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -279,15 +136,36 @@
            color="primary"
       >
          <v-icon
-              >{{icons.mdiEyePlus,}}
+              >{{icons.mdiEyePlus}}
              </v-icon>
       </v-btn>
        </template>
-       <v-card color="white">
+       <v-card style="padding:10px" >
+         <h2 class="text-center " >
+           Más información aquí
+         </h2>
+
+
+         <v-divider class="mb-4"></v-divider>
         <v-card-text>
-         <p> {{anuncio.mensajeAnuncio}}</p>
-         <p> {{anuncio.fechaInicio}}</p>
-        <p>  {{anuncio.fechaFinal}}</p>
+        <v-row>
+          <v-col class="col-8">
+            <v-img
+              class="blue--text align-end"
+              :src="'https://sacris.herokuapp.com/'+curso.imagenCurso"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+            >
+              <h1 color="white" style="color:#FFFFFF; font-size:30px;"  v-text="curso.nombreCurso"></h1>
+            </v-img>
+          </v-col>
+          <v-col class="col-4">
+            <p style="font-size:17px;"><strong>Descripcion:</strong>  {{curso.descriCurso}}</p>
+            <p style="font-size:17px;"><strong>Costo:</strong>  {{curso.costoCurso}}</p>
+            <p style="font-size:17px;"><strong>Estado:</strong> {{curso.estadoCurso}}</p>
+          </v-col>
+        </v-row>
+
         </v-card-text>
        </v-card>
        </v-dialog>
@@ -305,55 +183,55 @@ import {
    mdiCloseCircleOutline
 } from '@mdi/js'
 import axios from 'axios';
-import Datepicker from 'vuejs-datepicker';
-import Nuevo from '@/components/FormularioAnuncio.vue';
+import NuevoInsci from '@/components/curso/NuevoInsci.vue';
+import Nuevo from '@/components/curso/Nuevo';
 /* import editUsu from './editUsu.vue' */
 import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
-import {ValidationProvider, ValidationObserver, extend, setInteractionMode } from 'vee-validate'
+import { extend, setInteractionMode } from 'vee-validate'
 setInteractionMode('eager')
     extend('confirmed', {
     ...confirmed,
-    message: 'El campo {field} no coincide ',
+    message: 'El campo {_field_} no coincide ',
   })
 
    extend('alpha_dash', {
     ...alpha_dash,
-    message: 'El campo {field} puede contener caracteres alfanuméricos, así como guiones y guiones bajos.',
+    message: 'El campo {_field_} puede contener caracteres alfanuméricos, así como guiones y guiones bajos.',
   })
 
    extend('numeric', {
     ...numeric,
-    message: 'El campo {field} solo debe contener numeros',
+    message: 'El campo {_field_} solo debe contener numeros',
   })
 
   extend('alpha_spaces', {
     ...alpha_spaces,
-    message: 'El campo {field} solo debe tener caracteres alfabeticos y espacios',
+    message: 'El campo {_field_} solo debe tener caracteres alfabeticos y espacios',
   })
 
   extend('digits', {
     ...digits,
-    message: 'El campo {field} debe tener {length} digitos. ({value})',
+    message: 'El campo {_field_} debe tener {length} digitos. ({value})',
   })
 
   extend('required', {
     ...required,
-    message: 'El campo {field} no puede estar vacio',
+    message: 'El campo {_field_} no puede estar vacio',
   })
 
   extend('max', {
     ...max,
-    message: 'El campo {field} no puede tener más de {length} caracteres',
+    message: 'El campo {_field_} no puede tener más de {length} caracteres',
   })
 
   extend('min', {
     ...min,
-    message: 'El campo {field} debe tener minimo {length} caracteres',
+    message: 'El campo {_field_} debe tener minimo {length} caracteres',
   })
 
   extend('regex', {
     ...regex,
-    message: 'el campo {field} {value} no coincide {regex}',
+    message: 'el campo {_field_} {value} no coincide {regex}',
   })
 
   extend('email', {
@@ -364,15 +242,22 @@ setInteractionMode('eager')
  export default {
 
     components:{
-     ValidationProvider,
-       ValidationObserver,
+
   Nuevo,
-  Datepicker
+  NuevoInsci,
    /*  editUsu */
   },
 
   data: () => ({
  e1: 1,
+ errors:'',
+ //! Fecha
+            fechaMin:'',
+
+           activePicker: null,
+           menu: false,
+           date: null,
+
   snackbarData:{
               snackbar: false,
               text: '',
@@ -386,26 +271,25 @@ setInteractionMode('eager')
     valorBoton:true,
     BotonConsultaTexto:"Inactivo",
     dialog: false,
-    dialogEditar:false,
     dialogVermas: false,
     dialogDelete: false,
     dialogNuevo:false,
-  listaAnuncio: null,
+  listaCurso: null,
     data: [],
     editedIndex: -1,
     editedItem: {},
     itemSelect: {},
     itemSelectName: [],
-    UsuarioLogueado:{
-              idUsu:''
-              },
     defaultItem: {
-    idAnuncio:0,
-    estadoAnuncio: "",
-    fechaFinal: "",
+    idCurso:0,
+    costoCurso:0,
+    estadoCurso: "",
+    fechaInicialCurso: "",
+    idTipoCurso: null,
+    fechaFinalCurso: "",
     file: "",
-    tituloAnucio: "",
-    mensajeAnuncio:""
+    nombreCurso: "",
+    descriCurso:""
     },
      DatePickerFormat:'dd-MM-yy',
 
@@ -416,7 +300,7 @@ setInteractionMode('eager')
     },
     formTitle() {
 
-      return this.editedIndex === -1 ? 'Nuevo Anuncio' : 'Editar el Auncio'
+      return this.editedIndex === -1 ? 'Nuevo Curso' : 'Editar el Curso'
     },
   },
 
@@ -433,8 +317,7 @@ setInteractionMode('eager')
     dialogNuevo(val)
     {
       val|| this.closeNuevo()
-      },
-
+      }
   },
 
   created() {
@@ -442,6 +325,9 @@ setInteractionMode('eager')
   },
 
   methods: {
+    DeleteDate(){
+        this.editedItem.fechaFinalCurso=''
+    },
     selectedHandler(e){
           let file = e.target.files[0];
           console.log(file);
@@ -466,29 +352,33 @@ setInteractionMode('eager')
       this.keyNuevoUsu +=1
     },
     initialize() {
+      let direcciondoc = "https://sacris.herokuapp.com/api/TipoCurso/";
+                axios.get(direcciondoc)
+                .then( res =>{
+                  res.data.forEach(element => {
+                    this.itemSelectName.push(element.nombreTipoCurso)
+                  });
+                this.itemSelect = res.data
+                  });
 
-let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
-        axios.get(ruta)
-        .then(res=>{
-          this.UsuarioLogueado=res.data
-        })
-        let direccion = "https://sacris.herokuapp.com/api/Anuncio";
+
+        let direccion = "https://sacris.herokuapp.com/api/Curso/recreativo";
         axios.get(direccion)
                     .then( res =>{
-                this.listaAnuncio= res.data;
+                this.listaCurso= res.data;
                   });
     },
 
-    editItem(anuncio) {
-      this.editedItem = anuncio
-      console.log(anuncio)
+    editItem(curso) {
+      this.editedItem = curso
+      console.log(curso)
       console.log('BUENAS TARDES')
       this.dialog = true
       this.editedIndex= 1
     },
 
-    deleteItem(anuncio) {
-      this.editedItem = Object.assign({}, anuncio)
+    deleteItem(curso) {
+      this.editedItem = Object.assign({}, curso)
       this.dialogDelete = true
       this.editedIndex= 1
     },
@@ -501,14 +391,13 @@ let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
         cambioEstado = "activar"
       }
 
-      axios.put("https://sacris.herokuapp.com/api/Anuncio/"+cambioEstado+"/"+this.editedItem.idAnuncio,{ headers: { token: localStorage.getItem('token') } })
+      axios.put("https://sacris.herokuapp.com/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso,{ headers: { token: localStorage.getItem('token') }  })
            .then(res =>{
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
                     if(res.status === 201){
               console.log(res)
               this.Snackbar(res.data.success, "green")
-              //llamamos a este metodo para reenderizar el componente y que muestre los cambios
               this.initialize()
             }else{
               this.makeToast("Error",res.data.mensage,"danger");
@@ -520,18 +409,18 @@ let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
     consultarInactivos(){
           let varestado
               if(this.valorBoton){
-                varestado ="/inactivos"
-                this.BotonConsultaTexto=  "Activo"
+                varestado ="inactivos/"
+                this.BotonConsultaTexto=  "Activos"
 
               }else{
-                varestado = "/" ;
+                varestado = "" ;
                 this.BotonConsultaTexto= "Inactivo"
               }
 
-                let direccion = "https://sacris.herokuapp.com/api/Anuncio"+varestado;
+                let direccion = "https://sacris.herokuapp.com/api/Curso/"+varestado+"recreativo/";
                 axios.get(direccion).then( res =>{
-                   this.listaAnuncio= res.data;
-                    console.log(this.listaAnuncio)
+                   this.listaCurso= res.data;
+                    console.log(this.data)
                 });
                 this.valorBoton= !this.valorBoton
 
@@ -544,7 +433,6 @@ let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
     },
     closeNuevo(){
       this.dialogNuevo = false
-      this.dialogEditar = false
     },
 
     closeDelete() {
@@ -558,21 +446,19 @@ let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
     save() {
 
         /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("https://sacris.herokuapp.com/api/Anuncio/actualizar/"+this.editedItem.idAnuncio, this.editedItem,{ headers: { token: localStorage.getItem('token') } })
+          axios.put("https://sacris.herokuapp.com/api/Curso/"+this.editedItem.idCurso, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
           .then(data =>{
-                   if(data.status === 200){
+                   if(data.status === 201){
               console.log(data)
               this.Snackbar(data.data.success, "green")
-
               //llamamos a este metodo para reenderizar el componente y que muestre los cambios
               this.initialize()
+
             }else{
-              this.Snackbar("Error",data.data.mensage,"danger");
+              this.makeToast("Error",data.data.mensage,"danger");
               console.log("Error")
             }
           })
-          this.closeNuevo()
-
     },
 
     },

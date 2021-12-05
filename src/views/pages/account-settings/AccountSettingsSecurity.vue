@@ -154,12 +154,17 @@
 
                 <template v-slot:action="{ attrs }">
                   <v-btn
-                    color="blue"
+                    color="white"
                     text
+                    icon
+
                     v-bind="attrs"
                     @click="snackbarData.snackbar = false"
                   >
-                    Close
+
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
                   </v-btn>
                 </template>
               </v-snackbar>
@@ -170,7 +175,7 @@
 // eslint-disable-next-line object-curly-newline
 import { required, min, regex, alpha_dash, confirmed} from 'vee-validate/dist/rules'
  import { extend, ValidationObserver, ValidationProvider, setInteractionMode} from 'vee-validate'
-import { mdiKeyOutline, mdiLockOpenOutline, mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js'
+import { mdiKeyOutline, mdiLockOpenOutline, mdiEyeOffOutline, mdiEyeOutline,mdiCloseCircleOutline } from '@mdi/js'
 import axios from 'axios'
 setInteractionMode('eager')
 extend('required', {
@@ -232,7 +237,7 @@ export default {
         nuevaContraseña:this.newPassword
       }
 
-      let direccion= "http://localhost:3000/api/credenciales/cambioContra"
+      let direccion= "https://sacris.herokuapp.com/api/credenciales/cambioContra"
        axios.put(direccion, body).then(res=>{
           console.log(res)
           if(res.status === 201){
@@ -260,7 +265,8 @@ export default {
         mdiKeyOutline,
         mdiLockOpenOutline,
         mdiEyeOffOutline,
-        mdiEyeOutline
+        mdiEyeOutline,
+        mdiCloseCircleOutline
       },
     }
   },

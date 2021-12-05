@@ -54,30 +54,8 @@
       ></nav-menu-link>
 
 
-      <nav-menu-section-title title="Interfaz de Admin"></nav-menu-section-title>
+      <nav-menu-section-title title="Consulta y registrate aqui"></nav-menu-section-title>
 
-      <nav-menu-group
-        title="Usuarios"
-        :icon="icons.mdiAccountOutline"
-
-      >
-         <nav-menu-link
-         class="ml-8"
-        title="Usuarios"
-        :to="{ name: 'usuarios' }"
-        :icon="icons.mdiAccountOutline"
-      ></nav-menu-link>
-
-        <nav-menu-link
-          class="ml-8"
-          title="Otros"
-          :icon="icons.mdiBookCross"
-          :to="{ name: 'Otros' }"
-
-        ></nav-menu-link>
-
-
-      </nav-menu-group>
 
       <nav-menu-group
         title="Cursos"
@@ -87,59 +65,24 @@
           class="ml-12"
           title="Sacramentales"
           :icon="icons.mdiBookCross"
-          :to="{ name: 'cursos' }"
+          :to="{ name: 'SacramentalF' }"
 
         ></nav-menu-link>
         <nav-menu-link
           class="ml-12"
           title="Recreativos"
           :icon="icons.mdiBookOpenPageVariant"
-          :to="{ name: 'cards' }"
-        ></nav-menu-link>
-        <nav-menu-link
-          class="ml-12"
-          title="Tipo Curso"
-          :icon="icons.mdiFountainPen"
-          :to="{ name: 'tipoCurso' }"
-        ></nav-menu-link>
-
-      </nav-menu-group>
-<!--
-      <nav-menu-group
-        title="Requisitos"
-
-      >
-
-      </nav-menu-group>
-      -->
-      <nav-menu-group
-        title="Cursos"
-        :icon="icons.mdiFilePdfBox"
-      >
-
-        <nav-menu-link
-          title="Definir"
-          :icon="icons.mdiClipboardEditOutline"
-          :to="{ name: 'NuevoCR' }"
-
-        ></nav-menu-link>
-        <nav-menu-link
-          title="Consultar"
-          :icon="icons.mdiBookArrowDown"
-          :to="{ name: 'RequisitoIns' }"
+          :to="{ name: 'cursosF' }"
         ></nav-menu-link>
 
       </nav-menu-group>
 
 
-     <nav-menu-link
-          title="Inscripciones"
-          :icon="icons.mdiBookSearch"
-          :to="{ name: 'inscripcion' }"
-        ></nav-menu-link>
+
+
          <nav-menu-link
         title="Anuncios"
-        :to="{ name: 'anuncios' }"
+        :to="{ name: 'anunciosF' }"
         :icon="icons.mdiFormSelect"
       ></nav-menu-link>
 
@@ -170,37 +113,20 @@ import {
 import NavMenuGroup from './components/NavMenuGroup.vue'
 import NavMenuLink from './components/NavMenuLink.vue'
 import NavMenuSectionTitle from './components/NavMenuSectionTitle.vue'
-/* import axios from 'axios' */
+
 export default {
   components: {
     NavMenuGroup,
     NavMenuLink,
     NavMenuSectionTitle
   },
-  /* data:()=>({
-    UsuarioLogueado:{
-              idUsu:'',
-              tipoUsuario:''
-              },
-  }), */
   props: {
     isDrawerOpen: {
       type: Boolean,
       default: null,
     },
   },
- /*  created(){
-    this.initialize()
-  },
-  methods:{
-      initialize(){
-let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
-        axios.get(ruta)
-        .then(res=>{
-          this.UsuarioLogueado=res.data
-        })
-        }
-  }, */
+
   setup() {
     return {
       icons: {

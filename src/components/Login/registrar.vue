@@ -110,15 +110,14 @@
                                 v-model="form.fechaNacimientoUsuario"
                                 :active-picker.sync="activePicker"
                                 :error-messages="errors"
-
-                                max="2010-12-31"
-                                min="1930-01-01"
+                                :min="fechaMin"
+                                :max="fechaMax"
                                 @change="saveDate"
                               ></v-date-picker>
                           </v-dialog>
                         </validation-provider>
                       </v-col>
-                      <v-col>
+                      <v-col cols="12">
                          <validation-provider
                               v-slot="{ errors }"
                               name="NumeroContacto"
@@ -342,7 +341,7 @@
                        <v-col>
                      <validation-provider
                         v-slot="{ errors }"
-                        name="contraseña"
+                        name="politicas"
                         rules="required"
                       >
                    <v-checkbox
@@ -519,11 +518,15 @@ export default {
     },
     data:function(){
         return {
+          required,
           //?Checkbox
           politicas:false,
           //?dialog terminos
           TerminosDialog:false,
           //! Fecha
+            fechaMin:'',
+            fechaMax:'',
+
            activePicker: null,
            menu: false,
            date: null,
@@ -607,7 +610,7 @@ export default {
                 }
               });
 
-            axios.post("http://localhost:3000/api/usuarios",this.form/* , {headers: { token:this.tokenLogin } }*/ )
+            axios.post("https://sacris.herokuapp.com/api/usuarios",this.form/* , {headers: { token:this.tokenLogin } }*/ )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){
@@ -643,7 +646,7 @@ export default {
             this.snackbarData.color=color
         },
         initialize(){
-        let direccion = "http://localhost:3000/api/tipoDoc/";
+        let direccion = "https://sacris.herokuapp.com/api/tipoDoc/";
                 axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( res =>{
                 res.data.forEach(el => {
                     this.form.items.push(el.denominacionTipoDocumento)
@@ -652,6 +655,29 @@ export default {
                 this.items = res.data;
 
                   });
+
+                  let today = new Date();
+                  let today2
+                  let dd = today.getDate();
+                  let mm = today.getMonth() + 1; //January is 0!
+                  let yyyy = today.getFullYear();
+                  let yyyy2 = yyyy-12
+                  yyyy= yyyy-100
+
+
+
+                  if (dd < 10) {
+                      dd = '0' + dd;
+                    }
+
+                    if (mm < 10) {
+                      mm = '0' + mm;
+                    }
+
+                    today =  yyyy + '-' + mm + '-' + dd ;
+                    today2= yyyy2 + '-' + mm + '-' + dd ;
+                    this.fechaMin=today
+                    this.fechaMax=today2
     },
 
 

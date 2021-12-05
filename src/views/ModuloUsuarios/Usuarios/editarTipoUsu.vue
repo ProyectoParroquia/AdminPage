@@ -82,7 +82,6 @@ setInteractionMode('eager')
 
 export default {
    props:{
-
         itemSelectNameTU:Array,
         itemSelectTU:Array,
         editedItem:Object,
@@ -102,7 +101,7 @@ export default {
                 }
               });
 
-       axios.put("http://localhost:3000/api/usuarios/tipoUsu/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token:this.tokenLogin } })
+       axios.put("https://sacris.herokuapp.com/api/usuarios/tipoUsu/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token: localStorage.getItem('token') } })
           .then(res =>{
             if(res.status === 201){
               console.log(res)

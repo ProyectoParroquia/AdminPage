@@ -214,6 +214,7 @@ import {
   mdiMinusCircle,
   mdiPlusThick,
   mdiMagnify,
+  mdiCloseCircleOutline
 
 } from '@mdi/js'
 import axios from 'axios';
@@ -284,7 +285,7 @@ import editar from './editar.vue'
 
     //Listar
     initialize() {
-      let direccion = "http://localhost:3000/api/tipoDoc";
+      let direccion = "https://sacris.herokuapp.com/api/tipoDoc";
                 axios.get(direccion).then( res =>{
                 this.data = res.data;
                 console.log(this.data)
@@ -355,6 +356,7 @@ import editar from './editar.vue'
         mdiDotsHorizontal,
         mdiPencil,
         mdiMagnify,
+        mdiCloseCircleOutline
       },
     }
   },

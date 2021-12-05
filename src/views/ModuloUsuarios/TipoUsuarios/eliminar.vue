@@ -40,7 +40,7 @@ export default {
 
   methods:{
     eliminarTU() {
-      axios.delete("http://localhost:3000/api/tipoUsuario/"+this.datoTU.idTipoUsuario)
+      axios.delete("https://sacris.herokuapp.com/api/tipoUsuario/"+this.datoTU.idTipoUsuario,{ headers: { token: localStorage.getItem('token') }  })
               .then( res =>{
                 console.log(res)
                  if(res.status === 201){

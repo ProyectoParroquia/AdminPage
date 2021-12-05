@@ -1,4 +1,5 @@
 <template>
+
 <div id="htmlData">
   <v-data-table
   :items-per-page="5"
@@ -8,6 +9,32 @@
     class="elevation-1"
     :search="search"
   >
+     <v-snackbar
+                v-model="snackbarData.snackbar"
+                :timeout="snackbarData.timeout"
+                :color="snackbarData.color"
+                top
+                right
+              >
+
+                {{ snackbarData.text }}
+
+                <template v-slot:action="{ attrs }">
+                  <v-btn
+                    color="white"
+                    text
+                    icon
+
+                    v-bind="attrs"
+                    @click="snackbarData.snackbar = false"
+                  >
+
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
+                  </v-btn>
+                </template>
+              </v-snackbar>
   <template v-slot:top>
       <v-toolbar
         color = "tableHeader"
@@ -119,27 +146,6 @@
             <span>Consultar cancelados</span>
 
             </v-tooltip>
- <v-tooltip bottom
-            color="secondary">
-              <template v-slot:activator="{ on, attrs }">
-               <v-btn
-
-              color="primary"
-              dark
-              class=" mx-3"
-              v-bind="attrs"
-              v-on="on"
-              @click="consultarIncompletos()"
-              fab
-              small
-            >
-              <v-icon>
-                {{icons.mdiAlertCircleOutline}}
-              </v-icon>
-            </v-btn>
-            </template>
-            <span>Consultar Incompleto</span>
-            </v-tooltip>
             <v-tooltip bottom
             color="secondary">
               <template v-slot:activator="{ on, attrs }">
@@ -226,9 +232,76 @@
                       </validation-provider>
 
                   </v-col>
+                      <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                     <validation-provider
+                        v-slot="{ errors }"
+                        name="Usuario.nombreUsuario"
+                        rules="required|max:25|alpha_spaces|min:4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.Usuario.nombreUsuario"
+                          value="idUsuarioFK"
+                          :counter="25"
+                          :error-messages="errors"
+                          label="Nombre del usuario"
+                          required
+                          readonly
+                        ></v-text-field>
+                      </validation-provider>
+
+                  </v-col>
+                       <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                     <validation-provider
+                        v-slot="{ errors }"
+                        name="Usuario.apellidoUsuario"
+                        rules="required|max:25|alpha_spaces|min:4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.Usuario.apellidoUsuario"
+                          value="idUsuarioFK"
+                          :counter="25"
+                          :error-messages="errors"
+                          label="Apellido del usuario"
+                          required
+                          readonly
+                        ></v-text-field>
+                      </validation-provider>
+
+                  </v-col>
+                         <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                     <validation-provider
+                        v-slot="{ errors }"
+                        name="Usuario.numeroDocumentoUsuario"
+                        rules="required|max:25|numeric|min:4"
+                      >
+                        <v-text-field
+                          v-model="editedItem.Usuario.numeroDocumentoUsuario"
+                          value="idUsuarioFK"
+                          :counter="25"
+                          :error-messages="errors"
+                          label="Identificacióm del usuario"
+                          required
+                          readonly
+                        ></v-text-field>
+                      </validation-provider>
+
+                  </v-col>
           <v-col
-          cols="6"
-          sm="6"
+           cols="12"
+                    sm="6"
+                    md="4"
         >
         <v-autocomplete
           clearable
@@ -241,6 +314,7 @@
         >
         </v-autocomplete>
     </v-col>
+
 
                 </v-row>
 
@@ -400,7 +474,12 @@ setInteractionMode('eager')
   },
 
   data: () => ({
-
+snackbarData:{
+              snackbar: false,
+              text: '',
+              timeout: 2000,
+              color:''
+            },
     oculto:false,
     mostrado:true,
     keyNuevoUsu:0,
@@ -421,6 +500,11 @@ setInteractionMode('eager')
       },
       { text: 'Nombre curso', value: 'Curso.nombreCurso' },
       { text: 'Estado ', value: 'Estado.nombreEstado' },
+       { text: 'Nombre  ', value: 'Usuario.nombreUsuario' },
+        { text: 'Apellido ', value: 'Usuario.apellidoUsuario' },
+         { text: 'Identificación ', value: 'Usuario.numeroDocumentoUsuario' },
+          { text: 'Telefono ', value: 'Usuario.numeroContacto' },
+         { text: 'Correo ', value: 'Usuario.correoUsuario' },
       { text: 'Acciones', value: 'actions', sortable: false },
     ],
     data: [],
@@ -473,9 +557,14 @@ setInteractionMode('eager')
       this.dialogNuevo = true
       this.keyNuevoUsu +=1
     },
+      Snackbar(texto, color) {
+          this.snackbarData.text=texto,
+            this.snackbarData.snackbar=true
+            this.snackbarData.color=color
+        },
     initialize() {
 
-        let direccion = "http://localhost:3000/api/Inscripcion";
+        let direccion = "https://sacris.herokuapp.com/api/Inscripcion";
         axios.get(direccion)
                     .then( res =>{
                 this.data = res.data;
@@ -496,21 +585,21 @@ setInteractionMode('eager')
 
     },
     consultarInscritos(){
- let direccion = "http://localhost:3000/api/Inscripcion/Inscrito";
+ let direccion = "https://sacris.herokuapp.com/api/Inscripcion/Inscrito";
                 axios.get(direccion).then( res =>{
                     this.data = res.data;
                     console.log(this.data)
                 });
     },
     consultarCancelados(){
- let direccion = "http://localhost:3000/api/Inscripcion/cancelado";
+ let direccion = "https://sacris.herokuapp.com/api/Inscripcion/cancelado";
                 axios.get(direccion).then( res =>{
                     this.data = res.data;
                     console.log(this.data)
                 });
     },
     consultarIncompletos(){
- let direccion = "http://localhost:3000/api/Inscripcion/Incompleto";
+ let direccion = "https://sacris.herokuapp.com/api/Inscripcion/Incompleto";
                 axios.get(direccion).then( res =>{
                     this.data = res.data;
                     console.log(this.data)
@@ -529,12 +618,16 @@ setInteractionMode('eager')
                       this.editedItem.idEstadoFK = 4
                 break;
             }
-          axios.put("http://localhost:3000/api/Inscripcion/"+this.editedItem.idInscripcion, this.editedItem)
-          .then(data =>{
-             if(data.status===201){
-              console.log("correcto")
+          axios.put("https://sacris.herokuapp.com/api/Inscripcion/"+this.editedItem.idInscripcion, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
+            .then(data =>{
+                   if(data.status === 201){
+              console.log(data)
+              this.Snackbar(data.data.success, "green")
+              //llamamos a este metodo para reenderizar el componente y que muestre los cambios
+              this.initialize()
               this.salir()
             }else{
+              this.makeToast("Error",data.data.mensage,"danger");
               console.log("Error")
             }
           })

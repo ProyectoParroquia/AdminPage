@@ -1,15 +1,16 @@
 <template>
   <v-card>
-    <v-card-title class="align-start">
+    <v-card-title>
       <span class="font-weight-semibold">Nuestros servicios</span>
       <v-spacer></v-spacer>
       <v-btn
         icon
         small
         class="me-n3 mt-n2"
+        disabled
       >
         <v-icon>
-          {{ icons.mdiDotsVertical }}
+          {{ icons.mdiCheckboxMarkedCircleOutline  }}
         </v-icon>
       </v-btn>
     </v-card-title>
@@ -58,7 +59,7 @@
 
 <script>
 // eslint-disable-next-line object-curly-newline
-import { mdiAccountOutline, mdiCurrencyUsd, mdiTrendingUp, mdiDotsVertical, mdiLabelOutline } from '@mdi/js'
+import { mdiAccountOutline, mdiCurrencyUsd, mdiTrendingUp, mdiCheckboxMarkedCircleOutline , mdiLabelOutline } from '@mdi/js'
 
 export default {
   setup() {
@@ -96,7 +97,7 @@ export default {
 
       // icons
       icons: {
-        mdiDotsVertical,
+        mdiCheckboxMarkedCircleOutline ,
         mdiTrendingUp,
         mdiAccountOutline,
         mdiLabelOutline,

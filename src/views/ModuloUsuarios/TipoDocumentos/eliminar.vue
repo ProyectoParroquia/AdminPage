@@ -31,6 +31,9 @@
 <script>
 import axios from 'axios'
 export default {
+  data:()=>({
+    tokenLogin: localStorage.getItem('token'),
+  }),
   //(las propiedades las traemos al necesitar O USAR alguna funcion, arreglo o atributo en este componente)
    props:{
         datoTD:Object,
@@ -41,7 +44,7 @@ export default {
 
   methods:{
     eliminarTU() {
-      axios.delete("http://localhost:3000/api/tipoDoc/"+this.datoTD.idTipoDocumento)
+      axios.delete("https://sacris.herokuapp.com/api/tipoDoc/"+this.datoTD.idTipoDocumento, {headers: { token:this.tokenLogin } })
               .then( res =>{
                 console.log(res)
                  if(res.status === 201){

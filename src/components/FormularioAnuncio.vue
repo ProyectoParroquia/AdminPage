@@ -1,33 +1,40 @@
 <template>
 <validation-observer
     ref="observer"
-
+   v-slot="{ invalid }"
   >
   <v-form  @submit.prevent="guardar"  enctype="multipart/form-data">
     <v-container>
       <v-row>
  <v-stepper v-model="e1"  >
-    <v-stepper-header  max-width="920px">
+    <v-stepper-header  max-width="700px">
       <v-stepper-step
         :complete="e1 > 1"
         step="1"
       >
-        Definir datos
+        Definir datos 1
       </v-stepper-step>
 
       <v-divider></v-divider>
+
+      <v-stepper-step
+        :complete="e1 > 2"
+        step="2"
+      >
+        Definir fecha 2
+      </v-stepper-step>
 
       <v-divider></v-divider>
 
     </v-stepper-header>
 
     <v-stepper-items>
-      <v-stepper-content step="1">
-        <v-card  height="310px" width="900px">
+       <v-stepper-content step="1">
+        <v-card  height="310px" width="800px">
            <v-row>
               <v-col
-          cols="6"
-          sm="6"
+          cols="12"
+          sm="12"
         >  <validation-provider
         v-slot="{ errors }"
         name="nombreCurso"
@@ -43,8 +50,14 @@
             label="Titulo anuncio"
           ></v-text-field>
           </validation-provider>
-<br>
-<br>
+
+              </v-col>
+              <br>
+              <br>
+     <v-col
+          cols="12"
+          sm="12"
+        >
          <validation-provider
         v-slot="{ errors }"
         name="mensajeAnuncio"
@@ -63,47 +76,87 @@
           height="30px"
           ></v-textarea>
              </validation-provider>
-<br>
-          <input
+     </v-col>
+     <v-col
+          cols="12"
+          sm="6"
+        >          <input
          id="file"
           type="file"
            @change="selectedHandler"
            >
+             </v-col>
+              &nbsp;&nbsp;
+             <v-col cols="12"
+             sm="5">
         <figure>
-          <img width="90" :src="imagen" height="90" alt="foto curso">
+          <img width="100" :src="imagen" height="100" alt="foto curso">
         </figure>
-        </v-col>
-        <v-col
-          cols="12"
-          sm="6"
-        >Fecha final
-
-
-             <datepicker
-          name="fechaFinal"
-          id="fechaFinal"
-          label="Fecha final "
-          v-model="form.fechaFinal"
-          :disabledDates="disabledDates"
-          :format="DatePickerFormat"
-          class="fechas"
-
-          ></datepicker>
-
-        </v-col>
+             </v-col>
            </v-row>
         </v-card>
-<br>
-<br>
+<div class=" mt-7 text-right">
+          <v-btn
+          color="primary"
+          @click="e1 = 2"
+          text
+        >
+          Continuar
+        </v-btn>
+
+         </div>
+
+      </v-stepper-content>
+
+      <v-stepper-content step="2">
+        <v-card  height="450px" width="800px">
+        <v-col
+          cols="12"
+        >
+        <validation-provider
+                          v-slot="{ errors }"
+                          name="Fecha Final"
+                          rules="required|max:10|min:10"
+                        >
+
+                          <v-text-field
+                            color="#ae5f9e"
+                            type="date"
+                            readonly
+                            v-model="form.fechaFinal"
+                            :counter="10"
+                            :error-messages="errors"
+                            label="Fecha Inicial"
+                            clearable
+                          ></v-text-field>
+                          <v-date-picker
+                                elevation="15"
+                                v-model="form.fechaFinal"
+                                :active-picker.sync="activePicker"
+                                :error-messages="errors"
+                                :min="fechaMin"
+                                   full-width
+                              ></v-date-picker>
+                        </validation-provider>
+        </v-col>
+        </v-card>
+<div class=" mt-7 text-right">
+    <v-btn
+          color="primary"
+          @click="e1 = 1"
+          text
+           >
+          Regresar
+        </v-btn>
            <v-btn
           color="primary"
            type="submit"
-           text
-
           @click="guardar()"
+           :disabled="invalid"
         >
           Guardar
         </v-btn>
+</div>
       </v-stepper-content>
     </v-stepper-items>
   </v-stepper>
@@ -115,7 +168,6 @@
 <script>
 
 import axios from 'axios';
-import Datepicker from 'vuejs-datepicker';
 import { required, max, min, alpha_spaces,numeric ,alpha_dash} from 'vee-validate/dist/rules'
 import { extend, ValidationObserver,ValidationProvider } from 'vee-validate'
 import {
@@ -150,24 +202,33 @@ extend('alpha_spaces', {
   })
 export default {
      props:{
-
+       initialize:Function,
+       closeNuevo:Function,
+        UsuarioLogueado:Object,
         Snackbar:Function,
     },
   components: {
          ValidationObserver,
-         ValidationProvider,
-         Datepicker
+         ValidationProvider
           },
 
     name:"Nuevo",
     data() {
         return{
+           //! Fecha
+            fechaMin:'',
+           activePicker: null,
+           date: null,
+
            snackbarData:{
               snackbar: false,
               text: '',
               timeout: 2000,
               color:''
             },
+           /* UsuarioLogueado:{
+              idUsu:''
+              }, */
           e1: 1,
           miniatura:'',
             form:{
@@ -218,27 +279,27 @@ computed: {
   formdata.append('mensajeAnuncio', this.form.mensajeAnuncio),
   formdata.append('fechaInicio', this.form.fechaInicio),
   formdata.append('fechaFinal', this.form.fechaFinal),
-  //formdata.append('idUsuarioFK', this.form.idUsuarioFK),
+  formdata.append('UsuarioFK', this.form.UsuarioFK = this.UsuarioLogueado.idUsu),
   formdata.append('file', this.form.file),
-  axios.post('http://localhost:5000/api/Anuncio',formdata)
+
+
+  axios.post('https://sacris.herokuapp.com/api/Anuncio',formdata)
    .then(res =>{
 
                     if(res.status === 201){
               console.log(res)
               this.Snackbar(res.data.success, "green")
               //llamamos a este metodo para reenderizar el componente y que muestre los cambios
-              this.salir()
+              this.initialize()
             }else{
               this.makeToast("Error",res.data.mensage,"danger");
               console.log("Error")
             }
               })
-  this.salir()
+              this.closeNuevo()
 
   },
-  salir(){
-            this.$router.go(0);
-            },
+
   }
 }
 

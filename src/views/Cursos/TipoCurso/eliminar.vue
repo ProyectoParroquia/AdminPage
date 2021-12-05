@@ -46,7 +46,7 @@ export default {
             this.$router.go(0);
             },
     eliminarTU() {
-      axios.delete("http://localhost:3000/api/TipoCurso/"+this.datoTD.idTipoCurso)
+      axios.delete("https://sacris.herokuapp.com/api/TipoCurso/"+this.datoTD.idTipoCurso,{ headers: { token: localStorage.getItem('token') }  })
               .then( res =>{
                 console.log(res)
                  if(res.status === 201){

@@ -1,6 +1,12 @@
 <template>
   <v-app>
-    <vertical-nav-menu :is-drawer-open.sync="isDrawerOpen"></vertical-nav-menu>
+    <div v-if="UsuarioLogueado.tipoUsuario===3">
+      <menu-feligres :is-drawer-open.sync="isDrawerOpen"/>
+    </div>
+    <div v-else>
+        <vertical-nav-menu :is-drawer-open.sync="isDrawerOpen"></vertical-nav-menu>
+
+    </div>
 
     <v-app-bar
       app
@@ -85,14 +91,22 @@ import { mdiMagnify } from '@mdi/js'
 import VerticalNavMenu from './components/vertical-nav-menu/VerticalNavMenu.vue'
 import ThemeSwitcher from './components/ThemeSwitcher.vue'
 import AppBarUserMenu from './components/AppBarUserMenu.vue'
+import MenuFeligres from './components/vertical-nav-menu/MenuFeligres.vue'
+ import axios from 'axios'
 
 export default {
   components: {
     VerticalNavMenu,
     ThemeSwitcher,
     AppBarUserMenu,
+    MenuFeligres,
   },
   data: () => ({
+    tokenLogin: localStorage.getItem('token'),
+     UsuarioLogueado:{
+              idUsu:'',
+              tipoUsuario:''
+              },
       items: [
         {
           text: 'Dashboard',
@@ -111,6 +125,20 @@ export default {
         },
       ],
     }),
+
+created(){
+    this.initialize()
+  },
+  methods:{
+      initialize(){
+      let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params"
+        axios.get(ruta, { headers: { token:this.tokenLogin } })
+        .then(res=>{
+          console.log(res)
+          this.UsuarioLogueado=res.data
+        })
+        }
+  },
   setup() {
     const isDrawerOpen = ref(null)
 

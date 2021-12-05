@@ -316,12 +316,17 @@
 
                 <template v-slot:action="{ attrs }">
                   <v-btn
-                    color="blue"
+                    color="white"
                     text
+                    icon
+
                     v-bind="attrs"
                     @click="snackbarData.snackbar = false"
                   >
-                    Close
+
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
                   </v-btn>
                 </template>
               </v-snackbar>
@@ -335,7 +340,8 @@ import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_
   import axios from 'axios';
   import {
   mdiEyeOffOutline,
-  mdiEyeOutline
+  mdiEyeOutline,
+  mdiCloseCircleOutline,
 
 } from '@mdi/js'
 
@@ -419,7 +425,7 @@ export default {
             steps: 3,
           show1: false,
           show2: false,
-            tokenLogin: localStorage.getItem('token'),
+
             form:{
                 "nombreUsuario": "",
                 "apellidoUsuario": "",
@@ -485,7 +491,7 @@ export default {
                 }
               });
 
-            axios.post("http://localhost:3000/api/usuarios",this.form/* , {headers: { token:this.tokenLogin } }*/ )
+            axios.post("https://sacris.herokuapp.com/api/usuarios",this.form )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){
@@ -520,8 +526,8 @@ export default {
             this.snackbarData.color=color
         },
         initialize(){
-        let direccion = "http://localhost:3000/api/tipoDoc/";
-                axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( res =>{
+        let direccion = "https://sacris.herokuapp.com/api/tipoDoc/";
+                axios.get(direccion).then( res =>{
                 res.data.forEach(el => {
                     this.form.items.push(el.denominacionTipoDocumento)
 
@@ -541,7 +547,8 @@ export default {
     return {
       icons: {
         mdiEyeOffOutline,
-        mdiEyeOutline
+        mdiEyeOutline,
+        mdiCloseCircleOutline
 
       },
     }

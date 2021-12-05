@@ -23,7 +23,7 @@
           v-on="on"
           icon
          class="ma-2"
-        :href="'http://localhost:3000/'+requi.urlRequisito"
+        :href="'https://sacris.herokuapp.com/'+requi.urlRequisito"
          color="primary"
         target="_blank">
              <v-icon
@@ -41,7 +41,7 @@
                 size="200"
                 tile
               >
-                <pdf :src="'http://localhost:3000/'+requi.urlRequisito "></pdf>
+                <pdf :src="'https://sacris.herokuapp.com/'+requi.urlRequisito "></pdf>
 
               </v-avatar>
             </div>
@@ -123,7 +123,7 @@ pdf
 
     },
     mounted:function(){
-        let url = "http://localhost:3000/api/InscriRequi/";
+        let url = "https://sacris.herokuapp.com/api/InscriRequi/";
         axios.get(url)
     .then(data => {
          console.log(data)

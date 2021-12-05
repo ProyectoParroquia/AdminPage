@@ -268,7 +268,7 @@ export default {
       ValidationProvider,
        ValidationObserver},
   data:()=>({
-
+            tokenLogin: localStorage.getItem('token'),
      //! Fecha
            activePicker: null,
            menu: false,
@@ -300,7 +300,7 @@ export default {
 
 
         this.$refs.observer.validate()
-          axios.put("http://localhost:3000/api/usuarios/actualizar/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token:this.tokenLogin } })
+          axios.put("https://sacris.herokuapp.com/api/usuarios/actualizar/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token: localStorage.getItem('token') } })
           .then(res =>{
             if(res.status === 201){
               console.log(res)

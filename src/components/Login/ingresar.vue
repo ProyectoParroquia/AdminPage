@@ -84,13 +84,14 @@ export default {
           "username" : this.username,
           "password": this.password
         };
-        axios.post('http://localhost:3000/api/credenciales/login/', json)
+        axios.post('https://sacris.herokuapp.com/api/credenciales/login/', json)
         //eso devuelve una promesa
         .then( respuesta =>{
           console.log(respuesta)
            if(respuesta.status === 201){
 
              localStorage.token = respuesta.data.success;
+             console.log(localStorage.token)
              this.$router.push('/dashboard2');
            }else{
              this.error = true;

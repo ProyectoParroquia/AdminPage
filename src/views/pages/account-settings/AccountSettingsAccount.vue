@@ -90,12 +90,17 @@
 
                 <template v-slot:action="{ attrs }">
                   <v-btn
-                    color="blue"
+                    color="white"
                     text
+                    icon
+
                     v-bind="attrs"
                     @click="snackbarData.snackbar = false"
                   >
-                    Close
+
+                   <v-icon>
+                    {{ icons.mdiCloseCircleOutline}}
+                     </v-icon>
                   </v-btn>
                 </template>
               </v-snackbar>
@@ -103,7 +108,7 @@
 </template>
 
 <script>
-import { mdiAlertOutline, mdiCloudUploadOutline } from '@mdi/js'
+import { mdiAlertOutline, mdiCloudUploadOutline,mdiCloseCircleOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
 import axios from 'axios'
 
@@ -131,7 +136,7 @@ data: function(){
       submit(){
         this.accountDataLocale.username = this.accountDataLocale.credencial.username
         console.log(this.accountDataLocale)
-         axios.put("http://localhost:3000/api/usuarios/actualizar/"+this.accountDataLocale.idUsuario, this.accountDataLocale,{ headers: { token:this.tokenLogin } })
+         axios.put("https://sacris.herokuapp.com/api/usuarios/actualizar/"+this.accountDataLocale.idUsuario, this.accountDataLocale,{ headers: { token:this.tokenLogin } })
           .then(res =>{
             if(res.status === 201){
 
@@ -172,6 +177,7 @@ data: function(){
       icons: {
         mdiAlertOutline,
         mdiCloudUploadOutline,
+        mdiCloseCircleOutline
       },
     }
   },

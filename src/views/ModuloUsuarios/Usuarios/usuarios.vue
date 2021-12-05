@@ -370,7 +370,7 @@ import editarTiUsu from './editarTipoUsu.vue'
     keyEliminarUsu:0,
     valorBoton:true,
     BotonConsultaTexto:"Inactivos",
-    tokenLogin: localStorage.getItem('token'),
+
     dialog: false,
     dialogDelete: false,
     dialogTipoUsu:false,
@@ -450,10 +450,9 @@ import editarTiUsu from './editarTipoUsu.vue'
       this.keyNuevoUsu ++
     },
     initialize() {
-      /* this.BotonConsultaTexto = "Inactivos"
-      this.valorBoton = true */
-      let direcciondoc = "http://localhost:3000/api/tipoDoc/";
-                axios.get(direcciondoc/* ,{headers: { token:this.tokenLogin } } */)
+
+      let direcciondoc = "https://sacris.herokuapp.com/api/tipoDoc/";
+                axios.get(direcciondoc)
                 .then( res =>{
                   res.data.forEach(el => {
                     this.itemSelectName.push(el.denominacionTipoDocumento)
@@ -462,7 +461,8 @@ import editarTiUsu from './editarTipoUsu.vue'
                   });
 
 
-      let direccionTUsu = "http://localhost:3000/api/tipoUsuario/si/";
+
+      let direccionTUsu = "https://sacris.herokuapp.com/api/tipoUsuario/si/";
                 axios.get(direccionTUsu).then(res=>{
 
                   console.log(res)
@@ -472,10 +472,10 @@ import editarTiUsu from './editarTipoUsu.vue'
                   this.itemSelectTU = res.data
                 })
 
-
-        let direccion = "http://localhost:3000/api/usuarios";
-        axios.get(direccion, { headers: { token:this.tokenLogin } })
+        let direccion = "https://sacris.herokuapp.com/api/usuarios";
+        axios.get(direccion)
                     .then( res =>{
+                      console.log(res)
                 this.data = res.data;
                   });
     },
@@ -514,7 +514,7 @@ import editarTiUsu from './editarTipoUsu.vue'
 
 
 
-      axios.put("http://localhost:3000/api/usuarios/"+cambioEstado+"/"+this.editedItem.idUsuario, this.editedItem,{headers: { token:this.tokenLogin } })
+      axios.put("https://sacris.herokuapp.com/api/usuarios/"+cambioEstado+"/"+this.editedItem.idUsuario, this.editedItem,{ headers: { token: localStorage.getItem('token') } })
               .then( res =>{
                 console.log(res)
                  if(res.status === 201){
@@ -574,8 +574,8 @@ import editarTiUsu from './editarTipoUsu.vue'
               }
 
 
-                 let direccion = "http://localhost:3000/api/usuarios"+varestado;
-                axios.get(direccion, { headers: { token:this.tokenLogin } } ).then( res =>{
+                 let direccion = "https://sacris.herokuapp.com/api/usuarios"+varestado;
+                axios.get(direccion, { headers: { token: localStorage.getItem('token') } } ).then( res =>{
                     this.data = res.data;
                     console.log(this.data)
                 });

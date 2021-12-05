@@ -109,7 +109,7 @@ export default {
         if(this.datoTU.idTipoUsuario){
           console.log("editando")
           this.$refs.observer.validate()
-          axios.put("http://localhost:3000/api/tipoUsuario/actualizar/"+this.datoTU.idTipoUsuario, this.datoTU/* ,{ headers: { token:this.tokenLogin } } */)
+          axios.put("https://sacris.herokuapp.com/api/tipoUsuario/actualizar/"+this.datoTU.idTipoUsuario, this.datoTU,{ headers: { token: localStorage.getItem('token') }  })
           .then(res =>{
             if(res.status === 201){
               console.log(res)
@@ -123,7 +123,7 @@ export default {
 
         }else{
           console.log("creando")
-          axios.post("http://localhost:3000/api/tipoUsuario",this.datoTU/* , {headers: { token:this.tokenLogin } }*/ )
+          axios.post("https://sacris.herokuapp.com/api/tipoUsuario",this.datoTU, { headers: { token: localStorage.getItem('token') }  } )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){

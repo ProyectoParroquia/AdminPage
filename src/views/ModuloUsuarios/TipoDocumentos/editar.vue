@@ -18,7 +18,7 @@
                    <validation-provider
                       v-slot="{ errors }"
                       name="Tipo Usuario"
-                      rules="required|max:10|alpha_spaces|min:3"
+                      rules="required|max:10|alpha_spaces|min:2"
                     >
                           <v-text-field
                           color="#ae5f9e"
@@ -85,6 +85,9 @@ setInteractionMode('eager')
 
 
 export default {
+  data:()=>({
+    tokenLogin: localStorage.getItem('token'),
+  }),
   //accedemos a las propiedades que recibimos del componente padre(tipoDocu)
   //(las propiedades las traemos al necesitar alguna funcion, arreglo o atributo en este componente)
   props:{
@@ -112,7 +115,7 @@ export default {
         if(this.datoTD.idTipoDocumento){
           console.log("editando")
           this.$refs.observer.validate()
-          axios.put("http://localhost:3000/api/tipoDoc/actualizar/"+this.datoTD.idTipoDocumento, this.datoTD/* ,{ headers: { token:this.tokenLogin } } */)
+          axios.put("https://sacris.herokuapp.com/api/tipoDoc/actualizar/"+this.datoTD.idTipoDocumento, this.datoTD,{ headers: { token:this.tokenLogin } })
           .then(res =>{
             if(res.status === 201){
               console.log(res)
@@ -127,7 +130,7 @@ export default {
           //si no, agregaremos un nuevo Tipo Doc
         }else{
           console.log("creando")
-          axios.post("http://localhost:3000/api/tipoDoc/",this.datoTD/* , {headers: { token:this.tokenLogin } }*/ )
+          axios.post("https://sacris.herokuapp.com/api/tipoDoc/",this.datoTD, {headers: { token:this.tokenLogin } } )
             .then(res =>{
                 console.log(res);
                 if(res.status === 201){

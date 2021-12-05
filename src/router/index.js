@@ -6,13 +6,10 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/pages/login',
+    redirect: '/home-page',
+    /* redirect: '/pages/login', */
   },
-  {
-    path: '/dashboard',
-    name: 'dash',
-    component: () => import('@/views/dashboard/Dashboard.vue'),
-  },
+
 
    {
     path: '/dashboard2',
@@ -35,7 +32,7 @@ const routes = [
    {
     path: '/Cursos',
     name: 'cursos',
-    component: () => import('@/views/Cursos/cursos.vue'),
+    component: () => import('@/views/Cursos/cursoSacramental.vue'),
   },
 
     {
@@ -46,7 +43,7 @@ const routes = [
   {
   path: '/Recreativos',
   name: 'cards',
-  component: () => import('@/views/Cursos/cards.vue'),
+  component: () => import('@/views/Cursos/cursoRecreativo.vue'),
 },
 {
   path: '/TipoCurso',
@@ -68,32 +65,25 @@ const routes = [
     name: 'anuncios',
     component: () => import('@/views/Anuncios/CartaAnuncios.vue'),
   },
+  //Feligres
+  {
+    path: '/AnunciosF',
+    name: 'anunciosF',
+    component: () => import('@/views/pages/FeligresPages/Anuncios/CartaAnuncios.vue'),
+  },
 
   {
-    path: '/typography',
-    name: 'typography',
-    component: () => import('@/views/typography/Typography.vue'),
+    path: '/CursosF',
+    name: 'cursosF',
+    component: () => import('@/views/pages/FeligresPages/Cursos/cursos.vue'),
   },
   {
-    path: '/icons',
-    name: 'icons',
-    component: () => import('@/views/icons/Icons.vue'),
+    path: '/SacramentalF',
+    name: 'SacramentalF',
+    component: () => import('@/views/pages/FeligresPages/Cursos/cards.vue'),
   },
-  {
-    path: '/cards',
-    name: 'cards',
-    component: () => import('@/views/cards/Card.vue'),
-  },
-  {
-    path: '/simple-table',
-    name: 'simple-table',
-    component: () => import('@/views/simple-table/SimpleTable.vue'),
-  },
-  {
-    path: '/form-layouts',
-    name: 'form-layouts',
-    component: () => import('@/views/form-layouts/FormLayouts.vue'),
-  },
+  // aqui se acaban feligres
+
   {
     path: '/pages/account-settings',
     name: 'pages-account-settings',
@@ -101,7 +91,7 @@ const routes = [
   },
   {
     path: '/pages/login',
-    name: 'pages-login',
+    name: 'login',
     component: () => import('@/views/pages/Login.vue'),
     meta: {
       layout: 'blank',
@@ -116,7 +106,7 @@ const routes = [
     },
   },
   {
-    path: '/HomePage',
+    path: '/home-page',
     name: 'HomePage',
     component: () => import('@/views/HomePage/home.vue'),
     meta: {

@@ -51,7 +51,7 @@
           <v-card  max-width="500">
             <v-img
              class="blue--text align-end"
-              :src="'https://localhost:3000/'+anuncio.imagenAnuncio"
+              :src="'http://localhost:3000/'+anuncio.imagenAnuncio"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -300,12 +300,12 @@ setInteractionMode('eager')
     },
     initialize() {
 
-let ruta="https://localhost:3000/api/usuarios/obtener-params";
+let ruta="http://localhost:3000/api/usuarios/obtener-params";
         axios.get(ruta)
         .then(res=>{
           this.UsuarioLogueado=res.data
         })
-        let direccion = "https://localhost:3000/api/Anuncio";
+        let direccion = "http://localhost:3000/api/Anuncio";
         axios.get(direccion)
                     .then( res =>{
                 this.listaAnuncio= res.data;
@@ -334,7 +334,7 @@ let ruta="https://localhost:3000/api/usuarios/obtener-params";
         cambioEstado = "activar"
       }
 
-      axios.put("https://localhost:3000/api/Anuncio/"+cambioEstado+"/"+this.editedItem.idAnuncio,{ headers: { token: localStorage.getItem('token') } })
+      axios.put("http://localhost:3000/api/Anuncio/"+cambioEstado+"/"+this.editedItem.idAnuncio,{ headers: { token: localStorage.getItem('token') } })
            .then(res =>{
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
@@ -361,7 +361,7 @@ let ruta="https://localhost:3000/api/usuarios/obtener-params";
                 this.BotonConsultaTexto= "Inactivo"
               }
 
-                let direccion = "https://localhost:3000/api/Anuncio"+varestado;
+                let direccion = "http://localhost:3000/api/Anuncio"+varestado;
                 axios.get(direccion).then( res =>{
                    this.listaAnuncio= res.data;
                     console.log(this.listaAnuncio)
@@ -391,7 +391,7 @@ let ruta="https://localhost:3000/api/usuarios/obtener-params";
     save() {
 
         /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("https://localhost:3000/api/Anuncio/actualizar/"+this.editedItem.idAnuncio, this.editedItem,{ headers: { token: localStorage.getItem('token') } })
+          axios.put("http://localhost:3000/api/Anuncio/actualizar/"+this.editedItem.idAnuncio, this.editedItem,{ headers: { token: localStorage.getItem('token') } })
           .then(data =>{
                    if(data.status === 200){
               console.log(data)

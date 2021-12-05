@@ -106,7 +106,7 @@
           <v-card  >
             <v-img
              class="blue--text align-end"
-              :src="'https://localhost:3000/'+curso.imagenCurso"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -463,7 +463,7 @@
           <v-col class="col-8">
             <v-img
               class="blue--text align-end"
-              :src="'https://localhost:3000/'+curso.imagenCurso"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -665,7 +665,7 @@ setInteractionMode('eager')
       this.keyNuevoUsu +=1
     },
     initialize() {
-      let direcciondoc = "https://localhost:3000/api/TipoCurso/";
+      let direcciondoc = "http://localhost:3000/api/TipoCurso/";
                 axios.get(direcciondoc/* ,{headers: { token:this.tokenLogin } } */)
                 .then( res =>{
                   res.data.forEach(element => {
@@ -675,7 +675,7 @@ setInteractionMode('eager')
                   });
 
 
-        let direccion = "https://localhost:3000/api/Curso/sacramental";
+        let direccion = "http://localhost:3000/api/Curso/sacramental";
         axios.get(direccion)
                     .then( res =>{
                       console.log(res)
@@ -720,7 +720,7 @@ setInteractionMode('eager')
         cambioEstado = "activar"
       }
 
-      axios.put("https://localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso)
+      axios.put("http://localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso)
            .then(res =>{
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
@@ -748,7 +748,7 @@ setInteractionMode('eager')
                 this.BotonConsultaTexto= "Inactivo"
               }
 
-                let direccion = "https://localhost:3000/api/Curso/"+varestado+"sacramental/";
+                let direccion = "http://localhost:3000/api/Curso/"+varestado+"sacramental/";
                 axios.get(direccion).then( res =>{
                    this.listaCurso= res.data;
                     console.log(res)
@@ -777,7 +777,7 @@ setInteractionMode('eager')
     save() {
 
         /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("https://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem)
+          axios.put("http://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem)
           .then(data =>{
                    if(data.status === 201){
               console.log(data)

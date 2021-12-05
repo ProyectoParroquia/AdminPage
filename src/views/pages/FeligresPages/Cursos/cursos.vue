@@ -65,7 +65,7 @@
           <v-card max-width="270" >
             <v-img
              class="blue--text align-end"
-              :src="'https://localhost:3000/'+curso.imagenCurso"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -152,7 +152,7 @@
           <v-col class="col-8">
             <v-img
               class="blue--text align-end"
-              :src="'https://localhost:3000/'+curso.imagenCurso"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -352,7 +352,7 @@ setInteractionMode('eager')
       this.keyNuevoUsu +=1
     },
     initialize() {
-      let direcciondoc = "https://localhost:3000/api/TipoCurso/";
+      let direcciondoc = "http://localhost:3000/api/TipoCurso/";
                 axios.get(direcciondoc)
                 .then( res =>{
                   res.data.forEach(element => {
@@ -362,7 +362,7 @@ setInteractionMode('eager')
                   });
 
 
-        let direccion = "https://localhost:3000/api/Curso/recreativo";
+        let direccion = "http://localhost:3000/api/Curso/recreativo";
         axios.get(direccion)
                     .then( res =>{
                 this.listaCurso= res.data;
@@ -391,7 +391,7 @@ setInteractionMode('eager')
         cambioEstado = "activar"
       }
 
-      axios.put("https://localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso,{ headers: { token: localStorage.getItem('token') }  })
+      axios.put("http://localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso,{ headers: { token: localStorage.getItem('token') }  })
            .then(res =>{
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
@@ -417,7 +417,7 @@ setInteractionMode('eager')
                 this.BotonConsultaTexto= "Inactivo"
               }
 
-                let direccion = "https://localhost:3000/api/Curso/"+varestado+"recreativo/";
+                let direccion = "http://localhost:3000/api/Curso/"+varestado+"recreativo/";
                 axios.get(direccion).then( res =>{
                    this.listaCurso= res.data;
                     console.log(this.data)
@@ -446,7 +446,7 @@ setInteractionMode('eager')
     save() {
 
         /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("https://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
+          axios.put("http://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
           .then(data =>{
                    if(data.status === 201){
               console.log(data)

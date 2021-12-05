@@ -675,7 +675,7 @@ setInteractionMode('eager')
                   });
 
 
-        let direccion = "https://sacris.herokuapp.com/api/Curso/sacramental";
+        let direccion = "https://localhost:3000/api/Curso/sacramental";
         axios.get(direccion)
                     .then( res =>{
                       console.log(res)
@@ -720,7 +720,7 @@ setInteractionMode('eager')
         cambioEstado = "activar"
       }
 
-      axios.put("https://sacris.herokuapp.com/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso)
+      axios.put("https://localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso)
            .then(res =>{
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
@@ -748,7 +748,7 @@ setInteractionMode('eager')
                 this.BotonConsultaTexto= "Inactivo"
               }
 
-                let direccion = "https://sacris.herokuapp.com/api/Curso/"+varestado+"sacramental/";
+                let direccion = "https://localhost:3000/api/Curso/"+varestado+"sacramental/";
                 axios.get(direccion).then( res =>{
                    this.listaCurso= res.data;
                     console.log(res)
@@ -777,7 +777,7 @@ setInteractionMode('eager')
     save() {
 
         /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("https://sacris.herokuapp.com/api/Curso/"+this.editedItem.idCurso, this.editedItem)
+          axios.put("https://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem)
           .then(data =>{
                    if(data.status === 201){
               console.log(data)

@@ -13,7 +13,7 @@ axios.interceptors.response.use(config=>{
       alert(err.response.data.error)
       localStorage.removeItem('token')
       window.location.href = '/';
-
-
+    }if (err.response.status === 400){
+      window.location.href = '/dashboard2'
     }
   });

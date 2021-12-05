@@ -157,7 +157,7 @@ export default {
                  formdata.append('idCursoRequisitoFK', this.form.idCursoRequisitoFK),
                   formdata.append('idInscripcionFK', this.form.idInscripcionFK),
              formdata.append('file', this.form.file),
-            axios.post( "http://localhost:5000/api/InscriRequi/",formdata)
+            axios.post( "http://localhost:3000/api/InscriRequi/",formdata)
           .then(res =>{
                     if(res.status === 201){
               console.log(res)

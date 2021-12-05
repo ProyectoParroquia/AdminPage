@@ -21,7 +21,7 @@ export default {
 
     },
     mounted:function(){
-        let direccion = "https://sacris.herokuapp.com/api/Curso/recreativos";
+        let direccion = "https://sacris.herokuapp.com/api/Curso/recreativo";
                 axios.get(direccion).then( data =>{
                 this.ListaCurso = data.data;
                   });

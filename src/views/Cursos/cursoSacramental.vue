@@ -463,7 +463,7 @@
           <v-col class="col-8">
             <v-img
               class="blue--text align-end"
-              :src="'http://localhost:3000/'+curso.imagenCurso"
+              :src="'https://localhost:3000/'+curso.imagenCurso"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -665,7 +665,7 @@ setInteractionMode('eager')
       this.keyNuevoUsu +=1
     },
     initialize() {
-      let direcciondoc = "https://sacris.herokuapp.com/api/TipoCurso/";
+      let direcciondoc = "https://localhost:3000/api/TipoCurso/";
                 axios.get(direcciondoc/* ,{headers: { token:this.tokenLogin } } */)
                 .then( res =>{
                   res.data.forEach(element => {

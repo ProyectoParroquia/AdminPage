@@ -106,7 +106,7 @@
           <v-card  >
             <v-img
              class="blue--text align-end"
-              :src="'https://sacris.herokuapp.com/'+curso.imagenCurso"
+              :src="'https://localhost:3000/'+curso.imagenCurso"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -463,7 +463,7 @@
           <v-col class="col-8">
             <v-img
               class="blue--text align-end"
-              :src="'https://sacris.herokuapp.com/'+curso.imagenCurso"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >

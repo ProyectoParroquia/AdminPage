@@ -15,7 +15,7 @@
         cols="12"
         md="2"
       >
-        <label for="curso">Curso:</label>
+        <label for="idCursoFK">Curso:</label>
       </v-col>
 
       <v-col
@@ -31,7 +31,7 @@
           placeholder="First Name"
           hide-details
         ></v-text-field> -->
-        <SelectCurso id="curso" />
+        <SelectCurso id="idCursoFK" />
       </v-col>
        <v-col
       class="mt-5"
@@ -114,6 +114,7 @@
 <script>
 import SelectCurso from '@/components/SelectCurso.vue';
 import axios from 'axios';
+import {mdiCloseCircleOutline} from '@mdi/js'
 
 export default {
 
@@ -148,7 +149,11 @@ export default {
     },
     methods:{
         guardar(){
+          console.log(1)
+          console.log(this.form)
             this.form.idCursoFK = document.getElementById("idCursoFK").value
+            console.log("idcurso")
+ console.log(this.form)
               switch (this.form.idRequisitos) {
               case 'Documento de identidad':
                       this.form.idRequisitosFK = 1
@@ -166,8 +171,9 @@ export default {
                       this.form.idRequisitosFK = 5
                 break;
             }
-
-            axios.post("https://sacris.herokuapp.com/api/CursoRequisito",this.form)
+            console.log("idrequisito")
+             console.log(this.form)
+            axios.post("https://sacris.herokuapp.com/api/CursoRequisito",this.form,{ headers: { token: localStorage.getItem('token') }  })
          .then(res =>{
                     if(res.status === 201){
               console.log(res)
@@ -189,10 +195,19 @@ export default {
         },
         cambiarRequisito(tipo){
             this.form.idRequisitosFK = tipo
+        },
+        salir(){
+          this.$router.push('/dashboard2');
         }
 
 
-
+    },
+    setup() {
+    return {
+      icons: {
+          mdiCloseCircleOutline
+        }
+      }
     }
 }
 

@@ -68,7 +68,9 @@ import {
 } from '@mdi/js'
 export default {
    data: function(){
+
      return {
+
       show1: false,
       username: "",
       password: "",
@@ -78,6 +80,8 @@ export default {
   },
 
   methods:{
+
+
     login(){
         let json = {
           //this para llamar a una funcion a una variable de la misma clase
@@ -92,7 +96,9 @@ export default {
 
              localStorage.token = respuesta.data.success;
              console.log(localStorage.token)
-             this.$router.push('/dashboard2');
+
+             respuesta.data.tipoUsu===3 ?this.$router.push('/dashboardF') :this.$router.push('/dashboard2')
+
            }else{
              this.error = true;
              this.error_msg = respuesta.data.error;

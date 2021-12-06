@@ -7,7 +7,7 @@
           :key="requi.idInscriRequi"
         >
         <v-card
-            dark
+
           >
             <div class="d-flex flex-no-wrap justify-space-between">
               <div>
@@ -35,15 +35,17 @@
                 <v-card-actions>
                 </v-card-actions>
               </div>
-
+              <v-card elevation="5">
               <v-avatar
                 class="ma-3"
-                size="200"
+                size="160"
                 tile
               >
                 <pdf :src="'https://sacris.herokuapp.com/'+requi.urlRequisito "></pdf>
 
               </v-avatar>
+              </v-card>
+
             </div>
           </v-card>
          <!---<v-card

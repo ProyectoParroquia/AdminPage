@@ -282,7 +282,7 @@
       </v-container>
                         </v-form>
                           </validation-observer>
-          <v-snackbar
+          <!-- <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
                 :color="snackbarData.color"
@@ -302,7 +302,7 @@
                     Close
                   </v-btn>
                 </template>
-              </v-snackbar>
+              </v-snackbar> -->
                       </v-card-text>
 
 
@@ -378,10 +378,8 @@ export default {
        SelectCursoRe
     },
     props:{
-      metodo: {
-        type:Function,
-        default: null
-      },
+      Snackbar:Function,
+        closeInscripcion:Function,
       titulo: {
         type:String,
         default: "Registrarse"
@@ -417,12 +415,12 @@ export default {
 
             },
             items:{},
-            snackbarData:{
+            /* snackbarData:{
               snackbar: false,
               text: '',
               timeout: 2000,
               color:''
-            }
+            } */
         }
     },
 
@@ -456,21 +454,24 @@ export default {
 
 
       guardar(){
+        console.log(1)
             /* this.form.token = localStorage.getItem("token");  */
              this.form.idCursoFK = document.getElementById("idCursoFK").value
-
+              console.log(2)
             this.items.forEach(el => {
                 if(el.denominacionTipoDocumento == this.form.tipoDoc){
                   this.form.idTipoDoc_FK = el.idTipoDocumento
                 }
               });
-
-            axios.post("http://localhost:3000/api/Inscripcion",this.form/* , {headers: { token:this.tokenLogin } }*/ )
+            console.log(3)
+            axios.post("https://sacris.herokuapp.com/api/Inscripcion",this.form/* , {headers: { token:this.tokenLogin } }*/ )
             .then(res =>{
+                console.log("axios")
                 console.log(res);
                 if(res.status === 201){
+                  console.log(res)
                   this.Snackbar(res.data.success, "green")
-                  setTimeout((this.metodo)?this.metodo:this.$router.go(0),1000);
+                  this.closeInscripcion()
 
                 }else{
                   if(res.data.err){
@@ -494,11 +495,7 @@ export default {
 
         },
 
-        Snackbar(texto, color) {
-          this.snackbarData.text=texto,
-            this.snackbarData.snackbar=true
-            this.snackbarData.color=color
-        },
+
         initialize(){
         let direccion = "https://sacris.herokuapp.com/api/tipoDoc/";
                 axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( res =>{

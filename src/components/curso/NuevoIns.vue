@@ -307,27 +307,7 @@
       </v-container>
                         </v-form>
                           </validation-observer>
-          <v-snackbar
-                v-model="snackbarData.snackbar"
-                :timeout="snackbarData.timeout"
-                :color="snackbarData.color"
-                top
-                right
-              >
 
-                {{ snackbarData.text }}
-
-                <template v-slot:action="{ attrs }">
-                  <v-btn
-                    color="blue"
-                    text
-                    v-bind="attrs"
-                    @click="snackbarData.snackbar = false"
-                  >
-                    Close
-                  </v-btn>
-                </template>
-              </v-snackbar>
                       </v-card-text>
 
 
@@ -403,10 +383,8 @@ export default {
        SelectCursoSa
     },
     props:{
-      metodo: {
-        type:Function,
-        default: null
-      },
+      Snackbar:Function,
+        closeInscripcion:Function,
       titulo: {
         type:String,
         default: "Registrarse"
@@ -442,12 +420,7 @@ export default {
 
             },
             items:{},
-            snackbarData:{
-              snackbar: false,
-              text: '',
-              timeout: 2000,
-              color:''
-            }
+
         }
     },
 
@@ -481,6 +454,7 @@ export default {
 
 
       guardar(){
+        console.log("si");
             /* this.form.token = localStorage.getItem("token");  */
              this.form.idCursoFK = document.getElementById("idCursoFK").value
 
@@ -496,7 +470,7 @@ export default {
                 if(res.status === 201){
                   this.Snackbar(res.data.success, "green")
                   setTimeout((this.metodo)?this.metodo:this.$router.go(0),1000);
-
+                    this.closeInscripcion()
                 }else{
                   if(res.data.err){
                     this.Snackbar(res.data.err, "red")
@@ -519,11 +493,7 @@ export default {
 
         },
 
-        Snackbar(texto, color) {
-          this.snackbarData.text=texto,
-            this.snackbarData.snackbar=true
-            this.snackbarData.color=color
-        },
+
         initialize(){
         let direccion = "https://sacris.herokuapp.com/api/tipoDoc/";
                 axios.get(direccion/* ,{headers: { token:this.tokenLogin } } */).then( res =>{

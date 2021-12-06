@@ -1,7 +1,19 @@
 <template>
-    <v-container grid-List-md style="margin-top:100px">
+    <v-container grid-List-md >
 
       <v-row cols="2" >
+        <v-col
+      cols="12"
+      md="4"
+    >
+      <dashboard-congratulation-john></dashboard-congratulation-john>
+    </v-col>
+    <v-col
+      cols="12"
+      md="8"
+    >
+      <dashboard-statistics-card></dashboard-statistics-card>
+    </v-col>
 <v-col  >
    <v-card
     max-width="354"
@@ -126,9 +138,14 @@
 </template>
 <script>
 import axios from 'axios';
-
+import DashboardCongratulationJohn from '../../../dashboard-View/DashboardCongratulationJohn.vue'
+import DashboardStatisticsCard from '../../../dashboard-View/DashboardStatisticsCard.vue'
 
   export default {
+    components:{
+      DashboardCongratulationJohn,
+      DashboardStatisticsCard
+    },
 
     data: () => ({
  dato1: null,
@@ -148,21 +165,21 @@ import axios from 'axios';
     },
     },
   mounted:function(){
-           let url2 = "http://localhost:5000/api/Curso/c";
+           let url2 = "https://sacris.herokuapp.com/api/Curso/c";
         axios.get(url2)
     .then(data => {
          console.log(data)
            this.dato1= data.data;
 
         })
-           let url3 = "http://localhost:5000/api/Curso/r";
+           let url3 = "https://sacris.herokuapp.com/api/Curso/r";
         axios.get(url3)
     .then(data => {
          console.log(data)
            this.dato2= data.data;
 
         })
-             let url4 = "http://localhost:5000/api/Curso/s";
+             let url4 = "https://sacris.herokuapp.com/api/Curso/s";
         axios.get(url4)
     .then(data => {
          console.log(data)

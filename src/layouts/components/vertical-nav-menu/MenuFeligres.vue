@@ -44,7 +44,7 @@
     >
       <nav-menu-link
         title="Inicio"
-        :to="{ name: 'dashboard' }"
+        :to="{ name: 'dashF' }"
         :icon="icons.mdiHomeOutline"
       ></nav-menu-link>
       <nav-menu-link

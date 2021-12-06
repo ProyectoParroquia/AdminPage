@@ -1,5 +1,6 @@
 <template>
- <validation-observer
+<v-card>
+  <validation-observer
     ref="observer"
      v-slot="{invalid}"
   >
@@ -44,7 +45,7 @@
         <br>
          <v-container>
          <label>Suba los requisitos deacuerdo al curso que eligió  </label>
-        <SelectRC />
+        <SelectRC id="idCursoRequisitoFK"/>
 </v-container>
               <input
          id="file"
@@ -54,8 +55,8 @@
     <br>
          <v-btn
         type="submit"
-         color="purple"
-        text
+         color="primary"
+          class="mt-6"
          :disabled="invalid"
      >
 
@@ -74,20 +75,23 @@
     </v-container>
  </v-form>
   </validation-observer>
+</v-card>
+
 
 </template>
 
 <script>
 
 import axios from 'axios';
-import SelectIns from '@/components/curso/components/SelectIns.vue';
-import SelectRC from '@/components/SelectRC.vue';
+import SelectIns from '../components/curso/components/SelectIns.vue';
+import SelectRC from '../components/curso/components/SelectRC.vue';
+import {mdiCloseCircleOutline} from '@mdi/js'
 import pdf from 'vue-pdf'
 import { required, max, min, numeric} from 'vee-validate/dist/rules'
   import { extend, ValidationObserver} from 'vee-validate'
    extend('numeric', {
     ...numeric,
-    message: 'El campo {field} solo debe contener numeros',
+    message: 'El campo {_field_} solo debe contener numeros',
   })
   extend('required', {
     ...required,
@@ -150,15 +154,21 @@ export default {
             this.snackbarData.color=color
         },
   guardar() {
-
+            console.log(1)
            this.form.idInscripcionFK = document.getElementById("ListaidInscripcion").value
+           console.log("inscripcionfk")
+           console.log(this.form)
                this.form.idCursoRequisitoFK= document.getElementById("idCursoRequisitoFK").value
+               console.log("CursoRequifk")
+               console.log(this.form)
            const formdata = new FormData()
                  formdata.append('idCursoRequisitoFK', this.form.idCursoRequisitoFK),
                   formdata.append('idInscripcionFK', this.form.idInscripcionFK),
              formdata.append('file', this.form.file),
-            axios.post( "http://localhost:3000/api/InscriRequi/",formdata)
+             console.log(formdata)
+            axios.post( "https://sacris.herokuapp.com/api/InscriRequi/",formdata)
           .then(res =>{
+            console.log("entro a axios")
                     if(res.status === 201){
               console.log(res)
               this.Snackbar(res.data.success, "green")
@@ -171,7 +181,7 @@ export default {
               })
         },
         salir(){
-             this.$router.go(0);
+          this.$router.push('/dasboard2');
         },
          cambiarIns(tipo){
             this.form.idInscripcionFK = tipo
@@ -182,7 +192,14 @@ export default {
       imagen(){
       return this.miniatura;
     }
+    },
+    setup() {
+    return {
+      icons: {
+         mdiCloseCircleOutline
+      },
     }
+  },
 }
 
 </script>

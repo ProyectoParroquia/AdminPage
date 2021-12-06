@@ -66,19 +66,19 @@ export default {
     const statisticsData = [
       {
         title: 'Cantidad de Cursos',
-        total: '60',
+        total: '6',
       },
       {
         title: 'Feligreses',
-        total: '1,2k',
+        total: '30',
       },
       {
-        title: 'Eucaristias',
-        total: '5 x dia',
+        title: 'Total Incritos ',
+        total: '2',
       },
       {
         title: 'Ingresos',
-        total: '$88k',
+        total: '0',
       },
     ]
 

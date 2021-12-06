@@ -23,7 +23,7 @@ export default {
 
     },
     mounted:function(){
-        let direccion = "http://localhost:5000/api/Inscripcion/max";
+        let direccion = "https://sacris.herokuapp.com/api/Inscripcion/max";
                 axios.get(direccion).then( data =>{
                 this.ListaidInscripcion = data.data;
                   });

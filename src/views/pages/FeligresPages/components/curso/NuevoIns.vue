@@ -24,7 +24,7 @@
 
 </template>
 <script>
-import SelectCursoSa from '@/components/curso/components/SelectCursoSa.vue';
+import SelectCursoSa from '../curso/components/SelectCursoSa.vue';
 import axios from 'axios';
 
 export default {
@@ -48,7 +48,7 @@ export default {
         guardar(){
             this.form.idCursoFK = document.getElementById("idCursoFK").value
 
-            axios.post("http://localhost:5000/api/Inscripcion",this.form)
+            axios.post("https://sacris.herokuapp.com/api/Inscripcion",this.form)
          .then(data =>{
                     console.log(data);
                  this.salir()

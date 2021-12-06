@@ -1,9 +1,10 @@
 <template>
     <v-container grid-List-md>
- <v-btn
-       color="primary"
-      text
-    v-on:click="consultarInactivos()"><span  text color="primary" v-if="BotonConsultaTexto=='Inactivo'">
+      <h1>
+        Anuncios
+      </h1>
+    <v-btn outlined color="primary" class="mb-3"  v-on:click="consultarInactivos()">
+        <span  text color="primary" v-if="BotonConsultaTexto=='Inactivo'">
                Inactivos
               </span>
               <span text  color="primary" v-else>
@@ -38,17 +39,17 @@
               </v-snackbar>
       <v-dialog
           v-model="dialogNuevo"
-          max-width="800px"
-          max-height="1000px"
+          max-width="1000px"
+        max-height="1800px"
         >
-             <template v-slot:activator="{ on, attrs }">
+             <template  v-slot:activator="{ on, attrs }">
               <v-btn
+              class="ml-2 mb-3"
               color="primary"
               dark
-              v-bind="attrs"
+             v-bind="attrs"
               v-on="on"
               @click="abrir()"
-              text
             >
     Nuevo Anuncio
             </v-btn>
@@ -65,7 +66,7 @@
 </v-dialog>
    <v-row>
         <v-col
-        cols="4"
+           class="col-12 col-sm-6 col-md-4"
            v-for="anuncio in listaAnuncio"
           :key="anuncio.idAnuncio"
            :items="data"
@@ -73,7 +74,7 @@
           <v-card  max-width="500">
             <v-img
              class="blue--text align-end"
-              :src="'https://sacris.herokuapp.com/'+anuncio.imagenAnuncio"
+              :src="'http://localhost:3000/'+anuncio.imagenAnuncio"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -283,16 +284,23 @@
              </v-icon>
       </v-btn>
        </template>
-       <v-card color="white">
+           <v-card style="padding:10px" >
+         <h2 class="text-center " >
+           Más información aquí
+         </h2>
+         <v-divider class="mb-4"></v-divider>
         <v-card-text>
-         <p> {{anuncio.mensajeAnuncio}}</p>
-         <p> {{anuncio.fechaInicio}}</p>
-        <p>  {{anuncio.fechaFinal}}</p>
+
+            <p style="font-size:20px;"><b>{{anuncio.mensajeAnuncio}}</b> </p>
+            <p style="font-size:17px;"><strong>Publicado en:</strong>  {{anuncio.fechaInicio}}</p>
+            <p style="font-size:17px;"><strong>Termina el dia:</strong> {{anuncio.fechaFinal}}</p>
+
         </v-card-text>
        </v-card>
        </v-dialog>
        </v-card-actions>
           </v-card>
+
            </v-col>
      </v-row>
     </v-container>
@@ -313,47 +321,47 @@ import {ValidationProvider, ValidationObserver, extend, setInteractionMode } fro
 setInteractionMode('eager')
     extend('confirmed', {
     ...confirmed,
-    message: 'El campo {field} no coincide ',
+    message: 'El campo {_field_} no coincide ',
   })
 
    extend('alpha_dash', {
     ...alpha_dash,
-    message: 'El campo {field} puede contener caracteres alfanuméricos, así como guiones y guiones bajos.',
+    message: 'El campo {_field_} puede contener caracteres alfanuméricos, así como guiones y guiones bajos.',
   })
 
    extend('numeric', {
     ...numeric,
-    message: 'El campo {field} solo debe contener numeros',
+    message: 'El campo {_field_} solo debe contener numeros',
   })
 
   extend('alpha_spaces', {
     ...alpha_spaces,
-    message: 'El campo {field} solo debe tener caracteres alfabeticos y espacios',
+    message: 'El campo {_field_} solo debe tener caracteres alfabeticos y espacios',
   })
 
   extend('digits', {
     ...digits,
-    message: 'El campo {field} debe tener {length} digitos. ({value})',
+    message: 'El campo {_field_} debe tener {length} digitos. ({value})',
   })
 
   extend('required', {
     ...required,
-    message: 'El campo {field} no puede estar vacio',
+    message: 'El campo {_field_} no puede estar vacio',
   })
 
   extend('max', {
     ...max,
-    message: 'El campo {field} no puede tener más de {length} caracteres',
+    message: 'El campo {_field_} no puede tener más de {length} caracteres',
   })
 
   extend('min', {
     ...min,
-    message: 'El campo {field} debe tener minimo {length} caracteres',
+    message: 'El campo {_field_} debe tener minimo {length} caracteres',
   })
 
   extend('regex', {
     ...regex,
-    message: 'el campo {field} {value} no coincide {regex}',
+    message: 'el campo {_field_} {value} no coincide {regex}',
   })
 
   extend('email', {
@@ -472,7 +480,7 @@ let ruta="https://sacris.herokuapp.com/api/usuarios/obtener-params";
         .then(res=>{
           this.UsuarioLogueado=res.data
         })
-        let direccion = "https://sacris.herokuapp.com/api/Anuncio";
+        let direccion = "http://localhost:3000/api/Anuncio";
         axios.get(direccion)
                     .then( res =>{
                 this.listaAnuncio= res.data;

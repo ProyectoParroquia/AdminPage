@@ -1,6 +1,38 @@
 <template>
     <v-container grid-List-md>
+      <h1>Cursos Sacramentales</h1>
+       <v-dialog
+      transition="dialog-top-transition"
+      max-width="500px"
+    >
 
+  <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-bind="attrs"
+          v-on="on"
+         class="ma-2"
+         color="primary"
+         exact-active-class=""
+         >
+          Inscribete aquí
+             <v-icon
+                dark
+               right>
+            {{ icons.mdiAccountMultiplePlus }}
+             </v-icon>
+            </v-btn>
+      </template>
+      <v-card max-width="800px">
+        <v-card-title>
+          <span class="text-h5">Nueva Inscripcion</span>
+        </v-card-title>
+        <v-card-text>
+      <label>Elija el curso al cual desea inscribirse:</label>
+         <NuevoIns/>
+        </v-card-text>
+
+      </v-card>
+       </v-dialog>
       <v-snackbar
                 v-model="snackbarData.snackbar"
                 :timeout="snackbarData.timeout"
@@ -159,9 +191,7 @@
         </v-dialog>
          &nbsp;
        <v-dialog
-       color="white"
-         max-width="400px"
-          max-height="800px"
+        max-width="570px"
       >
       <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -177,16 +207,31 @@
              </v-icon>
       </v-btn>
        </template>
-       <v-card color="white">
-         <h2 class="text-center">
+       <v-card style="padding:10px" >
+         <h2 class="text-center " >
            Más información aquí
          </h2>
 
 
          <v-divider class="mb-4"></v-divider>
         <v-card-text>
-
-         <span ><strong>Descripcion:</strong>  {{curso.descriCurso}}</span>
+        <v-row>
+          <v-col class="col-8">
+            <v-img
+              class="blue--text align-end"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+            >
+              <h1 style="color:#FFFFFF; font-size:30px;"  v-text="curso.nombreCurso"></h1>
+            </v-img>
+          </v-col>
+          <v-col class="col-4">
+            <p style="font-size:17px;"><strong>Descripcion:</strong>  {{curso.descriCurso}}</p>
+            <p style="font-size:17px;"><strong>Costo:</strong>  {{curso.costoCurso}}</p>
+            <p style="font-size:17px;"><strong>Estado:</strong> {{curso.estadoCurso}}</p>
+          </v-col>
+        </v-row>
 
         </v-card-text>
        </v-card>
@@ -199,13 +244,14 @@
 </template>
 <script>
 import {
+  mdiAccountMultiplePlus,
   mdiPencil,
    mdiEyePlus,
    mdiContrast,
    mdiCloseCircleOutline
 } from '@mdi/js'
 import axios from 'axios';
-import NuevoIns from '@/components/curso/NuevoIns.vue';
+import NuevoIns from '../components/curso/NuevoIns.vue';
 import Nuevo from '@/components/curso/Nuevo';
 /* import editUsu from './editUsu.vue' */
 import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
@@ -483,31 +529,12 @@ setInteractionMode('eager')
       })
     },
 
-    save() {
-
-        /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("http://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem)
-          .then(data =>{
-                   if(data.status === 201){
-              console.log(data)
-              this.Snackbar(data.data.success, "green")
-              //llamamos a este metodo para reenderizar el componente y que muestre los cambios
-              this.initialize()
-              /* this.salir() */
-            }else{
-              this.makeToast("Error",data.data.mensage,"danger");
-              console.log("Error")
-            }
-          })
-    },
- /*  salir(){
-            this.$router.go(0);
-            }, */
-    },
+  },
  setup() {
     return {
       icons: {
         mdiPencil,
+        mdiAccountMultiplePlus,
          mdiEyePlus,
          mdiContrast,
          mdiCloseCircleOutline

@@ -1,9 +1,11 @@
 <template>
     <v-container grid-List-md>
-      <v-btn
-       color="primary"
-      text
-    v-on:click="consultarInactivos()"><span  text color="primary" v-if="BotonConsultaTexto=='Inactivo'">
+      <h1>
+        Cursos Recreativos
+      </h1>
+
+      <v-btn outlined color="primary"  v-on:click="consultarInactivos()">
+        <span  text color="primary" v-if="BotonConsultaTexto=='Inactivo'">
                Inactivos
               </span>
               <span text  color="primary" v-else>
@@ -37,6 +39,7 @@
                 </template>
               </v-snackbar>
         <v-dialog
+        v-model="dialogIncripcion"
       transition="dialog-top-transition"
       max-width="1000px"
         max-height="1800px"
@@ -44,12 +47,12 @@
 
   <template v-slot:activator="{ on, attrs }">
         <v-btn
-          v-bind="attrs"
+         v-bind="attrs"
           v-on="on"
          class="ma-2"
          color="primary"
          exact-active-class=""
-         text>
+         outlined>
                   Inscribir
             </v-btn>
       </template>
@@ -58,7 +61,7 @@
           <span class="text-h5">Nueva Inscripcion</span>
         </v-card-title>
         <v-card-text>
-         <NuevoInsci :Snackbar="Snackbar"/>
+         <NuevoInsci :Snackbar="Snackbar" :closeInscripcion="closeInscripcion"/>
         </v-card-text>
 
       </v-card>
@@ -70,12 +73,14 @@
         >
              <template v-slot:activator="{ on, attrs }">
               <v-btn
-              color="primary"
-              dark
-              v-bind="attrs"
-              v-on="on"
-              @click="abrir()"
-              text
+                color="primary"
+                dark
+                block
+                class="mb-5"
+                v-bind="attrs"
+                v-on="on"
+                @click="abrir()"
+
             >
              Nuevo curso
             </v-btn>
@@ -92,14 +97,15 @@
 </v-dialog>
    <v-row>
         <v-col
+          class="col-12 col-sm-6 col-md-4"
            v-for="curso in listaCurso"
           :key="curso.idCurso"
            :items="data"
         >
-          <v-card max-width="270" >
+          <v-card >
             <v-img
              class="blue--text align-end"
-              :src="'http:/localhost:3000/'+curso.imagenCurso"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
                  gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
@@ -107,11 +113,11 @@
             </v-img>
             <br>
             <v-card-text style="font-size:16px; line-height:0.5em;" >
-                         <p>{{curso.fechaInicialCurso}}</p>
-                         <p>{{curso.fechaFinalCurso}}</p>
-                         <p>{{curso.costoCurso}}</p>
-                         <p>{{curso.TipoCurso.nombreTipoCurso}}</p>
-                         <p>{{curso.estadoCurso}}</p>
+                  <p>Este curso empieza:</p>
+                    <p ><strong>Dia Inicio:</strong>  {{curso.fechaInicialCurso}}</p>
+                      <p>Y termina</p>
+                    <p ><strong>Fecha Fin:</strong> {{curso.fechaFinalCurso}}</p>
+
                          </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -253,16 +259,7 @@
           <img width="100" :src="imagen" height="100" alt="foto curso">
         </figure>
 <br>
-        <v-autocomplete
-          clearable
-          v-model="curso.TipoCurso.nombreTipoCurso"
-            :items="itemSelectName"
-          :error-messages="errors"
-          label="Tipo Curso"
-          data-vv-name="editedItem.idTipoCurso"
-          required
-        >
-        </v-autocomplete>
+
     </v-col>
 
  </v-row>
@@ -428,9 +425,7 @@
         </v-dialog>
          &nbsp;
        <v-dialog
-       color="white"
-         max-width="400px"
-          max-height="800px"
+        max-width="570px"
       >
       <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -446,9 +441,32 @@
              </v-icon>
       </v-btn>
        </template>
-       <v-card color="white">
+       <v-card style="padding:10px" >
+         <h2 class="text-center " >
+           Más información aquí
+         </h2>
+
+
+         <v-divider class="mb-4"></v-divider>
         <v-card-text>
-          {{curso.descriCurso}}
+        <v-row>
+          <v-col class="col-8">
+            <v-img
+              class="blue--text align-end"
+              :src="'http://localhost:3000/'+curso.imagenCurso"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+            >
+              <h1  style="color:#FFFFFF; font-size:30px;"  v-text="curso.nombreCurso"></h1>
+            </v-img>
+          </v-col>
+          <v-col class="col-4">
+            <p style="font-size:17px;"><strong>Descripcion:</strong>  {{curso.descriCurso}}</p>
+            <p style="font-size:17px;"><strong>Costo:</strong>  {{curso.costoCurso}}</p>
+            <p style="font-size:17px;"><strong>Estado:</strong> {{curso.estadoCurso}}</p>
+          </v-col>
+        </v-row>
+
         </v-card-text>
        </v-card>
        </v-dialog>
@@ -558,12 +576,16 @@ setInteractionMode('eager')
     dialogVermas: false,
     dialogDelete: false,
     dialogNuevo:false,
+    dialogIncripcion:false,
   listaCurso: null,
     data: [],
     editedIndex: -1,
     editedItem: {},
     itemSelect: {},
     itemSelectName: [],
+    items: [
+
+                  ],
     defaultItem: {
     idCurso:0,
     costoCurso:0,
@@ -601,6 +623,10 @@ setInteractionMode('eager')
     dialogNuevo(val)
     {
       val|| this.closeNuevo()
+      },
+      dialogIncripcion(val)
+    {
+      val|| this.closeNuevo()
       }
   },
 
@@ -635,8 +661,11 @@ setInteractionMode('eager')
       this.dialogNuevo = true
       this.keyNuevoUsu +=1
     },
+    abrirInscricion(){
+      this.dialogIncripcion = true
+    },
     initialize() {
-      let direcciondoc = "http:/localhost:3000/api/TipoCurso/";
+      let direcciondoc = "https://sacris-page.herokuapp.com/api/TipoCurso/";
                 axios.get(direcciondoc)
                 .then( res =>{
                   res.data.forEach(element => {
@@ -646,7 +675,7 @@ setInteractionMode('eager')
                   });
 
 
-        let direccion = "http:/localhost:3000/api/Curso/recreativo";
+        let direccion = "http://localhost:3000/api/Curso/recreativo";
         axios.get(direccion)
                     .then( res =>{
                 this.listaCurso= res.data;
@@ -675,7 +704,7 @@ setInteractionMode('eager')
         cambioEstado = "activar"
       }
 
-      axios.put("http:/localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso,{ headers: { token: localStorage.getItem('token') }  })
+      axios.put("http://localhost:3000/api/Curso/"+cambioEstado+"/"+this.editedItem.idCurso,{ headers: { token: localStorage.getItem('token') }  })
            .then(res =>{
                 this.valorBoton=!this.valorBoton
                   this.consultarInactivos()
@@ -701,7 +730,7 @@ setInteractionMode('eager')
                 this.BotonConsultaTexto= "Inactivo"
               }
 
-                let direccion = "http:/localhost:3000/api/Curso/"+varestado+"recreativo/";
+                let direccion = "http://localhost:3000/api/Curso/"+varestado+"recreativo/";
                 axios.get(direccion).then( res =>{
                    this.listaCurso= res.data;
                     console.log(this.data)
@@ -718,6 +747,9 @@ setInteractionMode('eager')
     closeNuevo(){
       this.dialogNuevo = false
     },
+    closeInscripcion(){
+      this.dialogIncripcion=false
+    },
 
     closeDelete() {
       this.dialogDelete = false
@@ -730,7 +762,7 @@ setInteractionMode('eager')
     save() {
 
         /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("http:/localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
+          axios.put("http://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
           .then(data =>{
                    if(data.status === 201){
               console.log(data)

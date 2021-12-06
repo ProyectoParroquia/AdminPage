@@ -91,8 +91,8 @@
 </template>
 <script>
 
-import axios from 'axios';/*
-import NuevoIn from '@/components/curso/NuevoIns'; */
+import axios from 'axios';
+/* import NuevoIn from '@/components/curso/NuevoIns'; */
 import {
   mdiEyePlus,
   mdiDelete,

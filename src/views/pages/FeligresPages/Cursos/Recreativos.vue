@@ -1,5 +1,38 @@
 <template>
     <v-container grid-List-md>
+      <h1>Cursos Recreativos</h1>
+          <v-dialog
+      transition="dialog-top-transition"
+      max-width="500px"
+    >
+
+  <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          v-bind="attrs"
+          v-on="on"
+         class="ma-2"
+         color="primary"
+         exact-active-class=""
+         >
+          Inscribete aquí
+             <v-icon
+                dark
+               right>
+            {{ icons.mdiAccountMultiplePlus }}
+             </v-icon>
+            </v-btn>
+      </template>
+      <v-card max-width="800px">
+        <v-card-title>
+          <span class="text-h5">Nueva Inscripcion</span>
+        </v-card-title>
+        <v-card-text>
+      <label>Elija el curso al cual desea inscribirse:</label>
+         <NuevoIn/>
+        </v-card-text>
+
+      </v-card>
+       </v-dialog>
 
       <v-snackbar
                 v-model="snackbarData.snackbar"
@@ -58,11 +91,12 @@
 </v-dialog>
    <v-row>
         <v-col
+         class="col-12 col-sm-6 col-md-4 "
            v-for="curso in listaCurso"
           :key="curso.idCurso"
            :items="data"
         >
-          <v-card max-width="270" >
+          <v-card  >
             <v-img
              class="blue--text align-end"
               :src="'http://localhost:3000/'+curso.imagenCurso"
@@ -156,7 +190,7 @@
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
-              <h1 color="white" style="color:#FFFFFF; font-size:30px;"  v-text="curso.nombreCurso"></h1>
+              <h1 style="color:#FFFFFF; font-size:30px;"  v-text="curso.nombreCurso"></h1>
             </v-img>
           </v-col>
           <v-col class="col-4">
@@ -177,6 +211,7 @@
 </template>
 <script>
 import {
+  mdiAccountMultiplePlus,
   mdiPencil,
    mdiEyePlus,
    mdiContrast,
@@ -185,6 +220,7 @@ import {
 import axios from 'axios';
 import NuevoInsci from '@/components/curso/NuevoInsci.vue';
 import Nuevo from '@/components/curso/Nuevo';
+import NuevoIn from '../components/curso/NuevoIn.vue';
 /* import editUsu from './editUsu.vue' */
 import { required, digits, email, max, min, regex, alpha_spaces, numeric, alpha_dash, confirmed} from 'vee-validate/dist/rules'
 import { extend, setInteractionMode } from 'vee-validate'
@@ -246,6 +282,9 @@ setInteractionMode('eager')
   Nuevo,
   NuevoInsci,
    /*  editUsu */
+
+NuevoIn
+
   },
 
   data: () => ({
@@ -443,28 +482,13 @@ setInteractionMode('eager')
       })
     },
 
-    save() {
 
-        /*  switch (this.editedItem.tipoDoc.denominacionTipoDocumento ) */
-          axios.put("http://localhost:3000/api/Curso/"+this.editedItem.idCurso, this.editedItem,{ headers: { token: localStorage.getItem('token') }  })
-          .then(data =>{
-                   if(data.status === 201){
-              console.log(data)
-              this.Snackbar(data.data.success, "green")
-              //llamamos a este metodo para reenderizar el componente y que muestre los cambios
-              this.initialize()
-
-            }else{
-              this.makeToast("Error",data.data.mensage,"danger");
-              console.log("Error")
-            }
-          })
-    },
 
     },
  setup() {
     return {
       icons: {
+        mdiAccountMultiplePlus,
         mdiPencil,
          mdiEyePlus,
          mdiContrast,

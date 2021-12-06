@@ -21,7 +21,7 @@ export default {
 
     },
     mounted:function(){
-        let direccion = "http://localhost:5000/api/Curso/Sacramental";
+        let direccion = "https://sacris.herokuapp.com/api/Curso/Sacramental";
                 axios.get(direccion).then( data =>{
                 this.ListaCurso = data.data;
                   });

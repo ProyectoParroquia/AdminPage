@@ -1,5 +1,8 @@
 <template>
     <v-container grid-List-md>
+      <h1>
+        Cursos Sacramentales
+      </h1>
 
 
       <v-btn  outlined color="primary"  v-on:click="consultarInactivos()"  >
@@ -49,7 +52,6 @@
           v-on="on"
          class="ma-2"
          color="primary"
-
          exact-active-class=""
          outlined>
                   Inscribir
@@ -61,7 +63,7 @@
           <span class="text-h5">Nueva Inscripcion</span>
         </v-card-title>
         <v-card-text>
-         <NuevoIns :Snackbar="Snackbar"/>
+         <NuevoIns :Snackbar="Snackbar" :closeInscripcion="closeInscripcion"/>
         </v-card-text>
 
       </v-card>
@@ -114,10 +116,10 @@
             </v-img>
             <br>
             <v-card-text style="font-size:16px; line-height:0.5em;" >
-
-                         <p ><strong>Curso {{curso.TipoCurso.nombreTipoCurso}}</strong> </p>
+                          <p>Este curso empieza:</p>
                         <p ><strong>Dia Inicio:</strong>  {{curso.fechaInicialCurso}}</p>
-                          <p ><strong>Fecha Fin</strong> {{curso.fechaFinalCurso}}</p>
+                          <p>Y termina</p>
+                          <p ><strong>Fecha Fin:</strong> {{curso.fechaFinalCurso}}</p>
 
 
                          </v-card-text>
@@ -262,15 +264,7 @@
           <img width="100" :src="imagen" height="100" alt="foto curso">
         </figure>
 <br>
-        <v-autocomplete
-          clearable
-          v-model="curso.TipoCurso.nombreTipoCurso"
-            :items="itemSelectName"
-          label="Tipo Curso"
-          data-vv-name="editedItem.idTipoCurso"
-          required
-        >
-        </v-autocomplete>
+
     </v-col>
 
  </v-row>

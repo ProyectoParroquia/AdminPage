@@ -67,6 +67,11 @@ const routes = [
   },
   //Feligres
   {
+    path: '/dashboardF',
+    name: 'dashF',
+    component: () => import('@/views/pages/FeligresPages/dashboard/Dashboard.vue'),
+  },
+  {
     path: '/AnunciosF',
     name: 'anunciosF',
     component: () => import('@/views/pages/FeligresPages/Anuncios/CartaAnuncios.vue'),
@@ -75,13 +80,20 @@ const routes = [
   {
     path: '/CursosF',
     name: 'cursosF',
-    component: () => import('@/views/pages/FeligresPages/Cursos/cursos.vue'),
+    component: () => import('@/views/pages/FeligresPages/Cursos/Recreativos.vue'),
   },
   {
     path: '/SacramentalF',
     name: 'SacramentalF',
-    component: () => import('@/views/pages/FeligresPages/Cursos/cards.vue'),
+    component: () => import('@/views/pages/FeligresPages/Cursos/Sacramentales.vue'),
   },
+  {
+    path: '/Subir',
+    name: 'subir',
+    component: () => import('@/views/pages/FeligresPages/Cursos/subir.vue'),
+  },
+
+
   // aqui se acaban feligres
 
   {

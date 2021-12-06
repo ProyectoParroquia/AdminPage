@@ -129,6 +129,7 @@
 </template>
 
 <script>
+import { mdiCloseCircleOutline } from '@mdi/js'
 import { ref } from '@vue/composition-api'
 import axios from 'axios'
 export default {
@@ -188,13 +189,9 @@ export default {
     return {
       optionsLocal,
       resetForm,
-      /* tokenLogin: localStorage.getItem('token'),
-        snackbarData:{
-              snackbar: false,
-              text: '',
-              timeout: 2000,
-              color:''
-            } */
+      icons: {
+        mdiCloseCircleOutline
+      },
        }
   },
 }

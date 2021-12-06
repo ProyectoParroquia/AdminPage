@@ -181,7 +181,7 @@ export default {
               })
         },
         salir(){
-          this.$router.push('/dasboard2');
+          this.$router.push('/dasboardF');
         },
          cambiarIns(tipo){
             this.form.idInscripcionFK = tipo

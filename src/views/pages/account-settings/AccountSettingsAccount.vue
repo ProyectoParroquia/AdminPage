@@ -171,7 +171,7 @@ data: function(){
     }
 
     return {
-      status,
+
       accountDataLocale,
       resetForm,
       icons: {
